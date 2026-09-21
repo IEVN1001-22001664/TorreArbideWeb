@@ -261,11 +261,33 @@
     var pills = document.querySelectorAll(".filter-pill");
     var prevBtn = document.getElementById("gallery-prev");
     var nextBtn = document.getElementById("gallery-next");
-    var stageEl = document.querySelector(".gallery-stage");
+    var previewImg = document.getElementById("gallery-preview-img");
+
+    function onSingleAndDoubleClick(el, onSingle, onDouble) {
+      var timer = null;
+      var pending = false;
+      el.addEventListener("click", function (e) {
+        if (pending) {
+          pending = false;
+          clearTimeout(timer);
+          onDouble(e);
+        } else {
+          pending = true;
+          timer = setTimeout(function () {
+            pending = false;
+            onSingle(e);
+          }, 300);
+        }
+      });
+    }
+
+    function onSingleTap(el, callback) {
+      el.addEventListener("click", callback);
+    }
 
     var HALF_WINDOW = 4;
     var SLOT_COUNT = HALF_WINDOW * 2 + 1;
-    var ANGLE_STEP = 13;
+    var ANGLE_STEP = 11;
     var RADIUS = 520;
 
     var currentList = [];
@@ -287,24 +309,36 @@
       slot.el.dataset.wrapped = wrapped;
     }
 
+    function updatePreview() {
+      var n = currentList.length;
+      if (!n) return;
+      var item = currentList[wrapIndex(center, n)];
+      previewImg.classList.remove("is-loaded");
+      previewImg.onload = function () { previewImg.classList.add("is-loaded"); };
+      previewImg.src = item.src;
+      previewImg.alt = item.alt;
+    }
+
+    var MAX_ANGLE_RAD = (HALF_WINDOW * ANGLE_STEP * Math.PI) / 180;
+    var MAX_DEPTH = RADIUS * (1 - Math.cos(MAX_ANGLE_RAD));
+
     function positionAllSlots() {
-      var stageWidth = stageEl.clientWidth;
+      var arcWidth = arcEl.clientWidth;
       var cardWidth = slots.length ? slots[0].el.offsetWidth : 190;
-      var halfStage = stageWidth / 2;
+      var halfArc = arcWidth / 2;
 
       slots.forEach(function (slot) {
         var relPos = slot.absIndex - center;
         var angleDeg = relPos * ANGLE_STEP;
         var angleRad = (angleDeg * Math.PI) / 180;
         var x = RADIUS * Math.sin(angleRad);
-        var depth = RADIUS * (1 - Math.cos(angleRad));
-        var rot = angleDeg * 0.9;
+        var depth = MAX_DEPTH - RADIUS * (1 - Math.cos(angleRad));
         var absRel = Math.abs(relPos);
         var opacity = absRel >= HALF_WINDOW ? 0 : 1 - Math.pow(absRel / HALF_WINDOW, 1.6);
 
-        slot.el.style.left = (halfStage + x - cardWidth / 2) + "px";
+        slot.el.style.left = (halfArc + x - cardWidth / 2) + "px";
         slot.el.style.top = depth + "px";
-        slot.el.style.transform = "rotate(" + rot + "deg)";
+        slot.el.style.zIndex = Math.round((HALF_WINDOW - absRel) * 10);
         slot.el.style.opacity = opacity;
         var interactive = opacity > 0.05;
         slot.el.style.pointerEvents = interactive ? "auto" : "none";
@@ -315,26 +349,30 @@
     function buildSlots() {
       arcEl.innerHTML = "";
       slots = [];
-      for (var k = 0; k < SLOT_COUNT; k++) {
-        var card = document.createElement("button");
+      for (let k = 0; k < SLOT_COUNT; k++) {
+        let card = document.createElement("button");
         card.type = "button";
         card.className = "gallery-card";
 
-        var img = document.createElement("img");
+        let img = document.createElement("img");
         img.loading = "lazy";
         card.appendChild(img);
 
-        card.addEventListener("click", function () {
-          openLightbox(parseInt(this.dataset.wrapped, 10));
-        });
+        let slot = { el: card, img: img, absIndex: k - HALF_WINDOW };
+
+        onSingleAndDoubleClick(
+          card,
+          function () { jumpTo(slot.absIndex); },
+          function () { openLightbox(wrapIndex(slot.absIndex, currentList.length)); }
+        );
 
         arcEl.appendChild(card);
 
-        var slot = { el: card, img: img, absIndex: k - HALF_WINDOW };
         slots.push(slot);
         updateSlotImage(slot);
       }
       positionAllSlots();
+      updatePreview();
     }
 
     function navigate(dir) {
@@ -350,6 +388,34 @@
         }
       });
       positionAllSlots();
+      updatePreview();
+    }
+
+    function jumpTo(targetAbsIndex) {
+      if (targetAbsIndex === center) return;
+      var desired = [];
+      for (var k = -HALF_WINDOW; k <= HALF_WINDOW; k++) desired.push(targetAbsIndex + k);
+
+      var stillNeeded = desired.slice();
+      var freeSlots = [];
+
+      slots.forEach(function (slot) {
+        var pos = stillNeeded.indexOf(slot.absIndex);
+        if (pos !== -1) {
+          stillNeeded.splice(pos, 1);
+        } else {
+          freeSlots.push(slot);
+        }
+      });
+
+      freeSlots.forEach(function (slot, i) {
+        slot.absIndex = stillNeeded[i];
+        updateSlotImage(slot);
+      });
+
+      center = targetAbsIndex;
+      positionAllSlots();
+      updatePreview();
     }
 
     function renderGallery() {
@@ -405,17 +471,29 @@
       lbIndex = i;
       updateLightbox();
       lightbox.hidden = false;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () {
+          lightbox.classList.add("is-visible");
+        });
+      });
     }
     function updateLightbox() {
       var item = currentList[lbIndex];
       lightboxImg.src = item.src;
       lightboxImg.alt = item.alt;
     }
-    function closeLightbox() { lightbox.hidden = true; }
+    function closeLightbox() {
+      lightbox.classList.remove("is-visible");
+      setTimeout(function () { lightbox.hidden = true; }, 300);
+    }
     function stepLightbox(dir) {
       lbIndex = (lbIndex + dir + currentList.length) % currentList.length;
       updateLightbox();
     }
+
+    onSingleTap(previewImg, function () {
+      openLightbox(wrapIndex(center, currentList.length));
+    });
 
     document.getElementById("lightbox-close").addEventListener("click", closeLightbox);
     document.getElementById("lightbox-prev").addEventListener("click", function () { stepLightbox(-1); });
