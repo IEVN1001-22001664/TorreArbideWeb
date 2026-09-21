@@ -128,14 +128,38 @@
   </div>
 </section>
 
-<!-- Placeholder: sección a diseñar -->
-<section class="section-placeholder bg-dark" id="galeria">
+<section class="galeria" id="galeria">
   <div class="section-head light reveal-scroll" style="--d:0">
     <p class="eyebrow">Un Vistazo</p>
     <h2>Galería</h2>
-    <p class="section-intro light">Muy pronto: fotos y video del avance de obra y los espacios de Torre Arbide.</p>
+  </div>
+
+  <div class="gallery-filters reveal-scroll" style="--d:1">
+    <button class="filter-pill is-active" data-filter="todas" type="button">Todas</button>
+    <button class="filter-pill" data-filter="aereas" type="button">Tomas Aéreas</button>
+    <button class="filter-pill" data-filter="departamentos" type="button">Departamentos</button>
+    <button class="filter-pill" data-filter="amenidades" type="button">Amenidades</button>
+    <button class="filter-pill" data-filter="areas-comunes" type="button">Áreas Comunes</button>
+  </div>
+
+  <div class="gallery-stage reveal-scroll" style="--d:2">
+    <div class="gallery-arc" id="gallery-arc"></div>
+    <p class="gallery-empty" id="gallery-empty" hidden>Aún no hay fotos en esta categoría — muy pronto.</p>
   </div>
 </section>
+
+<div class="lightbox" id="lightbox" hidden>
+  <button class="lightbox-close" id="lightbox-close" aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <button class="lightbox-nav lightbox-prev" id="lightbox-prev" aria-label="Anterior">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <img id="lightbox-img" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="lightbox-next" aria-label="Siguiente">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+</div>
 
 <section class="ubicacion" id="ubicacion">
   <div class="section-head reveal-scroll" style="--d:0">
