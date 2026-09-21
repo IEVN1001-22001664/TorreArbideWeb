@@ -510,4 +510,123 @@
 
     renderGallery();
   }
+
+  /* ---------- mapa interactivo de ubicación ---------- */
+  var mapEl = document.getElementById("map");
+  if (mapEl && typeof L !== "undefined") {
+    var TORRE = {
+      nombre: "Torre Arbide",
+      lat: 21.121367854829508,
+      lng: -101.69424102283388,
+      imagenIcono: "assets/logo-mark-white.svg"
+    };
+
+    var PUNTOS_DE_INTERES = [
+      { id: "hospital", nombre: "Hospital Aranda de la Parra", meta: "Hospital", icono: "🏥", lat: 21.1253351, lng: -101.6816112 },
+      { id: "universidad", nombre: "Universidad La Salle Bajío", meta: "Universidad", icono: "🎓", lat: 21.1526189, lng: -101.7114455 },
+      { id: "gimnasio", nombre: "Anytime Fitness Campestre", meta: "Gimnasio", icono: "🏋️", lat: 21.1546116, lng: -101.6989815 },
+      { id: "comercial", nombre: "Plaza Mayor León", meta: "Centro comercial", icono: "🛍️", lat: 21.1580824, lng: -101.6952760 },
+      { id: "corporativo", nombre: "Polifórum León", meta: "Zona corporativa", icono: "💼", lat: 21.1120623, lng: -101.6554191 },
+      { id: "centro", nombre: "Centro Histórico", meta: "Restaurantes y cultura", icono: "🍽️", lat: 21.1203664, lng: -101.6747844 }
+    ];
+
+    var map = L.map("map", { zoomControl: true }).setView([TORRE.lat, TORRE.lng], 13);
+
+    L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
+      attribution: '&copy; <a href="https://www.esri.com">Esri</a> &mdash; Esri, DeLorme, NAVTEQ',
+      maxZoom: 16
+    }).addTo(map);
+
+    var torreIcon = L.divIcon({
+      className: "",
+      html: '<div class="torre-marker"><img src="' + TORRE.imagenIcono + '" alt="' + TORRE.nombre + '"/></div>',
+      iconSize: [46, 46],
+      iconAnchor: [23, 46],
+      popupAnchor: [0, -40]
+    });
+
+    L.marker([TORRE.lat, TORRE.lng], { icon: torreIcon })
+      .addTo(map)
+      .bindPopup("<strong>" + TORRE.nombre + "</strong><br>Tu nuevo hogar");
+
+    var poiMarkers = {};
+
+    PUNTOS_DE_INTERES.forEach(function (poi) {
+      var icon = L.divIcon({
+        className: "",
+        html: '<div class="poi-marker">' + poi.icono + "</div>",
+        iconSize: [34, 34],
+        iconAnchor: [17, 17]
+      });
+
+      var marker = L.marker([poi.lat, poi.lng], { icon: icon })
+        .addTo(map)
+        .bindPopup("<strong>" + poi.nombre + "</strong>");
+
+      marker.on("click", function () { calcularRuta(poi); });
+      poiMarkers[poi.id] = marker;
+    });
+
+    var poiListEl = document.getElementById("poi-list");
+
+    PUNTOS_DE_INTERES.forEach(function (poi) {
+      var item = document.createElement("div");
+      item.className = "poi-item";
+      item.id = "poi-item-" + poi.id;
+      item.innerHTML =
+        '<div class="poi-icon">' + poi.icono + "</div>" +
+        "<div>" +
+        '<div class="poi-name">' + poi.nombre + "</div>" +
+        '<div class="poi-meta">' + poi.meta + "</div>" +
+        "</div>";
+      item.addEventListener("click", function () { calcularRuta(poi); });
+      poiListEl.appendChild(item);
+    });
+
+    var routingControl = null;
+
+    function calcularRuta(poi) {
+      document.querySelectorAll(".poi-item").forEach(function (el) { el.classList.remove("is-active"); });
+      document.getElementById("poi-item-" + poi.id).classList.add("is-active");
+
+      if (routingControl) {
+        map.removeControl(routingControl);
+      }
+
+      routingControl = L.Routing.control({
+        waypoints: [
+          L.latLng(poi.lat, poi.lng),
+          L.latLng(TORRE.lat, TORRE.lng)
+        ],
+        router: L.Routing.osrmv1({
+          serviceUrl: "https://router.project-osrm.org/route/v1"
+        }),
+        profile: "driving",
+        lineOptions: {
+          styles: [{ color: "#a8a59b", weight: 5, opacity: 0.9 }]
+        },
+        createMarker: function () { return null; },
+        addWaypoints: false,
+        draggableWaypoints: false,
+        fitSelectedRoutes: true,
+        show: false
+      }).addTo(map);
+
+      routingControl.on("routesfound", function (e) {
+        var ruta = e.routes[0];
+        var distanciaKm = (ruta.summary.totalDistance / 1000).toFixed(1);
+        var tiempoMin = Math.round(ruta.summary.totalTime / 60);
+
+        document.getElementById("poi-distance").textContent = distanciaKm + " km";
+        document.getElementById("poi-time").textContent = tiempoMin + " min";
+        document.getElementById("poi-result").hidden = false;
+      });
+
+      routingControl.on("routingerror", function () {
+        document.getElementById("poi-distance").textContent = "—";
+        document.getElementById("poi-time").textContent = "No disponible";
+        document.getElementById("poi-result").hidden = false;
+      });
+    }
+  }
 })();

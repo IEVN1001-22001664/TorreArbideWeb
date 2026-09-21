@@ -10,6 +10,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@1&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -175,17 +177,30 @@
   <div class="section-head reveal-scroll" style="--d:0">
     <p class="eyebrow">Dónde Estamos</p>
     <h2>Ubicación</h2>
-    <p class="section-intro">Tabasco 606, Bellavista, 37360 León de los Aldama, Gto.</p>
+    <p class="section-intro">Tabasco 606, Bellavista, 37360 León de los Aldama, Gto. — a minutos de los lugares que ya son parte de tu día a día.</p>
   </div>
 
-  <div class="map-wrap reveal-scroll" style="--d:1">
-    <iframe
-      class="map-frame"
-      src="https://www.google.com/maps?q=21.121367854829508,-101.69424102283388&z=16&output=embed"
-      title="Ubicación de Torre Arbide"
-      loading="lazy"
-      referrerpolicy="no-referrer-when-downgrade"
-      allowfullscreen></iframe>
+  <div class="map-layout reveal-scroll" style="--d:1">
+    <div class="poi-panel">
+      <h3 class="poi-panel-title">Puntos de interés</h3>
+      <div id="poi-list" class="poi-list"></div>
+
+      <div class="poi-result" id="poi-result" hidden>
+        <p class="poi-result-label">Ruta hacia Torre Arbide</p>
+        <div class="poi-result-row">
+          <div>
+            <p class="poi-result-sublabel">Distancia</p>
+            <p class="poi-result-value" id="poi-distance">—</p>
+          </div>
+          <div>
+            <p class="poi-result-sublabel">Tiempo en auto</p>
+            <p class="poi-result-value" id="poi-time">—</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="map" class="map-canvas"></div>
   </div>
 
   <div class="ubicacion-cta reveal-scroll" style="--d:2">
@@ -215,6 +230,8 @@
   <p>© 2026 Torre Arbide — DU'AN Bienes Raíces. Todos los derechos reservados.</p>
 </footer>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 <script src="js/script.js"></script>
 </body>
 </html>
