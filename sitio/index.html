@@ -145,17 +145,17 @@
   </div>
 
   <div class="gallery-preview reveal-scroll" style="--d:2">
-    <img id="gallery-preview-img" src="" alt="" title="Clic para ampliar">
-  </div>
-
-  <div class="gallery-stage reveal-scroll" style="--d:3">
     <button class="gallery-nav gallery-prev" id="gallery-prev" aria-label="Anterior">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>
     </button>
-    <div class="gallery-arc" id="gallery-arc"></div>
+    <img id="gallery-preview-img" src="" alt="" title="Clic para ampliar">
     <button class="gallery-nav gallery-next" id="gallery-next" aria-label="Siguiente">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
     </button>
+  </div>
+
+  <div class="gallery-stage reveal-scroll" style="--d:3">
+    <div class="gallery-arc" id="gallery-arc"></div>
     <p class="gallery-empty" id="gallery-empty" hidden>Aún no hay fotos en esta categoría — muy pronto.</p>
   </div>
 </section>
@@ -180,7 +180,11 @@
     <p class="section-intro">Tabasco 606, Bellavista, 37360 León de los Aldama, Gto. — a minutos de los lugares que ya son parte de tu día a día.</p>
   </div>
 
-  <div class="map-layout reveal-scroll" style="--d:1">
+  <div class="ubicacion-cta reveal-scroll" style="--d:1">
+    <a href="https://www.google.com/maps/place/Torre+Arbide/@21.1214229,-101.6968177,17z/data=!3m1!4b1!4m6!3m5!1s0x842bbf266fedba51:0x599374b5b1f6f2b3!8m2!3d21.1214179!4d-101.6942428!16s%2Fg%2F11q4dgky_7?entry=ttu&g_ep=EgoyMDI2MDkxNi4wIKXMDSoASAFQAw%3D%3D" target="_blank" rel="noopener" class="btn-outline-dark">Ver en Google Maps</a>
+  </div>
+
+  <div class="map-layout reveal-scroll" style="--d:2">
     <div class="poi-panel">
       <h3 class="poi-panel-title">Puntos de interés</h3>
 
@@ -228,10 +232,6 @@
       </button>
       <div id="map" class="map-canvas"></div>
     </div>
-  </div>
-
-  <div class="ubicacion-cta reveal-scroll" style="--d:2">
-    <a href="https://www.google.com/maps/dir/?api=1&destination=21.121367854829508,-101.69424102283388" target="_blank" rel="noopener" class="btn-outline-dark">Cómo Llegar</a>
   </div>
 </section>
 

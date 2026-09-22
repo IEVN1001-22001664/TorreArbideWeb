@@ -309,10 +309,11 @@
       slot.el.dataset.wrapped = wrapped;
     }
 
-    function updatePreview() {
+    function updatePreview(overrideIndex) {
       var n = currentList.length;
       if (!n) return;
-      var item = currentList[wrapIndex(center, n)];
+      var idx = (typeof overrideIndex === "number") ? overrideIndex : center;
+      var item = currentList[wrapIndex(idx, n)];
       previewImg.classList.remove("is-loaded");
       previewImg.onload = function () { previewImg.classList.add("is-loaded"); };
       previewImg.src = item.src;
@@ -322,13 +323,14 @@
     var MAX_ANGLE_RAD = (HALF_WINDOW * ANGLE_STEP * Math.PI) / 180;
     var MAX_DEPTH = RADIUS * (1 - Math.cos(MAX_ANGLE_RAD));
 
-    function positionAllSlots() {
+    function positionAllSlots(overrideCenter) {
+      var effectiveCenter = (typeof overrideCenter === "number") ? overrideCenter : center;
       var arcWidth = arcEl.clientWidth;
       var cardWidth = slots.length ? slots[0].el.offsetWidth : 190;
       var halfArc = arcWidth / 2;
 
       slots.forEach(function (slot) {
-        var relPos = slot.absIndex - center;
+        var relPos = slot.absIndex - effectiveCenter;
         var angleDeg = relPos * ANGLE_STEP;
         var angleRad = (angleDeg * Math.PI) / 180;
         var x = RADIUS * Math.sin(angleRad);
@@ -391,10 +393,9 @@
       updatePreview();
     }
 
-    function jumpTo(targetAbsIndex) {
-      if (targetAbsIndex === center) return;
+    function reassignSlots(targetIndex) {
       var desired = [];
-      for (var k = -HALF_WINDOW; k <= HALF_WINDOW; k++) desired.push(targetAbsIndex + k);
+      for (var k = -HALF_WINDOW; k <= HALF_WINDOW; k++) desired.push(targetIndex + k);
 
       var stillNeeded = desired.slice();
       var freeSlots = [];
@@ -412,7 +413,11 @@
         slot.absIndex = stillNeeded[i];
         updateSlotImage(slot);
       });
+    }
 
+    function jumpTo(targetAbsIndex) {
+      if (targetAbsIndex === center) return;
+      reassignSlots(targetAbsIndex);
       center = targetAbsIndex;
       positionAllSlots();
       updatePreview();
@@ -461,6 +466,72 @@
         resizeTicking = false;
       });
     });
+
+    /* ---------- arrastre libre del carrusel (mouse / touch) ---------- */
+    var DRAG_PX_PER_STEP = 130;
+    var visualCenter = center;
+    var isDragging = false;
+    var dragPointerId = null;
+    var dragStartX = 0;
+    var dragStartCenter = 0;
+    var dragMoved = false;
+    var dragSyncedIndex = center;
+    var dragRafPending = false;
+
+    function onDragStart(e) {
+      if (!slots.length || (e.pointerType === "mouse" && e.button !== 0)) return;
+      isDragging = true;
+      dragMoved = false;
+      dragPointerId = e.pointerId;
+      dragStartX = e.clientX;
+      dragStartCenter = center;
+      visualCenter = center;
+      dragSyncedIndex = center;
+      arcEl.classList.add("is-dragging");
+      try { arcEl.setPointerCapture(dragPointerId); } catch (err) {}
+    }
+
+    function onDragMove(e) {
+      if (!isDragging || e.pointerId !== dragPointerId) return;
+      var deltaX = e.clientX - dragStartX;
+      if (Math.abs(deltaX) > 4) dragMoved = true;
+      visualCenter = dragStartCenter - deltaX / DRAG_PX_PER_STEP;
+      if (dragRafPending) return;
+      dragRafPending = true;
+      requestAnimationFrame(function () {
+        dragRafPending = false;
+        if (!isDragging) return;
+        var rounded = Math.round(visualCenter);
+        if (rounded !== dragSyncedIndex) {
+          reassignSlots(rounded);
+          dragSyncedIndex = rounded;
+          updatePreview(rounded);
+        }
+        positionAllSlots(visualCenter);
+      });
+    }
+
+    function endDrag(e) {
+      if (!isDragging || (e && e.pointerId !== dragPointerId)) return;
+      isDragging = false;
+      arcEl.classList.remove("is-dragging");
+      center = Math.round(visualCenter);
+      visualCenter = center;
+      reassignSlots(center);
+      positionAllSlots();
+      updatePreview();
+    }
+
+    arcEl.addEventListener("pointerdown", onDragStart);
+    arcEl.addEventListener("pointermove", onDragMove);
+    arcEl.addEventListener("pointerup", endDrag);
+    arcEl.addEventListener("pointercancel", endDrag);
+    arcEl.addEventListener("click", function (e) {
+      if (dragMoved) {
+        e.stopPropagation();
+        dragMoved = false;
+      }
+    }, true);
 
     /* ---------- lightbox ---------- */
     var lightbox = document.getElementById("lightbox");
@@ -679,6 +750,7 @@
     });
 
     /* ---------- panel lateral: estado vacío / detalle ---------- */
+    var poiPanelEl = document.querySelector(".poi-panel");
     var poiEmptyEl = document.getElementById("poi-empty");
     var poiDetailEl = document.getElementById("poi-detail");
     var poiActivo = null;
@@ -686,6 +758,7 @@
     function mostrarDetallePOI(poi) {
       poiEmptyEl.style.display = "none";
       poiDetailEl.classList.add("show");
+      poiPanelEl.classList.add("has-selection"); // en móvil, el panel solo aparece tras seleccionar un punto
 
       document.getElementById("detail-icon").innerHTML = renderIcono(poi.icono);
       document.getElementById("detail-name").textContent = poi.nombre;
@@ -703,6 +776,7 @@
     document.getElementById("btn-volver").addEventListener("click", function () {
       poiDetailEl.classList.remove("show");
       poiEmptyEl.style.display = "flex";
+      poiPanelEl.classList.remove("has-selection");
       poiActivo = null;
       if (routingControl) {
         map.removeControl(routingControl);
