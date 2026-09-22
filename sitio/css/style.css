@@ -428,6 +428,17 @@ img{display:block;max-width:100%;}
 .filter-pill:hover{border-color:rgba(245,243,239,.4);color:var(--ink);}
 .filter-pill.is-active{background:var(--tan);color:var(--charcoal);border-color:var(--tan);}
 
+.gallery-subfilters{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  gap:12px;
+  max-width:820px;
+  margin:-40px auto 40px;
+  padding:0 clamp(20px,4vw,56px);
+}
+.gallery-subfilters[hidden]{display:none;}
+
 .gallery-preview{
   position:relative;
   max-width:820px;
