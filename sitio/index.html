@@ -183,30 +183,83 @@
   <div class="map-layout reveal-scroll" style="--d:1">
     <div class="poi-panel">
       <h3 class="poi-panel-title">Puntos de interés</h3>
-      <div id="poi-list" class="poi-list"></div>
 
-      <div class="poi-result" id="poi-result" hidden>
-        <p class="poi-result-label">Ruta hacia Torre Arbide</p>
-        <div class="poi-result-row">
+      <!-- Estado inicial: sin selección -->
+      <div class="poi-empty" id="poi-empty">
+        <svg class="poi-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 20l-6-3V4l6 3m0 13 6-3m-6 3V7m6 10 6 3V6l-6-3m0 14V4m0 0L9 7"/></svg>
+        <p>Toca cualquier ícono del mapa para ver de qué se trata, la distancia y el tiempo en auto hasta Torre Arbide.</p>
+      </div>
+
+      <!-- Estado con un punto de interés seleccionado -->
+      <div class="poi-detail" id="poi-detail">
+        <button class="btn-volver" id="btn-volver">← Ver todos los puntos</button>
+
+        <div class="poi-detail-header">
+          <div class="poi-detail-icon" id="detail-icon"></div>
           <div>
-            <p class="poi-result-sublabel">Distancia</p>
-            <p class="poi-result-value" id="poi-distance">—</p>
+            <div class="poi-detail-name" id="detail-name"></div>
+            <div class="poi-detail-categoria" id="detail-categoria"></div>
           </div>
-          <div>
-            <p class="poi-result-sublabel">Tiempo en auto</p>
-            <p class="poi-result-value" id="poi-time">—</p>
+        </div>
+
+        <img id="detail-foto" class="poi-detail-foto" alt="">
+
+        <div class="poi-result" id="poi-result" hidden>
+          <p class="poi-result-label">Ruta hacia Torre Arbide</p>
+          <div class="poi-result-row">
+            <div>
+              <p class="poi-result-sublabel">Distancia</p>
+              <p class="poi-result-value" id="poi-distance">—</p>
+            </div>
+            <div>
+              <p class="poi-result-sublabel">Tiempo en auto</p>
+              <p class="poi-result-value" id="poi-time">—</p>
+            </div>
           </div>
+          <button class="btn-explora" id="btn-explora">Explora la zona</button>
         </div>
       </div>
     </div>
 
-    <div id="map" class="map-canvas"></div>
+    <div class="mapa-wrapper">
+      <button class="btn-mapa-detallado" id="btn-mapa-detallado">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 20l-6-3V4l6 3m0 13 6-3m-6 3V7m6 10 6 3V6l-6-3m0 14V4m0 0L9 7"/></svg>
+        Ver mapa detallado
+      </button>
+      <div id="map" class="map-canvas"></div>
+    </div>
   </div>
 
   <div class="ubicacion-cta reveal-scroll" style="--d:2">
     <a href="https://www.google.com/maps/dir/?api=1&destination=21.121367854829508,-101.69424102283388" target="_blank" rel="noopener" class="btn-outline-dark">Cómo Llegar</a>
   </div>
 </section>
+
+<!-- Modal: Street View de un punto de interés -->
+<div class="modal-overlay" id="sv-overlay" hidden>
+  <div class="modal-card">
+    <div class="modal-header">
+      <h4 id="sv-title">Street View</h4>
+      <button class="modal-close" id="sv-close" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div id="street-view-pano" class="modal-frame">Cargando Street View…</div>
+  </div>
+</div>
+
+<!-- Modal: mapa detallado de la torre -->
+<div class="modal-overlay" id="gm-overlay" hidden>
+  <div class="modal-card modal-card-lg">
+    <div class="modal-header">
+      <h4>Mapa Detallado — Torre Arbide</h4>
+      <button class="modal-close" id="gm-close" aria-label="Cerrar">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+    <div id="gm-body" class="modal-frame modal-frame-lg"></div>
+  </div>
+</div>
 
 <!-- Placeholder: sección a diseñar -->
 <section class="section-placeholder bg-dark" id="testimonios">

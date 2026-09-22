@@ -521,45 +521,148 @@
       imagenIcono: "assets/logo-mark-white.svg"
     };
 
+    // Logos reales de los negocios vecinos (assets propios del sitio).
+    var ICONOS = {
+      santander: "assets/iconos/SANTANDER.png",
+      banamex: "assets/iconos/BANAMEX.png",
+      bbva: "assets/iconos/BBVA.png",
+      banbajio: "assets/iconos/BANBAJIO.png",
+      banorte: "assets/iconos/BANORTE.png",
+      valero: "assets/iconos/VALERO.png",
+      hsbc: "assets/iconos/HSBC.png",
+      oxxo: "assets/iconos/OXXO.png",
+      farmacia: "assets/iconos/GUADALAJARA.png",
+      dominos: "assets/iconos/DOMINOS.png",
+      caffenio: "assets/iconos/CAFEINO.png"
+    };
+
+    // Puntos de interés reales, a unos pasos de Torre Arbide. 6 ya traen su
+    // streetViewEmbed real; el resto queda vacío hasta que se genere su link
+    // (Google Maps → clic derecho → "Compartir o insertar mapa" → "Insertar
+    // un mapa" → copiar el src del iframe).
     var PUNTOS_DE_INTERES = [
-      { id: "hospital", nombre: "Hospital Aranda de la Parra", meta: "Hospital", icono: "🏥", lat: 21.1253351, lng: -101.6816112 },
-      { id: "universidad", nombre: "Universidad La Salle Bajío", meta: "Universidad", icono: "🎓", lat: 21.1526189, lng: -101.7114455 },
-      { id: "gimnasio", nombre: "Anytime Fitness Campestre", meta: "Gimnasio", icono: "🏋️", lat: 21.1546116, lng: -101.6989815 },
-      { id: "comercial", nombre: "Plaza Mayor León", meta: "Centro comercial", icono: "🛍️", lat: 21.1580824, lng: -101.6952760 },
-      { id: "corporativo", nombre: "Polifórum León", meta: "Zona corporativa", icono: "💼", lat: 21.1120623, lng: -101.6554191 },
-      { id: "centro", nombre: "Centro Histórico", meta: "Restaurantes y cultura", icono: "🍽️", lat: 21.1203664, lng: -101.6747844 }
+      { id: "santander", nombre: "Santander", categoria: "Financiera", icono: ICONOS.santander,
+        lat: 21.12186665790666, lng: -101.69432375483424,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1790089995811!6m8!1m7!1sdI3RGhWigAjla0NaO-9liQ!2m2!1d21.12198970614782!2d-101.6944770722062!3f133.02502660245599!4f2.4303822284732917!5f1.1230999101046981" },
+      { id: "banamex", nombre: "Banamex", categoria: "Financiera", icono: ICONOS.banamex,
+        lat: 21.122210206251495, lng: -101.69459648006098,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1790090052856!6m8!1m7!1sWiIRHbAyaH3K5IMNXB1d-Q!2m2!1d21.12215797308117!2d-101.6944881905261!3f323.25811578380984!4f7.705344649777459!5f0.7820865974627469" },
+      { id: "bbva", nombre: "BBVA", categoria: "Financiera", icono: ICONOS.bbva,
+        lat: 21.121762208592443, lng: -101.69471696590986,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1790090088403!6m8!1m7!1sn8P9Qpt5A1k_PO0AULgAPg!2m2!1d21.12146439333311!2d-101.694658700534!3f294.7346476753087!4f13.188192211784624!5f0.7820865974627469" },
+      { id: "banbajio", nombre: "BanBajío", categoria: "Financiera", icono: ICONOS.banbajio,
+        lat: 21.121466413016556, lng: -101.69440159080092,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1790090122071!6m8!1m7!1svM3XrtQRu0hjmvBOuz6YWg!2m2!1d21.1213551921156!2d-101.6945660187986!3f50.25626020298566!4f6.9931382674576525!5f1.227988510754158" },
+      { id: "banorte", nombre: "Banorte", categoria: "Financiera", icono: ICONOS.banorte,
+        lat: 21.122188446032975, lng: -101.69430444855233,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1790090242643!6m8!1m7!1sWiIRHbAyaH3K5IMNXB1d-Q!2m2!1d21.12215797308117!2d-101.6944881905261!3f72.32486885629194!4f1.4368111887287682!5f1.7605405380141321" },
+      { id: "valero", nombre: "Valero", categoria: "Gasolinera", icono: ICONOS.valero,
+        lat: 21.12296677832872, lng: -101.69390101703728,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1790090282108!6m8!1m7!1s-KfFVz1yHr4F-Krzc-MQ3w!2m2!1d21.12297898538805!2d-101.6942539243028!3f106.02699804908185!4f8.464517246761673!5f0.7820865974627469" },
+      { id: "hsbc", nombre: "HSBC", categoria: "Financiera", icono: ICONOS.hsbc,
+        lat: 21.123303089452072, lng: -101.69424363655656, streetViewEmbed: "" },
+      { id: "oxxo-1", nombre: "OXXO", categoria: "Servicios", icono: ICONOS.oxxo,
+        lat: 21.123166863336575, lng: -101.69387664290882, streetViewEmbed: "" },
+      { id: "oxxo-2", nombre: "OXXO", categoria: "Servicios", icono: ICONOS.oxxo,
+        lat: 21.120789269693443, lng: -101.69498577955541, streetViewEmbed: "" },
+      { id: "clinica-dental", nombre: "Clínica Dental Arbide", categoria: "Salud", icono: "🦷",
+        lat: 21.121085324374476, lng: -101.69484064812835, streetViewEmbed: "" },
+      { id: "farmacia", nombre: "Super Farmacia", categoria: "Servicios", icono: ICONOS.farmacia,
+        lat: 21.120678253737406, lng: -101.69468069091704, streetViewEmbed: "" },
+      { id: "dominos", nombre: "Domino's", categoria: "Restaurantes", icono: ICONOS.dominos,
+        lat: 21.120435012202794, lng: -101.69477638199538, streetViewEmbed: "" },
+      { id: "caffenio", nombre: "Caffenio", categoria: "Restaurantes", icono: ICONOS.caffenio,
+        lat: 21.120260196276046, lng: -101.69511522070262, streetViewEmbed: "" }
     ];
 
-    var map = L.map("map", { zoomControl: true }).setView([TORRE.lat, TORRE.lng], 13);
+    // Detecta si "icono" es una imagen (logo real: URL, base64 o ruta local
+    // del propio sitio) o un emoji/texto simple, y arma el <img> si aplica.
+    function renderIcono(icono) {
+      if (typeof icono !== "string") return icono;
+      var esImagen =
+        /^(https?:\/\/|data:image\/)/.test(icono) ||
+        /\.(png|jpe?g|svg|webp|gif)(\?.*)?$/i.test(icono);
+      return esImagen ? '<img src="' + icono + '" alt="" />' : icono;
+    }
+
+    // Zoom inicial centrado en la torre; overzoom controlado más allá de la
+    // resolución nativa de los tiles (16) hasta 19, permitiendo acercarse más
+    // a costa de perder nitidez.
+    var ZOOM_INICIAL = 18;
+    var ZOOM_NATIVO_MAPA = 16;
+    var ZOOM_MAX_MAPA = 19;
+
+    var map = L.map("map", { zoomControl: true, maxZoom: ZOOM_MAX_MAPA }).setView([TORRE.lat, TORRE.lng], ZOOM_INICIAL);
 
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
       attribution: '&copy; <a href="https://www.esri.com">Esri</a> &mdash; Esri, DeLorme, NAVTEQ',
-      maxZoom: 16
+      maxNativeZoom: ZOOM_NATIVO_MAPA,
+      maxZoom: ZOOM_MAX_MAPA
     }).addTo(map);
 
-    var torreIcon = L.divIcon({
-      className: "",
-      html: '<div class="torre-marker"><img src="' + TORRE.imagenIcono + '" alt="' + TORRE.nombre + '"/></div>',
-      iconSize: [46, 46],
-      iconAnchor: [23, 46],
-      popupAnchor: [0, -40]
-    });
+    // Escalado dinámico de íconos según el zoom, a partir de los tamaños que
+    // ya usa el sitio (torre 46px / poi 34px, ver .torre-marker y .poi-marker
+    // en style.css). Los POI crecen hasta 160% al zoom máximo y se achican
+    // hacia un mínimo legible al alejarse; la torre hace lo opuesto: se
+    // mantiene en su tamaño normal cerca, y crece al alejarse para seguir
+    // siendo el punto de referencia dominante.
+    var ICONO_POI_TAMANO_BASE = 34;
+    var ICONO_POI_TAMANO_MAX = Math.round(ICONO_POI_TAMANO_BASE * 1.6);
+    var ICONO_POI_TAMANO_MIN = 20;
+    var ZOOM_MIN_ESCALADO = 12;
 
-    L.marker([TORRE.lat, TORRE.lng], { icon: torreIcon })
+    var TORRE_TAMANO_BASE = 46;
+    var TORRE_TAMANO_MAX_ZOOMOUT = 70;
+
+    function lerp(a, b, t) { return a + (b - a) * t; }
+    function clamp01(t) { return Math.max(0, Math.min(1, t)); }
+
+    function tamanoPOI(zoom) {
+      if (zoom >= ZOOM_INICIAL) {
+        var t = clamp01((zoom - ZOOM_INICIAL) / (ZOOM_MAX_MAPA - ZOOM_INICIAL));
+        return Math.round(lerp(ICONO_POI_TAMANO_BASE, ICONO_POI_TAMANO_MAX, t));
+      }
+      var t2 = clamp01((zoom - ZOOM_MIN_ESCALADO) / (ZOOM_INICIAL - ZOOM_MIN_ESCALADO));
+      return Math.round(lerp(ICONO_POI_TAMANO_MIN, ICONO_POI_TAMANO_BASE, t2));
+    }
+
+    function tamanoTorre(zoom) {
+      if (zoom >= ZOOM_INICIAL) return TORRE_TAMANO_BASE;
+      var t = clamp01((zoom - ZOOM_MIN_ESCALADO) / (ZOOM_INICIAL - ZOOM_MIN_ESCALADO));
+      return Math.round(lerp(TORRE_TAMANO_MAX_ZOOMOUT, TORRE_TAMANO_BASE, t));
+    }
+
+    function crearIconoTorre(size) {
+      var imgSize = Math.round(size * (22 / 46));
+      return L.divIcon({
+        className: "",
+        html: '<div class="torre-marker" style="width:' + size + "px;height:" + size + 'px;">' +
+          '<img src="' + TORRE.imagenIcono + '" alt="' + TORRE.nombre + '" style="width:' + imgSize + "px;height:" + imgSize + 'px;"/></div>',
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size],
+        popupAnchor: [0, -size * 0.867]
+      });
+    }
+
+    function crearIconoPOI(poi, size) {
+      var borderWidth = Math.max(2, Math.round(size * (2 / 34)));
+      var fontSize = Math.round(size * (16 / 34));
+      return L.divIcon({
+        className: "",
+        html: '<div class="poi-marker" style="width:' + size + "px;height:" + size + "px;border-width:" + borderWidth + "px;font-size:" + fontSize + 'px;">' + renderIcono(poi.icono) + "</div>",
+        iconSize: [size, size],
+        iconAnchor: [size / 2, size / 2]
+      });
+    }
+
+    var torreMarker = L.marker([TORRE.lat, TORRE.lng], { icon: crearIconoTorre(tamanoTorre(ZOOM_INICIAL)) })
       .addTo(map)
       .bindPopup("<strong>" + TORRE.nombre + "</strong><br>Tu nuevo hogar");
 
     var poiMarkers = {};
 
     PUNTOS_DE_INTERES.forEach(function (poi) {
-      var icon = L.divIcon({
-        className: "",
-        html: '<div class="poi-marker">' + poi.icono + "</div>",
-        iconSize: [34, 34],
-        iconAnchor: [17, 17]
-      });
-
-      var marker = L.marker([poi.lat, poi.lng], { icon: icon })
+      var marker = L.marker([poi.lat, poi.lng], { icon: crearIconoPOI(poi, tamanoPOI(ZOOM_INICIAL)) })
         .addTo(map)
         .bindPopup("<strong>" + poi.nombre + "</strong>");
 
@@ -567,27 +670,57 @@
       poiMarkers[poi.id] = marker;
     });
 
-    var poiListEl = document.getElementById("poi-list");
-
-    PUNTOS_DE_INTERES.forEach(function (poi) {
-      var item = document.createElement("div");
-      item.className = "poi-item";
-      item.id = "poi-item-" + poi.id;
-      item.innerHTML =
-        '<div class="poi-icon">' + poi.icono + "</div>" +
-        "<div>" +
-        '<div class="poi-name">' + poi.nombre + "</div>" +
-        '<div class="poi-meta">' + poi.meta + "</div>" +
-        "</div>";
-      item.addEventListener("click", function () { calcularRuta(poi); });
-      poiListEl.appendChild(item);
+    map.on("zoomend", function () {
+      var zoom = map.getZoom();
+      torreMarker.setIcon(crearIconoTorre(tamanoTorre(zoom)));
+      PUNTOS_DE_INTERES.forEach(function (poi) {
+        poiMarkers[poi.id].setIcon(crearIconoPOI(poi, tamanoPOI(zoom)));
+      });
     });
 
+    /* ---------- panel lateral: estado vacío / detalle ---------- */
+    var poiEmptyEl = document.getElementById("poi-empty");
+    var poiDetailEl = document.getElementById("poi-detail");
+    var poiActivo = null;
+
+    function mostrarDetallePOI(poi) {
+      poiEmptyEl.style.display = "none";
+      poiDetailEl.classList.add("show");
+
+      document.getElementById("detail-icon").innerHTML = renderIcono(poi.icono);
+      document.getElementById("detail-name").textContent = poi.nombre;
+      document.getElementById("detail-categoria").textContent = poi.categoria || "";
+
+      var fotoEl = document.getElementById("detail-foto");
+      if (poi.foto) {
+        fotoEl.src = poi.foto;
+        fotoEl.style.display = "block";
+      } else {
+        fotoEl.style.display = "none";
+      }
+    }
+
+    document.getElementById("btn-volver").addEventListener("click", function () {
+      poiDetailEl.classList.remove("show");
+      poiEmptyEl.style.display = "flex";
+      poiActivo = null;
+      if (routingControl) {
+        map.removeControl(routingControl);
+        routingControl = null;
+      }
+      document.getElementById("poi-result").hidden = true;
+    });
+
+    /* ---------- cálculo de ruta (distancia + tiempo en auto) ---------- */
     var routingControl = null;
 
     function calcularRuta(poi) {
-      document.querySelectorAll(".poi-item").forEach(function (el) { el.classList.remove("is-active"); });
-      document.getElementById("poi-item-" + poi.id).classList.add("is-active");
+      poiActivo = poi;
+      mostrarDetallePOI(poi);
+
+      var btnExplora = document.getElementById("btn-explora");
+      btnExplora.disabled = !poi.streetViewEmbed;
+      btnExplora.textContent = poi.streetViewEmbed ? "Explora la zona" : "Zona no disponible aún";
 
       if (routingControl) {
         map.removeControl(routingControl);
@@ -628,5 +761,71 @@
         document.getElementById("poi-result").hidden = false;
       });
     }
+
+    /* ---------- modal: street view (solo al pedirlo con "Explora la zona") ---------- */
+    var svOverlay = document.getElementById("sv-overlay");
+    var svTitle = document.getElementById("sv-title");
+    var svPanoEl = document.getElementById("street-view-pano");
+
+    function abrirModal(overlay) {
+      overlay.hidden = false;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { overlay.classList.add("is-visible"); });
+      });
+    }
+    function cerrarModal(overlay) {
+      overlay.classList.remove("is-visible");
+      setTimeout(function () { overlay.hidden = true; }, 300);
+    }
+
+    function abrirStreetView(poi) {
+      svTitle.textContent = "Street View — " + poi.nombre;
+      if (!poi.streetViewEmbed) {
+        svPanoEl.innerHTML = "Falta configurar el Street View de este punto.";
+      } else {
+        svPanoEl.innerHTML =
+          '<iframe src="' + poi.streetViewEmbed + '" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+      }
+      abrirModal(svOverlay);
+    }
+
+    document.getElementById("btn-explora").addEventListener("click", function () {
+      if (poiActivo) abrirStreetView(poiActivo);
+    });
+    document.getElementById("sv-close").addEventListener("click", function () {
+      cerrarModal(svOverlay);
+      svPanoEl.innerHTML = "";
+    });
+    svOverlay.addEventListener("click", function (e) {
+      if (e.target === svOverlay) {
+        cerrarModal(svOverlay);
+        svPanoEl.innerHTML = "";
+      }
+    });
+
+    /* ---------- modal: mapa detallado (botón flotante sobre el mapa) ---------- */
+    var MAPA_DETALLADO_EMBED = "";
+    var gmOverlay = document.getElementById("gm-overlay");
+    var gmBody = document.getElementById("gm-body");
+
+    document.getElementById("btn-mapa-detallado").addEventListener("click", function () {
+      if (MAPA_DETALLADO_EMBED) {
+        gmBody.innerHTML =
+          '<iframe src="' + MAPA_DETALLADO_EMBED + '" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>';
+        abrirModal(gmOverlay);
+      } else {
+        window.open("https://www.google.com/maps/@" + TORRE.lat + "," + TORRE.lng + ",19z", "_blank");
+      }
+    });
+    document.getElementById("gm-close").addEventListener("click", function () {
+      cerrarModal(gmOverlay);
+      gmBody.innerHTML = "";
+    });
+    gmOverlay.addEventListener("click", function (e) {
+      if (e.target === gmOverlay) {
+        cerrarModal(gmOverlay);
+        gmBody.innerHTML = "";
+      }
+    });
   }
 })();
