@@ -45,8 +45,11 @@
 
   <div class="hero-content">
     <p class="hero-eyebrow reveal" style="--d:0">Vivir con Elegancia en</p>
-    <h1 class="hero-title reveal" style="--d:1">TORRE ARBIDE</h1>
-    <p class="hero-sub reveal" style="--d:2">Departamentos exclusivos con vistas panorámicas, ubicación premium y amenidades de lujo.</p>
+    <h1 class="hero-title reveal" style="--d:1">
+      <img src="assets/logo-mark-white.svg" alt="" class="hero-logo">
+      <span>TORRE ARBIDE</span>
+    </h1>
+    <p class="hero-sub reveal" style="--d:2">Lofts exclusivos con vistas panorámicas y una ubicación céntrica inigualable.</p>
     <div class="hero-cta reveal" style="--d:3">
       <a href="#departamentos" class="btn btn-primary">Ver Departamentos Disponibles</a>
       <a href="https://api.whatsapp.com/send?phone=524775514226&text=Hola%2C%20quiero%20agendar%20una%20visita%20a%20Torre%20Arbide" class="btn btn-ghost" target="_blank" rel="noopener">Agenda tu Visita</a>
@@ -263,19 +266,6 @@
   </div>
 </div>
 
-<!-- Modal: mapa detallado de la torre -->
-<div class="modal-overlay" id="gm-overlay" hidden>
-  <div class="modal-card modal-card-lg">
-    <div class="modal-header">
-      <h4>Mapa Detallado — Torre Arbide</h4>
-      <button class="modal-close" id="gm-close" aria-label="Cerrar">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
-      </button>
-    </div>
-    <div id="gm-body" class="modal-frame modal-frame-lg"></div>
-  </div>
-</div>
-
 <!-- Placeholder: sección a diseñar -->
 <section class="section-placeholder bg-dark" id="testimonios">
   <div class="section-head light reveal-scroll" style="--d:0">
@@ -285,14 +275,82 @@
   </div>
 </section>
 
-<!-- Placeholder: sección a diseñar -->
-<section class="section-placeholder bg-light" id="nosotros">
-  <div class="section-head reveal-scroll" style="--d:0">
-    <p class="eyebrow">DU'AN Bienes Raíces</p>
-    <h2>Nosotros</h2>
-    <p class="section-intro">Muy pronto: la historia y visión detrás de Torre Arbide.</p>
+<section class="nosotros" id="nosotros">
+  <div class="nosotros-intro">
+    <div class="section-head reveal-scroll" style="--d:0">
+      <p class="eyebrow">Constructora Simacon</p>
+      <h2>Nosotros</h2>
+    </div>
+    <h3 class="nosotros-manifiesto reveal-scroll" style="--d:1">Visualizamos, planeamos y construimos con calidad.</h3>
+    <p class="nosotros-copy reveal-scroll" style="--d:2">Con sede en León, Guanajuato, Constructora Simacon es una empresa dedicada a la construcción y al desarrollo de proyectos urbano-arquitectónicos, con experiencia en proyectos residenciales, comerciales e industriales.</p>
+    <p class="nosotros-copy reveal-scroll" style="--d:3">A lo largo de nuestra trayectoria hemos desarrollado proyectos que integran diseño, funcionalidad, calidad y eficiencia constructiva, cuidando cada etapa del proceso para convertir una visión arquitectónica en un proyecto tangible y duradero.</p>
+  </div>
+
+  <div class="nosotros-quote-band reveal-scroll" style="--d:0">
+    <div class="nosotros-quote">
+      <p>"En Simacon entendemos que cada proyecto representa una responsabilidad y una inversión importante para nuestros clientes."</p>
+    </div>
+    <div class="nosotros-quote-media">
+      <img src="assets/nosotros/img/SIMACON_01.jpeg" alt="Proyecto residencial de Constructora Simacon">
+    </div>
+  </div>
+
+  <div class="nosotros-mosaic reveal-scroll" style="--d:0">
+    <button class="nosotros-photo is-wide">
+      <img src="assets/nosotros/img/SIMACON_02.jpeg" alt="Comando — proyecto comercial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Comando</span><span class="cat">Comercial</span></span>
+    </button>
+    <button class="nosotros-photo">
+      <img src="assets/nosotros/img/SIMACON_03.jpeg" alt="Yuppi Kids Party — proyecto comercial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Yuppi Kids Party</span><span class="cat">Comercial</span></span>
+    </button>
+    <button class="nosotros-photo">
+      <img src="assets/nosotros/img/SIMACON_04.jpeg" alt="Paruno Corporativo — proyecto comercial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Paruno Corporativo</span><span class="cat">Comercial</span></span>
+    </button>
+    <button class="nosotros-photo">
+      <img src="assets/nosotros/img/SIMACON_05.jpeg" alt="Plaza comercial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Plaza Comercial</span><span class="cat">Comercial</span></span>
+    </button>
+    <button class="nosotros-photo is-large">
+      <img src="assets/nosotros/img/SIMACON_08.jpeg" alt="Kayata — proyecto residencial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Kayata</span><span class="cat">Residencial</span></span>
+    </button>
+    <button class="nosotros-photo">
+      <img src="assets/nosotros/img/SIMACON_06.jpeg" alt="Desarrollo residencial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Desarrollo Residencial</span><span class="cat">Residencial</span></span>
+    </button>
+    <button class="nosotros-photo">
+      <img src="assets/nosotros/img/SIMACON_07.jpeg" alt="Vivienda residencial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Vivienda Residencial</span><span class="cat">Residencial</span></span>
+    </button>
+    <button class="nosotros-photo">
+      <img src="assets/nosotros/img/SIMACON_09.jpeg" alt="Amenidades y terrazas de un proyecto de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Amenidades y Terrazas</span><span class="cat">Residencial</span></span>
+    </button>
+    <button class="nosotros-photo">
+      <img src="assets/nosotros/img/SIMACON_10.jpeg" alt="Desarrollo residencial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Desarrollo Residencial</span><span class="cat">Residencial</span></span>
+    </button>
+    <button class="nosotros-photo is-wide">
+      <img src="assets/nosotros/img/SIMACON_11.jpeg" alt="Nave industrial de Constructora Simacon">
+      <span class="nosotros-photo-caption"><span class="name">Nave Industrial</span><span class="cat">Industrial</span></span>
+    </button>
   </div>
 </section>
+
+<div class="lightbox" id="nosotros-lightbox" hidden>
+  <button class="lightbox-close" id="nosotros-lightbox-close" aria-label="Cerrar">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <button class="lightbox-nav lightbox-prev" id="nosotros-lightbox-prev" aria-label="Anterior">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <img id="nosotros-lightbox-img" src="" alt="">
+  <button class="lightbox-nav lightbox-next" id="nosotros-lightbox-next" aria-label="Siguiente">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+</div>
 
 <footer class="site-footer">
   <p>© 2026 Torre Arbide — DU'AN Bienes Raíces. Todos los derechos reservados.</p>

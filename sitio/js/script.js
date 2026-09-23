@@ -290,7 +290,7 @@
     var HALF_WINDOW = 4;
     var SLOT_COUNT = HALF_WINDOW * 2 + 1;
     var ANGLE_STEP = 11;
-    var RADIUS = 520;
+    var RADIUS = 360;
 
     var currentList = [];
     var activeFilter = "todas";
@@ -588,6 +588,53 @@
     renderGallery();
   }
 
+  /* ---------- lightbox de "Nosotros" (fotos reales de Constructora Simacon) ---------- */
+  var nosotrosLightbox = document.getElementById("nosotros-lightbox");
+  if (nosotrosLightbox) {
+    var nosotrosPhotoButtons = document.querySelectorAll(".nosotros-photo");
+    var nlImg = document.getElementById("nosotros-lightbox-img");
+    var nlIndex = 0;
+
+    function nlUpdate() {
+      var btn = nosotrosPhotoButtons[nlIndex];
+      var img = btn.querySelector("img");
+      nlImg.src = img.src;
+      nlImg.alt = img.alt;
+    }
+    function nlOpen(i) {
+      nlIndex = i;
+      nlUpdate();
+      nosotrosLightbox.hidden = false;
+      requestAnimationFrame(function () {
+        requestAnimationFrame(function () { nosotrosLightbox.classList.add("is-visible"); });
+      });
+    }
+    function nlClose() {
+      nosotrosLightbox.classList.remove("is-visible");
+      setTimeout(function () { nosotrosLightbox.hidden = true; }, 300);
+    }
+    function nlStep(dir) {
+      nlIndex = (nlIndex + dir + nosotrosPhotoButtons.length) % nosotrosPhotoButtons.length;
+      nlUpdate();
+    }
+
+    nosotrosPhotoButtons.forEach(function (btn, i) {
+      btn.addEventListener("click", function () { nlOpen(i); });
+    });
+    document.getElementById("nosotros-lightbox-close").addEventListener("click", nlClose);
+    document.getElementById("nosotros-lightbox-prev").addEventListener("click", function () { nlStep(-1); });
+    document.getElementById("nosotros-lightbox-next").addEventListener("click", function () { nlStep(1); });
+    nosotrosLightbox.addEventListener("click", function (e) {
+      if (e.target === nosotrosLightbox) nlClose();
+    });
+    document.addEventListener("keydown", function (e) {
+      if (nosotrosLightbox.hidden) return;
+      if (e.key === "Escape") nlClose();
+      if (e.key === "ArrowLeft") nlStep(-1);
+      if (e.key === "ArrowRight") nlStep(1);
+    });
+  }
+
   /* ---------- mapa interactivo de ubicación ---------- */
   var mapEl = document.getElementById("map");
   if (mapEl && typeof L !== "undefined") {
@@ -665,7 +712,7 @@
     // Zoom inicial centrado en la torre; overzoom controlado más allá de la
     // resolución nativa de los tiles (16) hasta 19, permitiendo acercarse más
     // a costa de perder nitidez.
-    var ZOOM_INICIAL = 18;
+    var ZOOM_INICIAL = 17;
     var ZOOM_NATIVO_MAPA = 16;
     var ZOOM_MAX_MAPA = 19;
 
@@ -816,7 +863,7 @@
         }),
         profile: "driving",
         lineOptions: {
-          styles: [{ color: "#a8a59b", weight: 5, opacity: 0.9 }]
+          styles: [{ color: "#5338ad", weight: 5, opacity: 0.9 }]
         },
         createMarker: function () { return null; },
         addWaypoints: false,
@@ -883,29 +930,39 @@
       }
     });
 
-    /* ---------- modal: mapa detallado (botón flotante sobre el mapa) ---------- */
-    var MAPA_DETALLADO_EMBED = "";
-    var gmOverlay = document.getElementById("gm-overlay");
-    var gmBody = document.getElementById("gm-body");
+    /* ---------- "Ver mapa detallado": pantalla completa del mapa interactivo ---------- */
+    var mapaWrapperEl = document.querySelector(".mapa-wrapper");
+    var mapaWrapperParent = mapaWrapperEl.parentNode;
+    var mapaWrapperNextSibling = mapaWrapperEl.nextSibling;
+    var btnMapaDetallado = document.getElementById("btn-mapa-detallado");
+    var ICONO_EXPANDIR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path d="M9 20l-6-3V4l6 3m0 13 6-3m-6 3V7m6 10 6 3V6l-6-3m0 14V4m0 0L9 7"/></svg>';
+    var ICONO_CERRAR = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>';
+    var mapaEnPantallaCompleta = false;
 
-    document.getElementById("btn-mapa-detallado").addEventListener("click", function () {
-      if (MAPA_DETALLADO_EMBED) {
-        gmBody.innerHTML =
-          '<iframe src="' + MAPA_DETALLADO_EMBED + '" allowfullscreen loading="lazy" referrerpolicy="strict-origin-when-cross-origin"></iframe>';
-        abrirModal(gmOverlay);
+    function alternarMapaPantallaCompleta() {
+      mapaEnPantallaCompleta = !mapaEnPantallaCompleta;
+
+      // .mapa-wrapper vive dentro de .map-layout, que tiene "reveal-scroll" (usa
+      // transform) — eso crea un containing block y rompe el position:fixed real
+      // contra el viewport. Se reubica temporalmente en <body> mientras está en
+      // pantalla completa, y se regresa a su lugar exacto al cerrar.
+      if (mapaEnPantallaCompleta) {
+        document.body.appendChild(mapaWrapperEl);
       } else {
-        window.open("https://www.google.com/maps/@" + TORRE.lat + "," + TORRE.lng + ",19z", "_blank");
+        mapaWrapperParent.insertBefore(mapaWrapperEl, mapaWrapperNextSibling);
       }
-    });
-    document.getElementById("gm-close").addEventListener("click", function () {
-      cerrarModal(gmOverlay);
-      gmBody.innerHTML = "";
-    });
-    gmOverlay.addEventListener("click", function (e) {
-      if (e.target === gmOverlay) {
-        cerrarModal(gmOverlay);
-        gmBody.innerHTML = "";
-      }
+
+      mapaWrapperEl.classList.toggle("is-fullscreen", mapaEnPantallaCompleta);
+      document.body.classList.toggle("mapa-fullscreen-lock", mapaEnPantallaCompleta);
+      btnMapaDetallado.innerHTML = mapaEnPantallaCompleta
+        ? ICONO_CERRAR + "Cerrar mapa"
+        : ICONO_EXPANDIR + "Ver mapa detallado";
+      requestAnimationFrame(function () { map.invalidateSize(); });
+    }
+
+    btnMapaDetallado.addEventListener("click", alternarMapaPantallaCompleta);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && mapaEnPantallaCompleta) alternarMapaPantallaCompleta();
     });
   }
 })();
