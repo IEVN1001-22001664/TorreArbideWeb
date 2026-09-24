@@ -10,6 +10,34 @@
     heroVideo.pause();
   }
 
+  /* ---------- carrusel de bienvenida (slide horizontal, una imagen a la vez) ---------- */
+  var welcomeTrack = document.getElementById("welcome-media-track");
+  if (welcomeTrack && !reduced) {
+    var welcomeRealSlides = welcomeTrack.children.length - 1; // excluye la copia final de la primera imagen
+    var welcomeIndex = 0;
+    var WELCOME_TRANSITION_MS = 1000; // debe igualar la duration de .welcome-media-track en CSS
+
+    function welcomeGoTo(i) {
+      welcomeTrack.style.transform = "translateX(-" + (i * 100) + "%)";
+    }
+
+    // No depende de "transitionend" (se puede perder si la pestaña queda en
+    // segundo plano) — el reinicio del loop se agenda con su propio temporizador.
+    setInterval(function () {
+      welcomeIndex++;
+      welcomeGoTo(welcomeIndex);
+      if (welcomeIndex >= welcomeRealSlides) {
+        setTimeout(function () {
+          welcomeTrack.classList.add("no-transition");
+          welcomeIndex = 0;
+          welcomeGoTo(welcomeIndex);
+          welcomeTrack.offsetHeight; // fuerza a aplicar el salto sin transición antes de restaurarla
+          welcomeTrack.classList.remove("no-transition");
+        }, WELCOME_TRANSITION_MS);
+      }
+    }, 4000);
+  }
+
   /* ---------- sticky nav background ---------- */
   var nav = document.getElementById("site-nav");
   if (nav) {

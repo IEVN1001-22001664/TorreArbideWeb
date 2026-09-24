@@ -275,15 +275,85 @@ img{display:block;max-width:100%;}
   color:var(--slate);
   max-width:460px;
 }
+
+.welcome-highlights{
+  display:flex;
+  flex-direction:column;
+  gap:18px;
+  margin-top:32px;
+  max-width:460px;
+}
+.welcome-highlight{
+  display:flex;
+  align-items:flex-start;
+  gap:14px;
+}
+.welcome-highlight svg{
+  flex:none;
+  width:22px;height:22px;
+  margin-top:2px;
+  color:var(--tan);
+}
+.welcome-highlight-title{
+  font-size:14px;
+  font-weight:700;
+  color:var(--charcoal);
+}
+.welcome-highlight-sub{
+  margin-top:2px;
+  font-size:13px;
+  line-height:1.55;
+  color:var(--slate);
+}
+
+.welcome-scarcity{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  margin-top:28px;
+  padding:14px 18px;
+  max-width:460px;
+  background:rgba(168,165,155,.14);
+  border:1px solid rgba(168,165,155,.4);
+}
+.welcome-scarcity-badge{
+  flex:none;
+  background:var(--tan);
+  color:var(--charcoal);
+  font-size:11px;
+  font-weight:700;
+  letter-spacing:.05em;
+  text-transform:uppercase;
+  padding:7px 12px;
+  border-radius:999px;
+  white-space:nowrap;
+}
+.welcome-scarcity-text{
+  font-size:12.5px;
+  line-height:1.5;
+  color:var(--charcoal);
+}
+
 .welcome-text .btn-outline-dark{
   margin-top:30px;
 }
 .welcome-media{
   aspect-ratio:4/5;
   overflow:hidden;
+  position:relative;
 }
-.welcome-media img{
-  width:100%;height:100%;
+.welcome-media-track{
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  height:100%;
+  transition:transform 1s cubic-bezier(.76,0,.24,1);
+}
+.welcome-media-track.no-transition{transition:none;}
+.welcome-media-track img{
+  width:100%;
+  height:100%;
+  flex:none;
   object-fit:cover;
   object-position:center 35%;
 }
@@ -1093,6 +1163,7 @@ body.mapa-fullscreen-lock{overflow:hidden;}
   .departamentos-3d{margin-top:48px;}
   .departamentos-3d-frame{aspect-ratio:3/4;}
   .welcome{padding:70px 0;}
+  .welcome-scarcity{flex-wrap:wrap;}
   .section-placeholder{padding:90px 0;}
   .galeria{padding:80px 0 90px;}
   .gallery-stage{height:240px;padding:0 12px;}
