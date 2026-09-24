@@ -1,0 +1,525 @@
+<!--
+  ============================================================
+  INSTRUCCIONES PARA CLAUDE CODE — Integración a torrearbide.com
+  ============================================================
+  Este archivo es un PROTOTIPO AISLADO. La tarea es integrar SOLO
+  el contenido de <section class="ubicacion-section"> dentro del
+  one-page existente, como una sección más entre las demás.
+
+  Puntos que debes adaptar al sistema de diseño real del sitio
+  (todos marcados con el comentario "CLAUDE CODE:" en su lugar):
+
+  1. COLORES — las variables --brand y --brand-dark en :root están
+     hardcodeadas a un dorado de ejemplo. Reemplázalas por las
+     variables/tokens de color que ya existen en el sitio.
+  2. TIPOGRAFÍA — el font-family del body es genérico. Debe heredar
+     o usar la tipografía real del sitio, no la de este prototipo.
+  3. BREAKPOINT — el layout pasa de 2 columnas a 1 en 800px
+     (mobile-first). Ajusta ese valor si el sitio usa otros
+     breakpoints estándar.
+  4. DATOS REALES — los objetos TORRE y PUNTOS_DE_INTERES tienen
+     coordenadas de EJEMPLO en León, Gto. Deben reemplazarse por
+     la ubicación real de Torre Arbide y los puntos de interés
+     reales que se quieran destacar.
+  5. LIBRERÍAS EXTERNAS — Leaflet y Leaflet Routing Machine se
+     cargan aquí vía CDN (unpkg). Si el sitio usa un bundler
+     (npm/vite/webpack), considera instalarlas como dependencias
+     en vez de mantener los <script src> de CDN.
+  6. TILES — se usa Esri World Light Gray Canvas (gratis, sin API
+     key, zoom máx. 16). Si el sitio final necesita más nivel de
+     zoom o un estilo de mapa más pulido/de marca, cambiar por
+     MapTiler o Stadia Maps (ambos requieren API key gratuita).
+  7. STREET VIEW — usa el embed gratuito de Google Maps (sin API
+     key ni facturación), NO la Maps JavaScript API. Cada POI en
+     PUNTOS_DE_INTERES necesita su propio campo streetViewEmbed
+     generado a mano (Google Maps → clic derecho → "Compartir o
+     insertar mapa" → "Insertar un mapa" → copiar el src del
+     iframe). Verificar que cada ubicación real tenga cobertura
+     de Street View antes de darla por lista.
+
+  Todo lo demás (estructura del mapa, marcadores, cálculo de rutas
+  con OSRM) es funcional y no debería necesitar cambios de lógica,
+  solo de estilo/datos.
+  ============================================================
+-->
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototipo — Mapa interactivo Torre Arbide</title>
+
+<!-- Leaflet CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+<!-- Leaflet Routing Machine CSS -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css" />
+
+<style>
+  :root{
+    --brand: #b8863f;      /* CLAUDE CODE: reemplazar por el token de color de marca real de Du'an / Torre Arbide */
+    --brand-dark: #8a6329; /* CLAUDE CODE: idem, tono oscuro de la misma marca */
+    --bg: #f7f5f2;
+    --text: #22201d;
+    --card: #ffffff;
+    --line: #e6e1da;
+  }
+  * { box-sizing: border-box; }
+  body{
+    margin:0;
+    font-family: 'Helvetica Neue', Arial, sans-serif; /* CLAUDE CODE: usar la tipografía real del sitio */
+    background: var(--bg);
+    color: var(--text);
+  }
+
+  /* ===== SECCIÓN "UBICACIÓN" — esto es lo que integrarías dentro de tu one-page ===== */
+  .ubicacion-section{
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 60px 24px;
+  }
+  .ubicacion-section h2{
+    font-size: 2rem;
+    margin-bottom: 6px;
+  }
+  .ubicacion-section p.subtitle{
+    color: #6b6459;
+    margin-bottom: 28px;
+  }
+
+  .mapa-layout{
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 0;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.12);
+    background: var(--card);
+  }
+  @media (max-width: 800px){ /* CLAUDE CODE: ajustar al breakpoint mobile estándar del sitio si es distinto */
+    .mapa-layout{ grid-template-columns: 1fr; }
+  }
+
+  /* Panel lateral con puntos de interés */
+  .poi-panel{
+    background: var(--card);
+    padding: 20px;
+    border-right: 1px solid var(--line);
+    max-height: 520px;
+    overflow-y: auto;
+  }
+  .poi-panel h3{
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color: #8a8378;
+    margin: 0 0 14px 0;
+  }
+  .poi-item{
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 10px;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.15s ease;
+    margin-bottom: 4px;
+  }
+  .poi-item:hover{ background: #f2ede4; }
+  .poi-item.active{ background: var(--brand); color: #fff; }
+  .poi-icon{
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    background: #f2ede4;
+    flex-shrink: 0;
+  }
+  .poi-item.active .poi-icon{ background: rgba(255,255,255,0.25); }
+  .poi-name{ font-size: 0.9rem; font-weight: 600; line-height: 1.2; }
+  .poi-meta{ font-size: 0.75rem; opacity: 0.75; }
+
+  .result-box{
+    margin-top: 16px;
+    padding: 14px;
+    border-radius: 10px;
+    background: #f2ede4;
+    display: none;
+  }
+  .result-box.show{ display: block; }
+  .result-box .label{ font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #8a8378; }
+  .result-box .value{ font-size: 1.1rem; font-weight: 700; color: var(--brand-dark); }
+  .result-row{ display: flex; justify-content: space-between; margin-top: 8px; }
+
+  /* Mapa */
+  #map{
+    width: 100%;
+    height: 520px;
+  }
+
+  /* Marcador tipo "imagen" de la torre */
+  .torre-marker{
+    width: 46px; height: 46px;
+    border-radius: 50% 50% 50% 0;
+    background: var(--brand);
+    transform: rotate(-45deg);
+    display: flex; align-items: center; justify-content: center;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.35);
+    border: 3px solid #fff;
+  }
+  .torre-marker img{
+    transform: rotate(45deg);
+    width: 22px; height: 22px;
+  }
+
+  /* Marcador tipo "icono" de POI */
+  .poi-marker{
+    width: 34px; height: 34px;
+    border-radius: 50%;
+    background: #fff;
+    border: 2px solid var(--brand);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 16px;
+    box-shadow: 0 3px 8px rgba(0,0,0,0.25);
+  }
+
+  /* Ocultamos el panel de instrucciones giro-a-giro que trae el plugin por defecto: 
+     solo nos interesa distancia + tiempo, ya los mostramos en nuestro propio panel */
+  .leaflet-routing-container{
+    display: none !important;
+  }
+
+  .note{
+    max-width: 1200px;
+    margin: 0 auto 60px auto;
+    padding: 0 24px;
+    font-size: 0.85rem;
+    color: #8a8378;
+    line-height: 1.6;
+  }
+  .note code{
+    background: #eee;
+    padding: 1px 5px;
+    border-radius: 4px;
+  }
+
+  /* ===== MODAL DE STREET VIEW ===== */
+  .sv-overlay{
+    position: fixed;
+    inset: 0;
+    background: rgba(20,18,15,0.65);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    padding: 20px;
+  }
+  .sv-overlay.show{ display: flex; }
+  .sv-modal{
+    background: #fff;
+    border-radius: 14px;
+    overflow: hidden;
+    width: 100%;
+    max-width: 760px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+  }
+  .sv-modal-header{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 18px;
+    border-bottom: 1px solid var(--line);
+  }
+  .sv-modal-header h4{
+    margin: 0;
+    font-size: 0.95rem;
+  }
+  .sv-modal-header .sv-close{
+    background: none;
+    border: none;
+    font-size: 1.3rem;
+    line-height: 1;
+    cursor: pointer;
+    color: #8a8378;
+    padding: 4px 8px;
+  }
+  .sv-modal-header .sv-close:hover{ color: var(--text); }
+  #street-view-pano{
+    width: 100%;
+    height: 420px;
+    background: #eee;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #8a8378;
+    font-size: 0.85rem;
+    text-align: center;
+    padding: 20px;
+  }
+</style>
+</head>
+<body>
+
+<section class="ubicacion-section">
+  <h2>Ubicación</h2>
+  <p class="subtitle">Torre Arbide está a minutos de los puntos que ya forman parte de tu día a día.</p>
+
+  <div class="mapa-layout">
+    <div class="poi-panel">
+      <h3>Puntos de interés</h3>
+      <div id="poi-list"></div>
+
+      <div class="result-box" id="result-box">
+        <div class="label">Ruta hacia Torre Arbide</div>
+        <div class="result-row">
+          <div>
+            <div class="label">Distancia</div>
+            <div class="value" id="result-distance">—</div>
+          </div>
+          <div>
+            <div class="label">Tiempo en auto</div>
+            <div class="value" id="result-time">—</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="map"></div>
+  </div>
+</section>
+
+<p class="note">
+  <strong>Notas del prototipo:</strong> las coordenadas de la torre son las reales; las de los puntos de interés (<code>PUNTOS_DE_INTERES</code> en el script) siguen siendo de EJEMPLO — reemplázalas por las reales. El ruteo usa el servidor demo público de OSRM (gratis, sin API key) vía <code>Leaflet Routing Machine</code>; para producción con tráfico real se recomienda apuntar a tu propia instancia de OSRM o a OpenRouteService (gratis hasta 2,000 requests/día). El Street View usa el embed gratuito de Google Maps (sin API key ni facturación) — cada POI necesita su propio link <code>streetViewEmbed</code> generado a mano desde Google Maps (ver comentario junto a <code>PUNTOS_DE_INTERES</code>).
+</p>
+
+<!-- ===== MODAL DE STREET VIEW ===== -->
+<div class="sv-overlay" id="sv-overlay">
+  <div class="sv-modal">
+    <div class="sv-modal-header">
+      <h4 id="sv-title">Street View</h4>
+      <button class="sv-close" id="sv-close" aria-label="Cerrar">✕</button>
+    </div>
+    <div id="street-view-pano">Cargando Street View…</div>
+  </div>
+</div>
+
+<!-- Leaflet -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+<!-- Leaflet Routing Machine -->
+<script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
+
+<script>
+/* =========================================================
+   1) DATOS — CLAUDE CODE: reemplazar con la ubicación real de
+   Torre Arbide y los puntos de interés reales que se quieran
+   destacar (coordenadas actuales son de EJEMPLO en León, Gto.)
+   ========================================================= */
+
+const TORRE = {
+  nombre: "Torre Arbide",
+  lat: 21.121657200978095,
+  lng: -101.69403830767935,
+  // Puedes usar una imagen real del logo/edificio aquí en vez de un ícono genérico:
+  imagenIcono: "https://api.iconify.design/mdi/office-building.svg?color=white"
+};
+
+const PUNTOS_DE_INTERES = [
+  // CLAUDE CODE / NACHO: streetViewEmbed es el link (solo el src="...") obtenido
+  // de Google Maps → clic derecho → "Compartir o insertar mapa" → "Insertar un mapa".
+  // El de "oficina" ya trae el que Nacho compartió como ejemplo; el resto están
+  // vacíos ("") a propósito — hay que generarlos uno por uno para cada POI real.
+  { id: "oficina",     nombre: "Zona Financiera / Corporativa", icono: "💼", lat: 21.1201, lng: -101.6790,
+    streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1790025049865!6m8!1m7!1sWiIRHbAyaH3K5IMNXB1d-Q!2m2!1d21.12215797308117!2d-101.6944881905261!3f325.2023988233564!4f6.864539634871036!5f0.7820865974627469" },
+  { id: "coworking",   nombre: "Centro de negocios / Coworking", icono: "🖥️", lat: 21.1305, lng: -101.6905, streetViewEmbed: "" },
+  { id: "gym",         nombre: "Gimnasio / Deportivo",          icono: "🏋️", lat: 21.1180, lng: -101.6940, streetViewEmbed: "" },
+  { id: "resto",       nombre: "Zona de restaurantes",          icono: "🍽️", lat: 21.1290, lng: -101.6810, streetViewEmbed: "" },
+  { id: "hospital",    nombre: "Hospital",                       icono: "🏥", lat: 21.1155, lng: -101.6870, streetViewEmbed: "" },
+  { id: "escuela",     nombre: "Universidad",                    icono: "🎓", lat: 21.1340, lng: -101.6760, streetViewEmbed: "" }
+];
+
+/* =========================================================
+   2) MAPA BASE
+   ========================================================= */
+
+const map = L.map('map', { zoomControl: true }).setView([TORRE.lat, TORRE.lng], 13);
+
+// Tiles de Esri (World Light Gray Canvas) — gratuitos, sin API key,
+// aptos para producción (a diferencia de CARTO/OSM directos, que ahora piden key o bloquean uso externo)
+L.tileLayer('https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}', {
+  attribution: '&copy; <a href="https://www.esri.com">Esri</a> &mdash; Esri, DeLorme, NAVTEQ',
+  maxZoom: 16 // este estilo de Esri no tiene más zoom que 16; si necesitas más, usa MapTiler/Stadia con key
+}).addTo(map);
+
+/* =========================================================
+   3) MARCADOR DE LA TORRE (marcador tipo "imagen")
+   ========================================================= */
+
+const torreIcon = L.divIcon({
+  className: '',
+  html: `<div class="torre-marker"><img src="${TORRE.imagenIcono}" alt="${TORRE.nombre}"/></div>`,
+  iconSize: [46, 46],
+  iconAnchor: [23, 46],
+  popupAnchor: [0, -40]
+});
+
+const torreMarker = L.marker([TORRE.lat, TORRE.lng], { icon: torreIcon })
+  .addTo(map)
+  .bindPopup(`<strong>${TORRE.nombre}</strong><br>Tu nuevo hogar`);
+
+/* =========================================================
+   4) MARCADORES DE PUNTOS DE INTERÉS (marcadores tipo "icono")
+   ========================================================= */
+
+const poiMarkers = {};
+
+PUNTOS_DE_INTERES.forEach(poi => {
+  const icon = L.divIcon({
+    className: '',
+    html: `<div class="poi-marker">${poi.icono}</div>`,
+    iconSize: [34, 34],
+    iconAnchor: [17, 17]
+  });
+
+  const marker = L.marker([poi.lat, poi.lng], { icon })
+    .addTo(map)
+    .bindPopup(`<strong>${poi.nombre}</strong>`);
+
+  marker.on('click', () => {
+    calcularRuta(poi);
+    abrirStreetView(poi);
+  });
+  poiMarkers[poi.id] = marker;
+});
+
+/* =========================================================
+   5) PANEL LATERAL — lista de puntos de interés
+   ========================================================= */
+
+const poiListEl = document.getElementById('poi-list');
+
+PUNTOS_DE_INTERES.forEach(poi => {
+  const item = document.createElement('div');
+  item.className = 'poi-item';
+  item.id = `item-${poi.id}`;
+  item.innerHTML = `
+    <div class="poi-icon">${poi.icono}</div>
+    <div>
+      <div class="poi-name">${poi.nombre}</div>
+      <div class="poi-meta">Click para ver ruta</div>
+    </div>
+  `;
+  item.addEventListener('click', () => {
+    calcularRuta(poi);
+    abrirStreetView(poi);
+  });
+  poiListEl.appendChild(item);
+});
+
+/* =========================================================
+   6) CÁLCULO DE RUTA (distancia + tiempo en automóvil)
+   ========================================================= */
+
+let routingControl = null;
+
+function calcularRuta(poi) {
+  // Resaltar item activo en la lista
+  document.querySelectorAll('.poi-item').forEach(el => el.classList.remove('active'));
+  document.getElementById(`item-${poi.id}`).classList.add('active');
+
+  // Quitar ruta anterior si existe
+  if (routingControl) {
+    map.removeControl(routingControl);
+  }
+
+  routingControl = L.Routing.control({
+    waypoints: [
+      L.latLng(poi.lat, poi.lng),
+      L.latLng(TORRE.lat, TORRE.lng)
+    ],
+    router: L.Routing.osrmv1({
+      serviceUrl: 'https://router.project-osrm.org/route/v1'
+      // 👆 PRODUCCIÓN: cambia esta URL por tu propia instancia de OSRM
+      // o usa L.Routing.openrouteservice('TU_API_KEY') con el plugin de ORS
+    }),
+    profile: 'driving',
+    lineOptions: {
+      styles: [{ color: '#b8863f', weight: 5, opacity: 0.85 }]
+    },
+    createMarker: () => null, // no queremos que el plugin dibuje marcadores extra, ya tenemos los nuestros
+    addWaypoints: false,
+    draggableWaypoints: false,
+    fitSelectedRoutes: true,
+    show: false // oculta el panel de instrucciones por defecto
+  }).addTo(map);
+
+  routingControl.on('routesfound', (e) => {
+    const ruta = e.routes[0];
+    const distanciaKm = (ruta.summary.totalDistance / 1000).toFixed(1);
+    const tiempoMin = Math.round(ruta.summary.totalTime / 60);
+
+    document.getElementById('result-distance').textContent = `${distanciaKm} km`;
+    document.getElementById('result-time').textContent = `${tiempoMin} min`;
+    document.getElementById('result-box').classList.add('show');
+  });
+
+  routingControl.on('routingerror', () => {
+    document.getElementById('result-distance').textContent = '—';
+    document.getElementById('result-time').textContent = 'No disponible';
+    document.getElementById('result-box').classList.add('show');
+  });
+}
+
+/* =========================================================
+   7) STREET VIEW — se abre al interactuar con un icono de POI
+   Usa el EMBED GRATUITO de Google Maps (el que se genera desde
+   maps.google.com → clic derecho → "Compartir o insertar mapa"),
+   NO la Maps JavaScript API — por eso no requiere API key ni
+   facturación habilitada.
+
+   IMPORTANTE: cada POI necesita su propio link de embed, obtenido
+   a mano. Cómo conseguirlo para cada punto de interés real:
+   1. Abre Google Maps, busca la ubicación o entra a Street View
+      justo donde quieres que se vea (ángulo, zoom, posición)
+   2. Clic derecho en el mapa → "Compartir o insertar mapa"
+   3. Pestaña "Insertar un mapa" → copia SOLO la URL del atributo
+      src="..." del iframe que te da (no el <iframe> completo)
+   4. Pega esa URL en el campo streetViewEmbed del POI correspondiente
+      dentro de PUNTOS_DE_INTERES (arriba en este mismo archivo)
+   ========================================================= */
+
+const svOverlay = document.getElementById('sv-overlay');
+const svTitle = document.getElementById('sv-title');
+const svPanoEl = document.getElementById('street-view-pano');
+
+function abrirStreetView(poi) {
+  svTitle.textContent = `Street View — ${poi.nombre}`;
+  svOverlay.classList.add('show');
+
+  if (!poi.streetViewEmbed) {
+    svPanoEl.innerHTML = 'Falta configurar el link de Street View para este punto (campo <code>streetViewEmbed</code> en PUNTOS_DE_INTERES).';
+    return;
+  }
+
+  svPanoEl.innerHTML = `
+    <iframe
+      src="${poi.streetViewEmbed}"
+      width="100%" height="100%" style="border:0;"
+      allowfullscreen loading="lazy"
+      referrerpolicy="strict-origin-when-cross-origin">
+    </iframe>
+  `;
+}
+
+document.getElementById('sv-close').addEventListener('click', () => {
+  svOverlay.classList.remove('show');
+  svPanoEl.innerHTML = ''; // liberamos el iframe al cerrar
+});
+svOverlay.addEventListener('click', (e) => {
+  if (e.target === svOverlay) {
+    svOverlay.classList.remove('show');
+    svPanoEl.innerHTML = '';
+  }
+});
+</script>
+
+</body>
+</html>

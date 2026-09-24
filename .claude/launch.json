@@ -4,7 +4,7 @@
     {
       "name": "torre-arbide",
       "runtimeExecutable": "python",
-      "runtimeArgs": ["-m", "http.server", "5173"],
+      "runtimeArgs": ["-m", "http.server", "5173", "--directory", "C:\\CLAUDECODE\\TORREARBIDE.COM\\sitio"],
       "port": 5173
     }
   ]
