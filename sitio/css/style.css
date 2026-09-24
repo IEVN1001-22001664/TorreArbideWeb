@@ -269,8 +269,8 @@ img{display:block;max-width:100%;}
 
 /* ---------- welcome (parte de Inicio) ---------- */
 .welcome{
-  background:var(--cream);
-  color:var(--charcoal);
+  background:var(--charcoal-deep);
+  color:var(--ink);
   padding:100px 0;
 }
 .welcome-grid{
@@ -286,7 +286,7 @@ img{display:block;max-width:100%;}
   font-family:var(--font-display);
   font-style:italic;
   font-size:clamp(18px,2vw,22px);
-  color:var(--slate);
+  color:var(--tan-light);
 }
 .welcome-title{
   margin-top:6px;
@@ -294,13 +294,13 @@ img{display:block;max-width:100%;}
   font-weight:800;
   font-size:clamp(28px,3.4vw,42px);
   letter-spacing:.01em;
-  color:var(--charcoal);
+  color:var(--ink);
 }
 .welcome-copy{
   margin-top:20px;
   font-size:15px;
   line-height:1.75;
-  color:var(--slate);
+  color:var(--ink-dim);
   max-width:460px;
 }
 
@@ -320,18 +320,18 @@ img{display:block;max-width:100%;}
   flex:none;
   width:22px;height:22px;
   margin-top:2px;
-  color:var(--tan);
+  color:var(--tan-light);
 }
 .welcome-highlight-title{
   font-size:14px;
   font-weight:700;
-  color:var(--charcoal);
+  color:var(--ink);
 }
 .welcome-highlight-sub{
   margin-top:2px;
   font-size:13px;
   line-height:1.55;
-  color:var(--slate);
+  color:var(--ink-dim);
 }
 
 .welcome-scarcity{
@@ -359,10 +359,10 @@ img{display:block;max-width:100%;}
 .welcome-scarcity-text{
   font-size:12.5px;
   line-height:1.5;
-  color:var(--charcoal);
+  color:var(--ink);
 }
 
-.welcome-text .btn-outline-dark{
+.welcome-text .btn-outline-light{
   margin-top:30px;
 }
 .welcome-media{
@@ -523,6 +523,21 @@ img{display:block;max-width:100%;}
   transition:background .2s ease, color .2s ease;
 }
 .btn-outline-dark:hover{background:var(--charcoal);color:#fff;}
+.btn-outline-light{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:13px 22px;
+  border:1px solid var(--ink);
+  color:var(--ink);
+  font-size:12px;
+  font-weight:600;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  text-decoration:none;
+  transition:background .2s ease, color .2s ease;
+}
+.btn-outline-light:hover{background:var(--ink);color:var(--charcoal);}
 
 .departamentos-3d-head{
   max-width:1180px;
@@ -744,12 +759,6 @@ img{display:block;max-width:100%;}
 .lightbox-nav svg{width:22px;height:22px;}
 .lightbox-prev{left:24px;}
 .lightbox-next{right:24px;}
-
-/* ---------- section placeholder (secciones por diseñar) ---------- */
-.section-placeholder{padding:130px 0;}
-.section-placeholder.bg-dark{background:var(--charcoal-deep);}
-.section-placeholder.bg-light{background:var(--cream);}
-.section-placeholder .section-head{margin-bottom:0;}
 
 /* ---------- ubicacion ---------- */
 .ubicacion{
@@ -1052,8 +1061,8 @@ body.mapa-fullscreen-lock{overflow:hidden;}
 
 /* ---------- nosotros ---------- */
 .nosotros{
-  background:var(--cream);
-  color:var(--charcoal);
+  background:var(--charcoal-deep);
+  color:var(--ink);
   padding:120px 0 0;
   overflow:hidden;
 }
@@ -1075,13 +1084,13 @@ body.mapa-fullscreen-lock{overflow:hidden;}
   font-size:clamp(30px,4.2vw,54px);
   line-height:1.14;
   letter-spacing:.01em;
-  color:var(--charcoal);
+  color:var(--ink);
 }
 .nosotros-copy{
   margin-top:20px;
   font-size:15px;
   line-height:1.75;
-  color:var(--slate);
+  color:var(--ink-dim);
   max-width:640px;
   margin-left:auto;
   margin-right:auto;
@@ -1215,7 +1224,6 @@ body.mapa-fullscreen-lock{overflow:hidden;}
   .departamentos-3d-head{margin-top:48px;}
   .welcome{padding:70px 0;}
   .welcome-scarcity{flex-wrap:wrap;}
-  .section-placeholder{padding:90px 0;}
   .galeria{padding:80px 0 90px;}
   .gallery-stage{height:240px;padding:0 12px;}
   .gallery-card{width:88px;}
