@@ -136,25 +136,6 @@ img{display:block;max-width:100%;}
   height:auto;
   filter:drop-shadow(0 12px 34px rgba(0,0,0,.45));
 }
-.hero-badge-title{
-  font-family:var(--font-sans);
-  font-weight:800;
-  font-size:clamp(48px,7vw,96px);
-  line-height:1.1;
-  letter-spacing:.01em;
-  color:#f4c430;
-  text-shadow:
-    0 2px 0 rgba(0,0,0,.5),
-    0 4px 10px rgba(0,0,0,.6),
-    0 12px 34px rgba(0,0,0,.55);
-}
-.hero-badge-sub{
-  margin-top:12px;
-  font-size:clamp(15px,1.5vw,19px);
-  line-height:1.5;
-  color:var(--ink);
-  text-shadow:0 4px 14px rgba(0,0,0,.5);
-}
 .hero-eyebrow{
   font-family:var(--font-display);
   font-style:italic;
@@ -450,10 +431,33 @@ img{display:block;max-width:100%;}
   display:flex;
   align-items:flex-end;
   padding:20px 24px;
+  overflow:hidden;
 }
 .unit-visual.tone-charcoal{background:var(--charcoal);}
 .unit-visual.tone-slate{background:var(--slate);}
 .unit-visual.tone-tan{background:var(--tan);}
+.unit-visual-track{
+  position:absolute;
+  inset:0;
+  display:flex;
+  flex-direction:row;
+  width:100%;
+  height:100%;
+  transition:transform 1s cubic-bezier(.76,0,.24,1);
+}
+.unit-visual-track.no-transition{transition:none;}
+.unit-visual-track img{
+  width:100%;
+  height:100%;
+  flex:none;
+  object-fit:cover;
+  display:block;
+}
+.unit-visual-overlay{
+  position:absolute;
+  inset:0;
+  background:linear-gradient(0deg, rgba(20,22,22,.75) 0%, rgba(20,22,22,.2) 55%, rgba(20,22,22,.08) 100%);
+}
 .unit-mark{position:absolute;top:20px;left:24px;width:20px;opacity:.85;}
 .unit-tags{position:absolute;top:20px;right:24px;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;}
 .unit-tag{
@@ -468,22 +472,20 @@ img{display:block;max-width:100%;}
   color:#fff;
   white-space:nowrap;
 }
-.tone-tan .unit-tag{background:rgba(47,53,55,.14);color:var(--charcoal);}
 .unit-tag.is-muestra{background:var(--tan);color:var(--charcoal);}
-.unit-name{
-  font-family:var(--font-display);
-  font-style:italic;
-  font-weight:600;
-  font-size:34px;
-  color:#fff;
-}
-.tone-tan .unit-name{color:var(--charcoal);}
 .unit-body{
   padding:28px 24px 30px;
   display:flex;
   flex-direction:column;
   gap:18px;
   flex:1;
+}
+.unit-model-name{
+  font-family:var(--font-display);
+  font-style:italic;
+  font-weight:600;
+  font-size:24px;
+  color:var(--charcoal);
 }
 .unit-specs{
   list-style:none;

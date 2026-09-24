@@ -38,6 +38,34 @@
     }, 4000);
   }
 
+  /* ---------- carruseles de fotos en las tarjetas de Departamentos ---------- */
+  if (!reduced) {
+    document.querySelectorAll(".unit-visual-track").forEach(function (track) {
+      var realSlides = track.children.length - 1; // excluye la copia final de la primera imagen
+      if (realSlides < 2) return;
+      var index = 0;
+      var TRANSITION_MS = 1000; // debe igualar la duration de .unit-visual-track en CSS
+
+      function goTo(i) {
+        track.style.transform = "translateX(-" + (i * 100) + "%)";
+      }
+
+      setInterval(function () {
+        index++;
+        goTo(index);
+        if (index >= realSlides) {
+          setTimeout(function () {
+            track.classList.add("no-transition");
+            index = 0;
+            goTo(index);
+            track.offsetHeight;
+            track.classList.remove("no-transition");
+          }, TRANSITION_MS);
+        }
+      }, 4000);
+    });
+  }
+
   /* ---------- sticky nav background ---------- */
   var nav = document.getElementById("site-nav");
   if (nav) {
