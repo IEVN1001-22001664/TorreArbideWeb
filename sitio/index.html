@@ -28,9 +28,10 @@
     <a href="#galeria">Galería</a>
     <a href="#ubicacion">Ubicación</a>
     <a href="#nosotros">Nosotros</a>
+    <a href="#agenda">Agenda</a>
   </nav>
 
-  <a href="https://api.whatsapp.com/send?phone=524775514226&text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Torre%20Arbide" class="nav-cta" target="_blank" rel="noopener">Contacto</a>
+  <a href="#agenda" class="nav-cta">Contacto</a>
 </header>
 
 <section class="hero" id="inicio">
@@ -43,8 +44,7 @@
   <div class="hero-overlay"></div>
 
   <div class="hero-badge reveal" style="--d:3">
-    <p class="hero-badge-title">50% de la Torre<br>Vendida</p>
-    <p class="hero-badge-sub">Aprovecha esta gran<br>oportunidad de inversión</p>
+    <img src="assets/hero/hero-badge-50-vendida.webp" alt="50% de la Torre Vendida — Aprovecha esta gran oportunidad de inversión" class="hero-badge-img">
   </div>
 
   <div class="hero-content">
@@ -56,7 +56,7 @@
     <p class="hero-sub reveal" style="--d:2">Lofts exclusivos con vistas panorámicas y una ubicación céntrica inigualable.</p>
     <div class="hero-cta reveal" style="--d:3">
       <a href="#departamentos" class="btn btn-primary">Ver Departamentos Disponibles</a>
-      <a href="https://api.whatsapp.com/send?phone=524775514226&text=Hola%2C%20quiero%20agendar%20una%20visita%20a%20Torre%20Arbide" class="btn btn-ghost" target="_blank" rel="noopener">Agenda tu Visita</a>
+      <a href="#agenda" class="btn btn-ghost">Agenda tu Visita</a>
     </div>
   </div>
 
@@ -392,6 +392,43 @@
   </button>
 </div>
 
+<section class="agenda" id="agenda">
+  <div class="agenda-grid">
+    <div class="agenda-intro reveal-scroll" style="--d:0">
+      <p class="agenda-eyebrow">Conócenos en Persona</p>
+      <h2 class="agenda-title">Agenda tu Visita</h2>
+      <p class="agenda-lead">Elige el horario que te acomode y agenda en línea. Te mostramos las unidades disponibles, precios y formas de pago.</p>
+      <p class="agenda-whatsapp">¿Prefieres escribirnos? <a id="agenda-whatsapp" href="#" target="_blank" rel="noopener">Envíanos un WhatsApp</a></p>
+    </div>
+
+    <div class="agenda-book reveal-scroll" style="--d:1">
+      <ul class="agenda-options">
+        <li class="agenda-option">
+          <div class="agenda-option-info">
+            <h3>Visita al Desarrollo</h3>
+            <p>Recorrido presencial de 1 hora en Tabasco 606, Bellavista, León.</p>
+          </div>
+          <button type="button" class="btn btn-primary agenda-btn"
+                  data-cal-namespace="torre-arbide"
+                  data-cal-link="informacion-du-an-bienes-raices-jfgxcn/visitas-torre-arbide"
+                  data-cal-config='{"layout":"month_view"}'>Agendar Visita</button>
+        </li>
+        <li class="agenda-option">
+          <div class="agenda-option-info">
+            <h3>Asesoría por Videollamada</h3>
+            <p>Revisamos plantas, precios y esquemas de pago desde donde estés.</p>
+          </div>
+          <button type="button" class="btn-outline-dark agenda-btn"
+                  data-cal-namespace="torre-arbide"
+                  data-cal-link="informacion-du-an-bienes-raices-jfgxcn/asesoria-para-torre-arbide"
+                  data-cal-config='{"layout":"month_view"}'>Agendar Videollamada</button>
+        </li>
+      </ul>
+      <p class="agenda-note">Al agendar recibirás la confirmación en tu correo.</p>
+    </div>
+  </div>
+</section>
+
 <footer class="site-footer">
   <p>© 2026 Torre Arbide — DU'AN Bienes Raíces. Todos los derechos reservados.</p>
 </footer>
@@ -399,5 +436,6 @@
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 <script src="js/script.js"></script>
+<script src="js/agenda.js"></script>
 </body>
 </html>

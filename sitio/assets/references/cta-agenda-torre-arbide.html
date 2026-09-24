@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Torre Arbide · Sección Agenda (vista previa)</title>
+
+<!-- 1) FUENTE — si el sitio ya usa otra tipografía, borra este link y cambia --ta-font abajo -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..800&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================
+   2) ESTILOS — todo va prefijado con .ta-agenda para no
+   chocar con el resto del sitio. Ajusta los tokens a la
+   paleta de Torre Arbide.
+   ========================================================= */
+.ta-agenda {
+  --ta-bg: #DCE1E0;        /* concreto claro */
+  --ta-ink: #1F2A30;       /* grafito azulado */
+  --ta-muted: #56646A;     /* texto secundario */
+  --ta-line: #B7C0C0;      /* divisores */
+  --ta-accent: #A5834F;    /* latón */
+  --ta-accent-ink: #FFFFFF;
+  --ta-font: "Archivo", "Helvetica Neue", Arial, sans-serif;
+
+  background: var(--ta-bg);
+  color: var(--ta-ink);
+  font-family: var(--ta-font);
+  padding: clamp(4rem, 10vw, 8rem) clamp(1.25rem, 5vw, 4rem);
+}
+
+.ta-agenda__inner {
+  max-width: 1120px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1.1fr 1fr;
+  gap: clamp(2.5rem, 6vw, 6rem);
+  align-items: end;
+}
+
+.ta-agenda__title {
+  font-stretch: 125%;
+  font-weight: 800;
+  font-size: clamp(2.6rem, 6.5vw, 5.2rem);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.5rem;
+}
+
+.ta-agenda__lead {
+  font-size: clamp(1.05rem, 1.4vw, 1.2rem);
+  line-height: 1.55;
+  color: var(--ta-muted);
+  max-width: 38ch;
+  margin: 0 0 2.5rem;
+}
+
+.ta-agenda__alt {
+  font-size: 0.98rem;
+  color: var(--ta-muted);
+  margin: 0;
+}
+.ta-agenda__alt a {
+  color: var(--ta-ink);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+.ta-agenda__alt a:hover { text-decoration-thickness: 2px; }
+
+/* Opciones de cita */
+.ta-agenda__options {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  border-top: 2px solid var(--ta-ink);
+}
+
+.ta-agenda__option {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.5rem 1.5rem;
+  align-items: center;
+  padding: 1.75rem 0;
+  border-bottom: 1px solid var(--ta-line);
+}
+
+.ta-agenda__option h3 {
+  font-stretch: 112%;
+  font-weight: 700;
+  font-size: 1.3rem;
+  margin: 0 0 0.35rem;
+}
+
+.ta-agenda__option p {
+  margin: 0;
+  color: var(--ta-muted);
+  line-height: 1.45;
+  max-width: 34ch;
+}
+
+.ta-agenda__btn {
+  font: inherit;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.9rem 1.4rem;
+  border-radius: 999px;
+  border: 1.5px solid var(--ta-ink);
+  background: transparent;
+  color: var(--ta-ink);
+  white-space: nowrap;
+  transition: background-color .2s ease, color .2s ease;
+}
+.ta-agenda__btn:hover { background: var(--ta-ink); color: var(--ta-bg); }
+
+.ta-agenda__btn--primary {
+  background: var(--ta-accent);
+  border-color: var(--ta-accent);
+  color: var(--ta-accent-ink);
+}
+.ta-agenda__btn--primary:hover { background: var(--ta-ink); border-color: var(--ta-ink); }
+
+.ta-agenda__btn:focus-visible,
+.ta-agenda__alt a:focus-visible {
+  outline: 3px solid var(--ta-accent);
+  outline-offset: 3px;
+}
+
+.ta-agenda__note {
+  font-size: 0.9rem;
+  color: var(--ta-muted);
+  margin: 1.25rem 0 0;
+}
+
+@media (max-width: 820px) {
+  .ta-agenda__inner { grid-template-columns: 1fr; align-items: start; }
+  .ta-agenda__lead { margin-bottom: 0; }
+  .ta-agenda__alt { order: 3; }
+}
+
+@media (max-width: 480px) {
+  .ta-agenda__option { grid-template-columns: 1fr; }
+  .ta-agenda__btn { width: 100%; margin-top: 0.75rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ta-agenda__btn { transition: none; }
+}
+</style>
+</head>
+<body style="margin:0">
+
+<!-- =========================================================
+     3) HTML DE LA SECCIÓN — pégalo al final del one-page,
+     antes del footer.
+     ========================================================= -->
+<section class="ta-agenda" id="agenda" aria-labelledby="ta-agenda-title">
+  <div class="ta-agenda__inner">
+
+    <div class="ta-agenda__intro">
+      <h2 class="ta-agenda__title" id="ta-agenda-title">Recorre Torre Arbide</h2>
+      <p class="ta-agenda__lead">
+        Elige el horario que te acomode y agenda en línea. Te mostramos las
+        unidades disponibles, precios y formas de pago.
+      </p>
+    </div>
+
+    <div class="ta-agenda__book">
+      <ul class="ta-agenda__options">
+        <li class="ta-agenda__option">
+          <div>
+            <h3>Visita al desarrollo</h3>
+            <p>Recorrido presencial de 1 hora en Tabasco 606, Bellavista, León.</p>
+          </div>
+          <button type="button"
+                  class="ta-agenda__btn ta-agenda__btn--primary"
+                  data-cal-namespace="torre-arbide"
+                  data-cal-link="informacion-du-an-bienes-raices-jfgxcn/visitas-torre-arbide"
+                  data-cal-config='{"layout":"month_view"}'>
+            Agendar visita
+          </button>
+        </li>
+        <li class="ta-agenda__option">
+          <div>
+            <h3>Asesoría por videollamada</h3>
+            <p>Revisamos plantas, precios y esquemas de pago desde donde estés.</p>
+          </div>
+          <button type="button"
+                  class="ta-agenda__btn"
+                  data-cal-namespace="torre-arbide"
+                  data-cal-link="informacion-du-an-bienes-raices-jfgxcn/asesoria-para-torre-arbide"
+                  data-cal-config='{"layout":"month_view"}'>
+            Agendar videollamada
+          </button>
+        </li>
+      </ul>
+      <p class="ta-agenda__note">Al agendar recibirás la confirmación en tu correo.</p>
+    </div>
+
+    <p class="ta-agenda__alt">
+      ¿Prefieres escribirnos?
+      <a id="ta-agenda-whatsapp" href="#" target="_blank" rel="noopener">Envíanos un WhatsApp</a>
+    </p>
+
+  </div>
+</section>
+
+<!-- =========================================================
+     4) SCRIPT — pégalo antes de </body>. Carga Cal.com,
+     aplica tus colores al calendario y registra la conversión.
+     ========================================================= -->
+<script>
+(function () {
+  /* ---- Configuración ---- */
+  var WHATSAPP = "52XXXXXXXXXX"; // ← tu número con lada de país, sin + ni espacios
+  var WHATSAPP_MSG = "Hola, me interesa Torre Arbide y quiero más información.";
+  var BRAND = "#A5834F";         // mismo color que --ta-accent
+  var NS = "torre-arbide";
+
+  /* ---- Liga de WhatsApp ---- */
+  var wa = document.getElementById("ta-agenda-whatsapp");
+  if (wa) wa.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(WHATSAPP_MSG);
+
+  /* ---- Loader oficial de Cal.com ---- */
+  (function (C, A, L) { var p = function (a, ar) { a.q.push(ar); }; var d = C.document; C.Cal = C.Cal || function () { var cal = C.Cal; var ar = arguments; if (!cal.loaded) { cal.ns = {}; cal.q = cal.q || []; d.head.appendChild(d.createElement("script")).src = A; cal.loaded = true; } if (ar[0] === L) { var api = function () { p(api, arguments); }; var namespace = ar[1]; api.q = api.q || []; if (typeof namespace === "string") { cal.ns[namespace] = cal.ns[namespace] || api; p(cal.ns[namespace], ar); p(cal, ["initNamespace", namespace]); } else p(cal, ar); return; } p(cal, ar); }; })(window, "https://app.cal.com/embed/embed.js", "init");
+
+  Cal("init", NS, { origin: "https://cal.com" });
+
+  Cal.ns[NS]("ui", {
+    theme: "light",
+    hideEventTypeDetails: false,
+    layout: "month_view",
+    cssVarsPerTheme: { light: { "cal-brand": BRAND } }
+  });
+
+  /* ---- Conversión: se dispara cuando alguien termina de agendar ---- */
+  Cal.ns[NS]("on", {
+    action: "bookingSuccessful",
+    callback: function (e) {
+      var data = (e && e.detail && e.detail.data) || {};
+      var slug = (data.eventType && data.eventType.slug) || "";
+      var tipo = slug.indexOf("visita") !== -1 ? "visita" : "videollamada";
+
+      // Meta Pixel (si está instalado)
+      if (typeof window.fbq === "function") {
+        window.fbq("track", "Schedule", { content_name: "Torre Arbide - " + tipo });
+      }
+      // Google Ads / GA4 (si está instalado)
+      if (typeof window.gtag === "function") {
+        window.gtag("event", "agendar_cita", { tipo_cita: tipo });
+      }
+      // Google Tag Manager (si está instalado)
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({ event: "agendar_cita", tipo_cita: tipo });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
