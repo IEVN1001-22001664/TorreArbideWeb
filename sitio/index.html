@@ -110,10 +110,10 @@
     </div>
     <div class="welcome-media reveal-scroll" style="--d:1">
       <div class="welcome-media-track" id="welcome-media-track">
-        <img src="assets/welcome/Torre_Arbide_5_Dron-9.jpg" alt="Torre Arbide — vista aérea">
-        <img src="assets/welcome/ss-159.jpg" alt="Torre Arbide — interiores">
-        <img src="assets/welcome/Torre_Arbide_5_Dron-10.jpg" alt="Torre Arbide — vista aérea">
-        <!--<img src="assets/welcome/ss-179.jpg" alt="Torre Arbide — interiores"> -->
+        <img src="assets/welcome/Rend 1.png" alt="Torre Arbide — vista aérea">
+        <img src="assets/welcome/Render1.jpeg" alt="Torre Arbide — interiores">
+        <img src="assets/welcome/Render3.jpeg" alt="Torre Arbide — vista aérea">
+        <img src="assets/welcome/Torre_Arbide_5_Dron-10.jpg" alt="Torre Arbide — interiores">
         <img src="assets/welcome/Torre_Arbide_5_Dron-9.jpg" alt="" aria-hidden="true">
       </div>
     </div>
@@ -152,7 +152,7 @@
           <span class="unit-price-label">Desde</span>
           <span class="unit-price-value">$2,323,000</span>
         </div>
-        <a href="https://api.whatsapp.com/send?phone=524775514226&text=Hola%2C%20quiero%20informaci%C3%B3n%20del%20Modelo%20Studio%20en%20Torre%20Arbide" class="btn btn-outline-dark" target="_blank" rel="noopener">Solicitar Información</a>
+        <button type="button" class="btn btn-outline-dark" data-ficha="studio">Ver Ficha de Modelo</button>
       </div>
     </article>
 
@@ -180,7 +180,7 @@
           <span class="unit-price-label">Desde</span>
           <span class="unit-price-value">$2,821,000</span>
         </div>
-        <a href="https://api.whatsapp.com/send?phone=524775514226&text=Hola%2C%20quiero%20informaci%C3%B3n%20del%20Modelo%20Studio%20Max%20en%20Torre%20Arbide" class="btn btn-outline-dark" target="_blank" rel="noopener">Solicitar Información</a>
+        <button type="button" class="btn btn-outline-dark" data-ficha="studio-max">Ver Ficha de Modelo</button>
       </div>
     </article>
 
@@ -208,7 +208,7 @@
           <span class="unit-price-label">Desde</span>
           <span class="unit-price-value">$3,061,000</span>
         </div>
-        <a href="https://api.whatsapp.com/send?phone=524775514226&text=Hola%2C%20quiero%20informaci%C3%B3n%20del%20Modelo%20Loft%20en%20Torre%20Arbide" class="btn btn-outline-dark" target="_blank" rel="noopener">Solicitar Información</a>
+        <button type="button" class="btn btn-outline-dark" data-ficha="loft">Ver Ficha de Modelo</button>
       </div>
     </article>
   </div>
@@ -243,6 +243,117 @@
     </button>
   </div>
 </section>
+
+<!-- Ficha de Modelo (modal) -->
+<div class="ficha-modal" id="ficha-modal" role="dialog" aria-modal="true" aria-labelledby="ficha-title">
+  <div class="ficha-window">
+
+    <div class="ficha-topbar">
+      <div class="ficha-topbar-meta">
+        <span class="ficha-status-tag">Venta Exclusiva</span>
+        <span class="ficha-ref-code" id="ficha-ref-code"></span>
+      </div>
+      <button type="button" class="ficha-close" id="ficha-close" aria-label="Cerrar ficha">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
+
+    <div class="ficha-scroll">
+      <div class="ficha-grid">
+
+        <div class="ficha-col-left">
+          <div class="ficha-gallery">
+            <button type="button" class="ficha-gallery-stage" id="ficha-gallery-stage" aria-label="Ver imagen en pantalla completa">
+              <img id="ficha-gallery-img" src="" alt="">
+              <span class="ficha-zoom-badge">
+                <svg viewBox="0 0 24 24" fill="currentColor" width="12" height="12"><path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/></svg>
+                Pantalla Completa
+              </span>
+            </button>
+            <div class="ficha-thumbs" id="ficha-thumbs"></div>
+          </div>
+
+          <div class="ficha-section" id="ficha-description-section" hidden>
+            <p class="ficha-section-title">Descripción</p>
+            <div class="ficha-description" id="ficha-description"></div>
+          </div>
+
+          <div class="ficha-section" id="ficha-equipment-section" hidden>
+            <p class="ficha-section-title">Equipamiento &amp; Acabados Incluidos</p>
+            <div class="ficha-tags" id="ficha-tags"></div>
+          </div>
+        </div>
+
+        <div class="ficha-col-right">
+          <div class="ficha-card is-heading">
+            <h1 class="ficha-title" id="ficha-title"></h1>
+            <p class="ficha-location" id="ficha-location"></p>
+            <div class="ficha-pricing-list" id="ficha-pricing-list"></div>
+            <p class="ficha-furnishing-note" id="ficha-furnishing-note" hidden></p>
+          </div>
+
+          <div class="ficha-card is-specs">
+            <p class="ficha-section-title">Especificaciones Técnicas</p>
+            <div class="ficha-specs-grid" id="ficha-specs-grid"></div>
+          </div>
+
+          <div class="ficha-card is-payment">
+            <p class="ficha-section-title">Formas de Pago &amp; Créditos</p>
+            <ul class="ficha-payment-list">
+              <li class="ficha-payment-item"><span class="ficha-payment-bullet"></span><span><strong>Créditos Hipotecarios:</strong> Todos los bancos autorizados (BBVA, Banorte, Santander, Scotiabank, etc.).</span></li>
+              <li class="ficha-payment-item"><span class="ficha-payment-bullet"></span><span><strong>Cofinavit / Aliados:</strong> Totalmente compatible con esquemas de crédito mixto e institucional.</span></li>
+              <li class="ficha-payment-item"><span class="ficha-payment-bullet"></span><span><strong>Recursos Propios:</strong> Transferencia con esquema de apartado para congelar precio.</span></li>
+            </ul>
+          </div>
+
+          <div class="ficha-actions">
+            <a href="#" target="_blank" rel="noopener" class="ficha-btn ficha-btn-primary" id="ficha-whatsapp-btn">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.087-.179.182-.077.357.101.174.45 1.743 1.94 2.234.193.064.347.103.466.14.202.064.385.055.53-.016.183-.089.789-.918.999-1.232.21-.314.42-.262.705-.157.285.105 1.808.853 2.119 1.008.311.155.518.232.593.361.075.13.075.753-.069 1.158z"/></svg>
+              Consultar por WhatsApp
+            </a>
+            <a href="https://cal.com/informacion-du-an-bienes-raices-jfgxcn/visitas-torre-arbide" target="_blank" rel="noopener" class="ficha-btn ficha-btn-secondary">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+              Programa una Visita
+            </a>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="ficha-levels" id="ficha-levels-section" hidden>
+        <p class="ficha-level-title" id="ficha-level-title"></p>
+        <div class="ficha-level-wrapper" id="ficha-level-wrapper">
+          <button type="button" class="ficha-level-nav ficha-level-prev" id="ficha-level-prev" aria-label="Planta anterior">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>
+          </button>
+          <button type="button" class="ficha-level-nav ficha-level-next" id="ficha-level-next" aria-label="Planta siguiente">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
+          </button>
+          <div class="ficha-level-slides" id="ficha-level-slides"></div>
+          <div class="ficha-level-dots" id="ficha-level-dots"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Lightbox de la ficha (pantalla completa) -->
+<div class="ficha-lightbox" id="ficha-lightbox">
+  <button type="button" class="ficha-lightbox-close" id="ficha-lightbox-close" aria-label="Cerrar pantalla completa">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+  </button>
+  <button type="button" class="ficha-lightbox-nav ficha-lightbox-prev" id="ficha-lightbox-prev" aria-label="Anterior">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>
+  </button>
+  <div class="ficha-lightbox-content">
+    <img id="ficha-lightbox-img" src="" alt="">
+  </div>
+  <button type="button" class="ficha-lightbox-nav ficha-lightbox-next" id="ficha-lightbox-next" aria-label="Siguiente">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
+  </button>
+  <div class="ficha-lightbox-counter" id="ficha-lightbox-counter"></div>
+</div>
 
 <section class="galeria" id="galeria">
   <div class="section-head light reveal-scroll" style="--d:0">
@@ -499,5 +610,6 @@
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
 <script src="js/script.js"></script>
 <script src="js/agenda.js"></script>
+<script src="js/ficha-modelo.js"></script>
 </body>
 </html>
