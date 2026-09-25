@@ -217,8 +217,30 @@
     <p class="eyebrow">Recorrido Virtual</p>
     <h3>Explora el Edificio en 3D</h3>
   </div>
-  <div class="departamentos-3d-frame">
+  <div class="departamentos-3d-frame" id="visor-3d-frame">
     <iframe src="assets/modelos3d/visor-3d.html" title="Visor 3D interactivo de Torre Arbide" loading="lazy"></iframe>
+
+    <div class="visor-3d-gate" id="visor-3d-gate">
+      <button type="button" class="visor-3d-activate" id="visor-3d-activate">
+        <svg class="visor-3d-cube-icon" viewBox="0 0 100 100" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" aria-hidden="true">
+          <path d="M50 8v14"/>
+          <circle cx="50" cy="5" r="3" fill="currentColor" stroke="none"/>
+          <path d="M50 22 15 40v40l35 20 35-20V40z"/>
+          <path d="M15 40 50 60l35-20"/>
+          <path d="M50 60v40"/>
+          <path d="M15 60 4 66"/>
+          <circle cx="2" cy="68" r="3" fill="currentColor" stroke="none"/>
+          <path d="M85 60 96 66"/>
+          <circle cx="98" cy="68" r="3" fill="currentColor" stroke="none"/>
+        </svg>
+        <span class="visor-3d-activate-label">Toca para interactuar<br>con el modelo 3D</span>
+      </button>
+    </div>
+
+    <button type="button" class="visor-3d-exit" id="visor-3d-exit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      Salir del recorrido
+    </button>
   </div>
 </section>
 

@@ -66,6 +66,28 @@
     });
   }
 
+  /* ---------- candado de interacción del visor 3D ---------- */
+  var visorFrame = document.getElementById("visor-3d-frame");
+  var visorActivate = document.getElementById("visor-3d-activate");
+  var visorExit = document.getElementById("visor-3d-exit");
+  if (visorFrame && visorActivate && visorExit) {
+    var activarVisor3d = function () {
+      visorFrame.classList.add("is-active");
+      document.body.classList.add("visor-3d-lock");
+    };
+    var salirVisor3d = function () {
+      visorFrame.classList.remove("is-active");
+      document.body.classList.remove("visor-3d-lock");
+    };
+    visorActivate.addEventListener("click", activarVisor3d);
+    visorExit.addEventListener("click", salirVisor3d);
+    document.addEventListener("keydown", function (e) {
+      if (e.key === "Escape" && visorFrame.classList.contains("is-active")) {
+        salirVisor3d();
+      }
+    });
+  }
+
   /* ---------- sticky nav background ---------- */
   var nav = document.getElementById("site-nav");
   if (nav) {
