@@ -636,32 +636,6 @@ img{display:block;max-width:100%;}
   line-height:1.5;
 }
 
-.visor-3d-exit{
-  position:absolute;
-  bottom:24px;
-  left:24px;
-  z-index:6;
-  display:none;
-  align-items:center;
-  gap:8px;
-  padding:12px 18px;
-  background:rgba(20,22,26,.75);
-  border:1px solid rgba(245,243,239,.4);
-  color:var(--ink);
-  font-family:var(--font-sans);
-  font-size:12px;
-  font-weight:600;
-  letter-spacing:.06em;
-  text-transform:uppercase;
-  cursor:pointer;
-  backdrop-filter:blur(6px);
-  transition:background .2s ease, border-color .2s ease;
-}
-.visor-3d-exit svg{width:16px;height:16px;flex:none;}
-.visor-3d-exit:hover{background:rgba(20,22,26,.9);border-color:var(--ink);}
-.visor-3d-exit:focus-visible{outline:2px solid var(--tan-light);outline-offset:3px;}
-.departamentos-3d-frame.is-active .visor-3d-exit{display:flex;}
-
 body.visor-3d-lock{overflow:hidden;}
 
 /* ---------- galeria ---------- */

@@ -69,8 +69,7 @@
   /* ---------- candado de interacción del visor 3D ---------- */
   var visorFrame = document.getElementById("visor-3d-frame");
   var visorActivate = document.getElementById("visor-3d-activate");
-  var visorExit = document.getElementById("visor-3d-exit");
-  if (visorFrame && visorActivate && visorExit) {
+  if (visorFrame && visorActivate) {
     var activarVisor3d = function () {
       visorFrame.classList.add("is-active");
       document.body.classList.add("visor-3d-lock");
@@ -80,12 +79,14 @@
       document.body.classList.remove("visor-3d-lock");
     };
     visorActivate.addEventListener("click", activarVisor3d);
-    visorExit.addEventListener("click", salirVisor3d);
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && visorFrame.classList.contains("is-active")) {
         salirVisor3d();
       }
     });
+    // Expuesta para que el botón "Salir" dentro del <iframe> del visor 3D
+    // (junto a "Ver edificio completo") pueda cerrarlo desde ahí.
+    window.salirVisor3d = salirVisor3d;
   }
 
   /* ---------- sticky nav background ---------- */

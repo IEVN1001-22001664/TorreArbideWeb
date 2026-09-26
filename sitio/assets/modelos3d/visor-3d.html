@@ -35,13 +35,17 @@
     width:230px;flex-shrink:0;border-right:1px solid var(--line);
     padding:18px 12px;display:flex;flex-direction:column;gap:8px;overflow-y:auto;
   }
+  .level-actions{display:flex;gap:8px;margin-bottom:6px;}
   .reset-btn{
-    all:unset;display:block;text-align:center;padding:10px;margin-bottom:6px;
+    all:unset;box-sizing:border-box;flex:1;display:flex;align-items:center;justify-content:center;
+    text-align:center;padding:10px 6px;
     border:1px solid var(--line);border-radius:2px;color:var(--ink-dim);
-    font-size:11.5px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;cursor:pointer;
+    font-size:11px;font-weight:600;letter-spacing:.03em;text-transform:uppercase;cursor:pointer;
+    line-height:1.3;
     transition:border-color .2s ease, color .2s ease;
   }
   .reset-btn:hover{border-color:var(--tan-light);color:var(--ink);}
+  .reset-btn.exit-btn:hover{border-color:#e08a8a;color:var(--ink);}
   .level-card{
     background:var(--cream, #f5f3ef);color:#2f3537;border-radius:8px;padding:12px 14px;
     cursor:pointer;border:2px solid transparent;transition:border-color .15s ease, transform .15s ease;
@@ -139,8 +143,9 @@
 
   @media (max-width:900px){
     .app{flex-direction:column;}
-    nav.levels{width:100%;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);}
+    nav.levels{width:100%;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);align-items:flex-start;}
     .level-card{min-width:150px;}
+    .level-actions{flex-shrink:0;}
     aside.render-panel{width:100%;border-top:1px solid var(--line);}
   }
 </style>
@@ -149,7 +154,10 @@
 
 <div class="app">
   <nav class="levels" id="levelList">
-    <button class="reset-btn" id="resetBtn">↺ Ver edificio completo</button>
+    <div class="level-actions">
+      <button class="reset-btn" id="resetBtn">↺ Ver Todo</button>
+      <button class="reset-btn exit-btn" id="exitBtn">✕ Salir</button>
+    </div>
     <!-- tarjetas generadas por JS -->
   </nav>
 
@@ -490,6 +498,13 @@ function resetView() {
   clearRender();
 }
 document.getElementById('resetBtn').addEventListener('click', resetView);
+document.getElementById('exitBtn').addEventListener('click', () => {
+  try {
+    if (window.parent && typeof window.parent.salirVisor3d === 'function') {
+      window.parent.salirVisor3d();
+    }
+  } catch (e) { /* iframe fuera de contexto (ej. abierto directo) — se ignora */ }
+});
 
 /* ================= Panel de render 2D + tarjetas de unidades ================= */
 const renderPanel = document.getElementById('renderPanel');
