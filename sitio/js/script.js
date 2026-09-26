@@ -125,224 +125,48 @@
   }
 
   /* ---------- galería interactiva (rueda circular) ---------- */
-  var GALLERY_IMAGES = [
-    { src: 'assets/galeria/aereas/01.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/02.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/03.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/04.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/05.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/06.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/07.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/08.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/09.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/10.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/11.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/12.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/13.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/14.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/15.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/16.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/17.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/18.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/aereas/19.jpg', category: 'aereas', alt: 'Torre Arbide - Tomas Aéreas' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_36.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_37.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_38.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_39.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_40.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_41.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_42.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_43.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_44.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_45.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_46.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_47.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_48.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_49.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_50.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_51.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_52.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_53.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_54.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_55.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_56.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_57.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_58.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_59.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_60.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_61.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_62.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_63.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_64.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_65.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_66.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_67.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_68.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_69.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_70.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_71.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_72.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_73.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_74.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_75.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_76.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_77.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_78.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_79.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_80.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_81.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_82.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_83.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_84.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_85.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_86.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_87.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_88.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_89.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_90.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_91.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_92.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_93.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_94.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_95.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_96.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_97.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/studio/Torre_Arbide_1_98.jpg', category: 'studio', alt: 'Torre Arbide - Studio' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_01.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_02.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_03.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_04.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_05.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_06.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_07.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_08.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_09.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_10.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_11.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_12.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_13.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_14.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_15.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_16.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_17.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_18.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_19.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_20.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_21.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_22.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_23.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_24.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_25.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_26.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_27.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_28.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_29.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_30.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_31.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_32.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_33.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_34.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_35.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_36.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_37.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_38.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_39.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_40.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_41.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_42.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_43.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_44.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_45.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_46.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_47.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_48.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_49.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_50.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_51.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_52.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_53.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_54.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_55.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_56.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_57.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_58.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_59.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_60.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_61.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_62.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_63.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_64.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_65.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_66.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_67.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_3_68.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/departamentos/loft/Torre_Arbide_4_01.jpg', category: 'loft', alt: 'Torre Arbide - Loft' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_01.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_02.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_03.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_04.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_05.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_06.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_07.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_08.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_09.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_10.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_11.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_12.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_13.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_14.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_15.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_16.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_17.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/amenidades/Torre_Arbide_2_18.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_07.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_08.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_09.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_10.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_11.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_12.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_13.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_14.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_15.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_16.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_17.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_18.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_19.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_20.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_21.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_22.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_23.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_24.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_25.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_26.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_27.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_28.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_29.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_30.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_31.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_32.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_1_33.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_2_01.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_02.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_03.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_04.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_05.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_06.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_57.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_58.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_59.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' },
-    { src: 'assets/galeria/areas-comunes/Torre_Arbide_4_60.jpg', category: 'areas-comunes', alt: 'Torre Arbide - Áreas Comunes' }
-  ];
+  function pad2(n) { return n < 10 ? "0" + n : "" + n; }
+  function galleryCategory(folder, prefix, count, category, alt, ext) {
+    var list = [];
+    for (var i = 1; i <= count; i++) {
+      list.push({ src: "assets/galeria/" + folder + "/" + prefix + "_" + pad2(i) + "." + (ext || "jpg"), category: category, alt: alt });
+    }
+    return list;
+  }
+
+  var GALLERY_IMAGES = []
+    .concat(galleryCategory("aereas", "galeria_entorno", 12, "aereas", "Torre Arbide - Entorno"))
+    .concat([
+      { src: 'assets/galeria/amenidades/galeria_amenidades_01.jpeg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
+      { src: 'assets/galeria/amenidades/galeria_amenidades_02.jpeg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
+      { src: 'assets/galeria/amenidades/galeria_amenidades_03.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
+      { src: 'assets/galeria/amenidades/galeria_amenidades_04.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
+      { src: 'assets/galeria/amenidades/galeria_amenidades_05.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
+      { src: 'assets/galeria/amenidades/galeria_amenidades_06.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' },
+      { src: 'assets/galeria/amenidades/galeria_amenidades_07.jpg', category: 'amenidades', alt: 'Torre Arbide - Amenidades' }
+    ])
+    .concat(galleryCategory("areas-comunes", "galeria_estacionamiento", 24, "areas-comunes", "Torre Arbide - Cochera y Recepción"))
+    .concat(galleryCategory("departamentos/studio", "galeria_studio", 63, "studio", "Torre Arbide - Studio"))
+    .concat(galleryCategory("departamentos/studioMax", "galeria_studioMax", 35, "studiomax", "Torre Arbide - Studio Max"))
+    .concat(galleryCategory("departamentos/loft", "galeria_loft", 67, "loft", "Torre Arbide - Loft"));
 
   var arcEl = document.getElementById("gallery-arc");
   if (arcEl) {
     var emptyEl = document.getElementById("gallery-empty");
     var pills = document.querySelectorAll(".filter-pill");
     var subfiltersEl = document.getElementById("gallery-subfilters");
-    var DEPARTAMENTOS_FAMILY = ["departamentos", "studio", "loft"];
+    var DEPARTAMENTOS_FAMILY = ["departamentos", "studio", "studiomax", "loft"];
     var prevBtn = document.getElementById("gallery-prev");
     var nextBtn = document.getElementById("gallery-next");
     var previewImg = document.getElementById("gallery-preview-img");
+    var modelInfoEl = document.getElementById("gallery-model-info");
+
+    // Mismos datos ya usados en la ficha de cada modelo (js/ficha-modelo.js).
+    var MODEL_INFO = {
+      studio: { nombre: "Studio", superficie: "70.12 a 70.90 m²", desde: "$2,323,000" },
+      studiomax: { nombre: "Studio Max", superficie: "88.80 m²", desde: "$2,821,000" },
+      loft: { nombre: "Loft", superficie: "100.80 a 103.11 m²", desde: "$3,061,000" }
+    };
 
     function onSingleAndDoubleClick(el, onSingle, onDouble) {
       var timer = null;
@@ -372,7 +196,7 @@
     var RADIUS = 360;
 
     var currentList = [];
-    var activeFilter = "todas";
+    var activeFilter = "aereas";
     var center = 0;
     var slots = [];
 
@@ -510,6 +334,14 @@
         : activeFilter === "departamentos"
           ? GALLERY_IMAGES.filter(function (item) { return DEPARTAMENTOS_FAMILY.indexOf(item.category) !== -1; })
           : GALLERY_IMAGES.filter(function (item) { return item.category === activeFilter; });
+
+      var info = MODEL_INFO[activeFilter];
+      if (info) {
+        modelInfoEl.textContent = "Modelo " + info.nombre + " · Superficie " + info.superficie + " · Precios desde " + info.desde;
+        modelInfoEl.hidden = false;
+      } else {
+        modelInfoEl.hidden = true;
+      }
 
       center = 0;
 

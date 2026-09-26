@@ -12,7 +12,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@1&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="css/style.css?v=20260926">
 </head>
 <body>
 
@@ -42,10 +42,6 @@
   </div>
 
   <div class="hero-overlay"></div>
-
-  <div class="hero-badge reveal" style="--d:3">
-    <img src="assets/hero/hero-badge-50-vendida.webp" alt="50% de la Torre Vendida — Aprovecha esta gran oportunidad de inversión" class="hero-badge-img">
-  </div>
 
   <div class="hero-content">
     <p class="hero-eyebrow reveal" style="--d:0">Vivir con Elegancia en</p>
@@ -110,11 +106,12 @@
     </div>
     <div class="welcome-media reveal-scroll" style="--d:1">
       <div class="welcome-media-track" id="welcome-media-track">
-        <img src="assets/welcome/Rend 1.png" alt="Torre Arbide — vista aérea">
-        <img src="assets/welcome/Render1.jpeg" alt="Torre Arbide — interiores">
-        <img src="assets/welcome/Render3.jpeg" alt="Torre Arbide — vista aérea">
-        <img src="assets/welcome/Torre_Arbide_5_Dron-10.jpg" alt="Torre Arbide — interiores">
-        <img src="assets/welcome/Torre_Arbide_5_Dron-9.jpg" alt="" aria-hidden="true">
+        <img src="assets/welcome/welcome_01.jpg" alt="Torre Arbide — vista aérea">
+        <img src="assets/welcome/welcome_02.jpg" alt="Torre Arbide — interiores">
+        <img src="assets/welcome/welcome_03.jpg" alt="Torre Arbide — vista aérea">
+        <img src="assets/welcome/welcome_04.jpg" alt="Torre Arbide — interiores">
+        <img src="assets/welcome/welcome_05.jpg" alt="Torre Arbide — interiores">
+        <img src="assets/welcome/welcome_06.jpg" alt="" aria-hidden="true">
       </div>
     </div>
   </div>
@@ -257,6 +254,20 @@
       <div class="ficha-grid">
 
         <div class="ficha-col-left">
+          <div class="ficha-levels" id="ficha-levels-section" hidden>
+            <p class="ficha-level-title" id="ficha-level-title"></p>
+            <div class="ficha-level-wrapper" id="ficha-level-wrapper">
+              <button type="button" class="ficha-level-nav ficha-level-prev" id="ficha-level-prev" aria-label="Planta anterior">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>
+              </button>
+              <button type="button" class="ficha-level-nav ficha-level-next" id="ficha-level-next" aria-label="Planta siguiente">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
+              </button>
+              <div class="ficha-level-slides" id="ficha-level-slides"></div>
+              <div class="ficha-level-dots" id="ficha-level-dots"></div>
+            </div>
+          </div>
+
           <div class="ficha-gallery">
             <button type="button" class="ficha-gallery-stage" id="ficha-gallery-stage" aria-label="Ver imagen en pantalla completa">
               <img id="ficha-gallery-img" src="" alt="">
@@ -267,16 +278,6 @@
             </button>
             <div class="ficha-thumbs" id="ficha-thumbs"></div>
           </div>
-
-          <div class="ficha-section" id="ficha-description-section" hidden>
-            <p class="ficha-section-title">Descripción</p>
-            <div class="ficha-description" id="ficha-description"></div>
-          </div>
-
-          <div class="ficha-section" id="ficha-equipment-section" hidden>
-            <p class="ficha-section-title">Equipamiento &amp; Acabados Incluidos</p>
-            <div class="ficha-tags" id="ficha-tags"></div>
-          </div>
         </div>
 
         <div class="ficha-col-right">
@@ -284,7 +285,6 @@
             <h1 class="ficha-title" id="ficha-title"></h1>
             <p class="ficha-location" id="ficha-location"></p>
             <div class="ficha-pricing-list" id="ficha-pricing-list"></div>
-            <p class="ficha-furnishing-note" id="ficha-furnishing-note" hidden></p>
           </div>
 
           <div class="ficha-card is-specs">
@@ -315,18 +315,14 @@
 
       </div>
 
-      <div class="ficha-levels" id="ficha-levels-section" hidden>
-        <p class="ficha-level-title" id="ficha-level-title"></p>
-        <div class="ficha-level-wrapper" id="ficha-level-wrapper">
-          <button type="button" class="ficha-level-nav ficha-level-prev" id="ficha-level-prev" aria-label="Planta anterior">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M15 6l-6 6 6 6"/></svg>
-          </button>
-          <button type="button" class="ficha-level-nav ficha-level-next" id="ficha-level-next" aria-label="Planta siguiente">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
-          </button>
-          <div class="ficha-level-slides" id="ficha-level-slides"></div>
-          <div class="ficha-level-dots" id="ficha-level-dots"></div>
-        </div>
+      <div class="ficha-section" id="ficha-description-section" hidden>
+        <p class="ficha-section-title">Descripción</p>
+        <div class="ficha-description" id="ficha-description"></div>
+      </div>
+
+      <div class="ficha-section" id="ficha-equipment-section" hidden>
+        <p class="ficha-section-title">Equipamiento &amp; Acabados Incluidos</p>
+        <div class="ficha-tags" id="ficha-tags"></div>
       </div>
 
     </div>
@@ -357,15 +353,16 @@
   </div>
 
   <div class="gallery-filters reveal-scroll" style="--d:1">
-    <button class="filter-pill is-active" data-filter="todas" type="button">Todas</button>
-    <button class="filter-pill" data-filter="aereas" type="button">Entorno</button>
+    <button class="filter-pill is-active" data-filter="aereas" type="button">Entorno</button>
     <button class="filter-pill" data-filter="amenidades" type="button">Amenidades</button>
     <button class="filter-pill" data-filter="areas-comunes" type="button">Cochera y Recepción</button>
     <button class="filter-pill" data-filter="departamentos" type="button">Departamentos</button>
+    <button class="filter-pill" data-filter="todas" type="button">Todas</button>
   </div>
 
   <div class="gallery-subfilters reveal-scroll" id="gallery-subfilters" style="--d:1" hidden>
     <button class="filter-pill" data-filter="studio" type="button">Studio</button>
+    <button class="filter-pill" data-filter="studiomax" type="button">Studio Max</button>
     <button class="filter-pill" data-filter="loft" type="button">Loft</button>
   </div>
 
@@ -378,6 +375,8 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M9 6l6 6-6 6"/></svg>
     </button>
   </div>
+
+  <p class="gallery-model-info" id="gallery-model-info" hidden></p>
 
   <div class="gallery-stage reveal-scroll" style="--d:3">
     <div class="gallery-arc" id="gallery-arc"></div>
@@ -475,15 +474,26 @@
 
 <section class="nosotros" id="nosotros">
   <div class="nosotros-intro">
-    <div class="section-head light reveal-scroll" style="--d:0">
-      <p class="eyebrow">Un proyecto de:</p>
-
-      <img src="assets/iconos/SIMACON%20LOGO.png" alt="Constructora Simacon" class="nosotros-logo">
-      <p class="eyebrow">Constructora Simacon</p>
+    <div class="nosotros-intro-col nosotros-intro-duan">
+      <div class="section-head reveal-scroll" style="--d:0">
+        <p class="eyebrow">Comercialización por</p>
+        <img src="assets/nosotros/duan/DUAN_LOGO_trimmed.webp" alt="Du'an Bienes Raíces" class="nosotros-logo">
+        <p class="eyebrow">Du'an Bienes Raíces</p>
+      </div>
+      <p class="nosotros-copy reveal-scroll" style="--d:2">Con más de 10 años de experiencia en el mercado inmobiliario de León, Du'an Bienes Raíces es sinónimo de honestidad, cercanía y rigor comercial. Nuestro compromiso es proteger tu patrimonio conectándote con desarrollos residenciales de alto valor y plusvalía.</p>
+      <p class="nosotros-copy reveal-scroll" style="--d:3">Respaldados por una sólida infraestructura legal y tecnológica, brindamos un servicio integral diseñado para resolver cada detalle de tu adquisición: planes de financiamiento a tu medida, absoluta claridad contractual y un seguimiento puntual para hacer de tu inversión una experiencia confiable y sin complicaciones.</p>
     </div>
-    <!--<h3 class="nosotros-manifiesto reveal-scroll" style="--d:1">Visualizamos, planeamos y construimos con calidad.</h3>-->
-    <p class="nosotros-copy reveal-scroll" style="--d:2">Con sede en León, Guanajuato, Constructora Simacon es una empresa dedicada a la construcción y al desarrollo de proyectos urbano-arquitectónicos, con experiencia en proyectos residenciales, comerciales e industriales.</p>
-    <p class="nosotros-copy reveal-scroll" style="--d:3">A lo largo de nuestra trayectoria hemos desarrollado proyectos que integran diseño, funcionalidad, calidad y eficiencia constructiva, cuidando cada etapa del proceso para convertir una visión arquitectónica en un proyecto tangible y duradero.</p>
+    <div class="nosotros-intro-col nosotros-intro-simacon">
+      <div class="section-head light reveal-scroll" style="--d:0">
+        <p class="eyebrow">Un proyecto y construcción de:</p>
+
+        <img src="assets/iconos/SIMACON%20LOGO.png" alt="Constructora Simacon" class="nosotros-logo">
+        <p class="eyebrow">Constructora Simacon</p>
+      </div>
+      <!--<h3 class="nosotros-manifiesto reveal-scroll" style="--d:1">Visualizamos, planeamos y construimos con calidad.</h3>-->
+      <p class="nosotros-copy reveal-scroll" style="--d:2">Con sede en León, Guanajuato, Constructora Simacon es una empresa dedicada a la construcción y al desarrollo de proyectos urbano-arquitectónicos, con experiencia en proyectos residenciales, comerciales e industriales.</p>
+      <p class="nosotros-copy reveal-scroll" style="--d:3">A lo largo de nuestra trayectoria hemos desarrollado proyectos que integran diseño, funcionalidad, calidad y eficiencia constructiva, cuidando cada etapa del proceso para convertir una visión arquitectónica en un proyecto tangible y duradero.</p>
+    </div>
   </div>
 
   <div class="nosotros-quote-band reveal-scroll" style="--d:0">
@@ -496,7 +506,7 @@
   </div>
 
   <div class="nosotros-mosaic reveal-scroll" style="--d:0">
-     <p class="eyebrow">Algunos de nuestros proyectos construidos exitosamente:</p>
+     <p class="eyebrow">Algunos proyectos construidos y conlcuidos exitosamente por constructora Simacon:</p>
      <button class="nosotros-photo is-wide">
        <img src="assets/nosotros/img/SIMACON_01.jpeg" alt="Kayata — proyecto residencial de Constructora Simacon">
        <span class="nosotros-photo-caption"><span class="name">Kayata</span><span class="cat">Residencial</span></span>
@@ -567,7 +577,8 @@
         <li class="agenda-option">
           <div class="agenda-option-info">
             <h3>Visita al Desarrollo</h3>
-            <p>Recorrido presencial de 1 hora en Tabasco 606, Bellavista, León.</p>
+            <p>Recorrido presencial de 1 hora en Torre Arbide.</p>
+            <p>Tabasco 606, Bellavista, 37360 León de los Aldama, Gto.</p>
           </div>
           <button type="button" class="btn btn-primary agenda-btn"
                   data-cal-namespace="torre-arbide"
@@ -592,6 +603,16 @@
 
 <footer class="site-footer">
   <p>© 2026 Torre Arbide — DU'AN Bienes Raíces. Todos los derechos reservados.</p>
+  <p class="footer-credit">
+    Sitio creado por <strong>HunterMKT</strong> · contacto
+    <a href="https://api.whatsapp.com/send?phone=524771302581" target="_blank" rel="noopener" aria-label="Contactar a HunterMKT por WhatsApp">
+      <svg viewBox="0 0 32 32" aria-hidden="true" focusable="false">
+        <path d="M16.001 3C9.373 3 4 8.373 4 15c0 2.386.7 4.607 1.905 6.472L4 29l7.72-1.865A11.94 11.94 0 0 0 16.001 27C22.628 27 28 21.627 28 15S22.628 3 16.001 3zm0 21.818a9.77 9.77 0 0 1-4.98-1.363l-.357-.212-4.583 1.107 1.127-4.463-.232-.367A9.8 9.8 0 0 1 6.182 15c0-5.415 4.404-9.818 9.819-9.818S25.818 9.585 25.818 15 21.416 24.818 16.001 24.818z"/>
+        <path d="M20.885 17.395c-.26-.13-1.533-.756-1.77-.843-.238-.087-.412-.13-.586.13-.174.26-.673.843-.825 1.017-.152.174-.304.196-.564.065-.26-.13-1.096-.404-2.088-1.288-.772-.688-1.293-1.538-1.445-1.798-.152-.26-.016-.4.114-.53.117-.116.26-.304.39-.456.13-.152.174-.26.26-.434.087-.174.043-.326-.022-.456-.065-.13-.586-1.412-.803-1.935-.212-.51-.427-.44-.586-.448l-.5-.01c-.174 0-.456.065-.695.326-.238.26-.912.891-.912 2.174 0 1.283.934 2.522 1.065 2.696.13.174 1.837 2.805 4.452 3.933.622.269 1.108.43 1.487.55.625.199 1.194.171 1.644.104.5-.075 1.533-.627 1.75-1.232.217-.605.217-1.123.152-1.232-.065-.108-.238-.174-.5-.304z"/>
+      </svg>
+      477 130 2581
+    </a>
+  </p>
 </footer>
 
 <a href="https://api.whatsapp.com/send?phone=524775514226&text=Hola%2C%20quiero%20informaci%C3%B3n%20sobre%20Torre%20Arbide" class="whatsapp-float" target="_blank" rel="noopener" aria-label="Chatea con nosotros por WhatsApp">
@@ -603,8 +624,8 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-<script src="js/script.js"></script>
-<script src="js/agenda.js"></script>
-<script src="js/ficha-modelo.js"></script>
+<script src="js/script.js?v=20260926"></script>
+<script src="js/agenda.js?v=20260926"></script>
+<script src="js/ficha-modelo.js?v=20260926"></script>
 </body>
 </html>

@@ -9,7 +9,6 @@
   var titleEl = document.getElementById("ficha-title");
   var locationEl = document.getElementById("ficha-location");
   var pricingListEl = document.getElementById("ficha-pricing-list");
-  var furnishingNoteEl = document.getElementById("ficha-furnishing-note");
   var specsGridEl = document.getElementById("ficha-specs-grid");
   var descriptionSection = document.getElementById("ficha-description-section");
   var descriptionEl = document.getElementById("ficha-description");
@@ -39,14 +38,39 @@
   function pad(n) {
     return n < 10 ? "0" + n : "" + n;
   }
-  var STUDIO_PHOTOS = [];
-  for (var i = 1; i <= 16; i++) STUDIO_PHOTOS.push("Studio_" + pad(i) + ".jpg");
+  function photoSet(prefix, count) {
+    var list = [];
+    for (var i = 1; i <= count; i++) list.push(prefix + "_" + pad(i) + ".jpg");
+    return list;
+  }
+  var STUDIO_PHOTOS = photoSet("ficha_studio", 17);
+  var LOFT_PHOTOS = photoSet("ficha_loft", 13);
+  var STUDIOMAX_PHOTOS = photoSet("ficha_studiomax", 14);
 
-  /* ---------- datos de cada modelo ----------
-     Nota: "studio-max" y "loft" muestran una ficha simplificada (fotos +
-     precio agregado) porque aún no hay desglose por unidad, descripción
-     ni equipamiento propios como en Studio — agregar esas llaves aquí en
-     cuanto ese contenido esté listo, sin tocar el resto del código. */
+  // Texto compartido: mismo contenido en los 3 modelos, cambiando solo el
+  // nombre del modelo en la primera frase (indicación explícita: "por el
+  // momento copia y pega la misma descripción y equipamiento").
+  var EQUIPMENT_COMUN = [
+    "Gran Isla de cocina equipada",
+    "Terraza privada con vista al Este",
+    "Cuarto de lavado cerrado",
+    "Baño con lavabo de mármol",
+    "1 Cajón de estacionamiento",
+    "Pisos cerámicos gran formato",
+    "Portón y acceso controlado",
+    "Tanque e instalaciones independientes"
+  ];
+  function descripcionModelo(nombre) {
+    return [
+      "El <strong>Modelo " +
+        nombre +
+        "</strong> redefine el concepto residencial en la colonia Arbide: un departamento concebido sin muros innecesarios para optimizar cada metro cuadrado y lograr una fluidez visual completa entre cocina, estancia y área de descanso.",
+      "El corazón del departamento es su <strong>isla monolítica central</strong> equipada con parrilla empotrada y campana suspendida, integrada armónicamente a la línea de cocina. La estancia conecta mediante cancelería corrediza de piso a techo hacia un <strong>amplio balcón/terraza privada</strong> con orientación lateral al este, garantizando iluminación matutina natural y un ambiente fresco durante la tarde.",
+      "A diferencia de los estudios promedio, este modelo integra un <strong>cuarto de lavado cerrado e independiente</strong>, baño completo con separación de áreas húmedas y preparación para climatización. Es ideal tanto para profesionistas jóvenes o parejas sin hijos, como para inversionistas que buscan alta rentabilidad en renta ejecutiva patrimonial o plataformas de hospedaje."
+    ];
+  }
+
+  /* ---------- datos de cada modelo ---------- */
   var FICHAS = {
     studio: {
       refCode: "Torre Arbide • Modelo Studio",
@@ -54,7 +78,6 @@
       location: "Tabasco 606, Col. Bellavista / Arbide, León, Gto.",
       photosBase: "assets/fichas/mods/studio/",
       photos: STUDIO_PHOTOS,
-      defaultCaratula: "dep103mod.jpg",
       units: [
         {
           id: "103",
@@ -63,7 +86,6 @@
           price: "$2,323,000",
           m2: "70.12 m²",
           nivel: "Nivel 1 (Piso 1)",
-          caratula: "dep103mod.jpg",
           levelIndex: 0,
           waText: "Hola, me interesa información y agendar cita para el Modelo Studio Dpto 103 en Torre Arbide"
         },
@@ -74,7 +96,6 @@
           price: "$2,374,000",
           m2: "70.90 m²",
           nivel: "Nivel 3 (Piso 3)",
-          caratula: "dep301mod.jpg",
           levelIndex: 1,
           waText: "Hola, me interesa información y agendar cita para el Modelo Studio Dpto 301 en Torre Arbide"
         }
@@ -86,23 +107,8 @@
         { label: "Lavandería", value: "Cuarto Cerrado" },
         { label: "Estacionamiento", value: "1 Cajón techado" }
       ],
-      description: [
-        "El <strong>Modelo Studio</strong> redefine el concepto residencial en la colonia Arbide: un departamento concebido sin muros innecesarios para optimizar cada metro cuadrado y lograr una fluidez visual completa entre cocina, estancia y área de descanso.",
-        "El corazón del departamento es su <strong>isla monolítica central</strong> equipada con parrilla empotrada y campana suspendida, integrada armónicamente a la línea de cocina. La estancia conecta mediante cancelería corrediza de piso a techo hacia un <strong>amplio balcón/terraza privada</strong> con orientación lateral al este, garantizando iluminación matutina natural y un ambiente fresco durante la tarde.",
-        "A diferencia de los estudios promedio, este modelo integra un <strong>cuarto de lavado cerrado e independiente</strong>, baño completo con separación de áreas húmedas y preparación para climatización. Es ideal tanto para profesionistas jóvenes o parejas sin hijos, como para inversionistas que buscan alta rentabilidad en renta ejecutiva patrimonial o plataformas de hospedaje."
-      ],
-      equipment: [
-        "Gran Isla de cocina equipada",
-        "Terraza privada con vista al Este",
-        "Cuarto de lavado cerrado",
-        "Baño con lavabo de mármol",
-        "1 Cajón de estacionamiento",
-        "Pisos cerámicos gran formato",
-        "Portón y acceso controlado",
-        "Tanque e instalaciones independientes"
-      ],
-      furnishingNote:
-        '<strong>Modalidad de entrega:</strong> Se entregan sin amueblar (cocina integral, carpintería fija y baño listos). <em>Opción de paquete amueblado y decorado "Llave en Mano" con costo adicional.</em>',
+      description: descripcionModelo("Studio"),
+      equipment: EQUIPMENT_COMUN,
       levels: [
         { title: "1er Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl1.webp" },
         { title: "3er Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl3.webp" }
@@ -114,13 +120,42 @@
       refCode: "Torre Arbide • Modelo Studio Max",
       title: "Departamento Modelo Studio Max",
       location: "Tabasco 606, Col. Bellavista / Arbide, León, Gto.",
-      photosBase: "assets/dep-models/studio-max/",
-      photos: ["studio_max_01.jpg", "studio_max_02.jpg", "studio_max_03.jpg", "studio_max_04.jpg", "studio_max_05.jpg"],
-      price: "$2,821,000",
+      photosBase: "assets/fichas/mods/studiomax/",
+      photos: STUDIOMAX_PHOTOS,
+      units: [
+        {
+          id: "204",
+          name: "Dpto. 204 • Nivel 2",
+          sub: "88.80 m²",
+          price: "$2,821,000",
+          m2: "88.80 m²",
+          nivel: "Nivel 2 (Piso 2)",
+          levelIndex: 0,
+          waText: "Hola, me interesa información y agendar cita para el Modelo Studio Max Dpto 204 en Torre Arbide"
+        },
+        {
+          id: "303",
+          name: "Dpto. 303 • Nivel 3",
+          sub: "88.80 m²",
+          price: "$2,842,000",
+          m2: "88.80 m²",
+          nivel: "Nivel 3 (Piso 3)",
+          levelIndex: 1,
+          waText: "Hola, me interesa información y agendar cita para el Modelo Studio Max Dpto 303 en Torre Arbide"
+        }
+      ],
+      specsDefault: { superficie: "88.80 m²", nivel: "Piso 2 y Piso 3" },
       staticSpecs: [
-        { label: "Superficie", value: "88.80 m²" },
-        { label: "Estacionamiento", value: "2 cajones" },
-        { label: "Disponibilidad", value: "2 Disponibles" }
+        { label: "Configuración", value: "1 Recámara Studio Max" },
+        { label: "Baños", value: "1 Completo" },
+        { label: "Lavandería", value: "Cuarto Cerrado" },
+        { label: "Estacionamiento", value: "2 Cajones techados" }
+      ],
+      description: descripcionModelo("StudioMax"),
+      equipment: EQUIPMENT_COMUN,
+      levels: [
+        { title: "2do Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl2.webp" },
+        { title: "3er Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl3.webp" }
       ],
       waDefaultText: "Hola, quiero información del Modelo Studio Max en Torre Arbide"
     },
@@ -129,13 +164,53 @@
       refCode: "Torre Arbide • Modelo Loft",
       title: "Departamento Modelo Loft",
       location: "Tabasco 606, Col. Bellavista / Arbide, León, Gto.",
-      photosBase: "assets/dep-models/loft/",
-      photos: ["loft_01.jpg", "loft_02.jpg", "loft_03.jpg", "loft_04.jpg", "loft_05.jpg"],
-      price: "$3,061,000",
+      photosBase: "assets/fichas/mods/loft/",
+      photos: LOFT_PHOTOS,
+      units: [
+        {
+          id: "201",
+          name: "Dpto. 201 • Nivel 2",
+          sub: "100.80 m² • Unidad Muestra",
+          price: "$3,061,000",
+          m2: "100.80 m²",
+          nivel: "Nivel 2 (Piso 2)",
+          levelIndex: 0,
+          waText: "Hola, me interesa información y agendar cita para el Modelo Loft Dpto 201 en Torre Arbide"
+        },
+        {
+          id: "401",
+          name: "Dpto. 401 • Niveles 4-5",
+          sub: "100.80 m² • Dúplex",
+          price: "$3,259,000",
+          m2: "100.80 m²",
+          nivel: "Nivel 4 y 5 (Dúplex)",
+          levelIndex: [1, 2],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Loft Dpto 401 en Torre Arbide"
+        },
+        {
+          id: "403",
+          name: "Dpto. 403 • Niveles 4-5",
+          sub: "103.11 m² • Dúplex",
+          price: "$3,333,000",
+          m2: "103.11 m²",
+          nivel: "Nivel 4 y 5 (Dúplex)",
+          levelIndex: [1, 2],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Loft Dpto 403 en Torre Arbide"
+        }
+      ],
+      specsDefault: { superficie: "100.80 a 103.11 m²", nivel: "Piso 2, 4 y 5" },
       staticSpecs: [
-        { label: "Superficie", value: "100.80 m²" },
-        { label: "Estacionamiento", value: "1 cajón" },
-        { label: "Disponibilidad", value: "3 Disponibles" }
+        { label: "Configuración", value: "1 Recámara Loft" },
+        { label: "Baños", value: "1 Completo" },
+        { label: "Lavandería", value: "Cuarto Cerrado" },
+        { label: "Estacionamiento", value: "1 Cajón techado" }
+      ],
+      description: descripcionModelo("Loft"),
+      equipment: EQUIPMENT_COMUN,
+      levels: [
+        { title: "2do Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl2.webp" },
+        { title: "4to Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl4.webp" },
+        { title: "5to Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl5.webp" }
       ],
       waDefaultText: "Hola, quiero información del Modelo Loft en Torre Arbide"
     }
@@ -148,16 +223,15 @@
   var currentUnitIndex = -1;
   var galleryItems = [];
   var currentGalleryIndex = 0;
+  var renderToken = 0;
 
   var levelTimer = null;
   var levelIndex = 0;
   var levelStatic = false;
 
   /* ---------- galería ---------- */
-  function buildGalleryItems(data, unit) {
+  function buildGalleryItems(data) {
     var items = [];
-    var caratula = unit && unit.caratula ? unit.caratula : data.defaultCaratula;
-    if (caratula) items.push({ src: data.photosBase + caratula, contain: true });
     (data.photos || []).forEach(function (p) {
       items.push({ src: data.photosBase + p, contain: false });
     });
@@ -182,9 +256,11 @@
     if (index < 0 || index >= galleryItems.length) return;
     currentGalleryIndex = index;
     var item = galleryItems[index];
+    var myToken = renderToken;
     galleryImg.style.opacity = "0.2";
     var temp = new Image();
     temp.onload = temp.onerror = function () {
+      if (myToken !== renderToken) return; // la ficha se cerró/cambió antes de que la imagen cargara
       galleryImg.src = item.src;
       galleryImg.classList.toggle("ficha-fit-contain", !!item.contain);
       galleryImg.style.opacity = "1";
@@ -259,12 +335,19 @@
 
     renderSpecs(data, unit);
 
-    galleryItems = buildGalleryItems(data, unit);
-    renderThumbs();
-    showGalleryImage(0);
-
-    if (data.levels && data.levels.length && typeof unit.levelIndex === "number") {
-      freezeLevelAt(unit.levelIndex);
+    if (data.levels && data.levels.length && unit.levelIndex != null) {
+      if (Array.isArray(unit.levelIndex)) {
+        // Dúplex: dos niveles relevantes — se muestra el primero pero se
+        // deja la navegación activa para que se pueda ver el segundo piso.
+        levelStatic = false;
+        stopLevelTimer();
+        showLevelSlide(unit.levelIndex[0]);
+        levelPrevBtn.style.display = "";
+        levelNextBtn.style.display = "";
+        levelDotsEl.style.display = "";
+      } else {
+        freezeLevelAt(unit.levelIndex);
+      }
     }
 
     whatsappBtn.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(unit.waText);
@@ -293,6 +376,7 @@
 
   /* ---------- carrusel de plantas / niveles ---------- */
   function showLevelSlide(i) {
+    if (!currentData || !currentData.levels || !currentData.levels.length) return;
     var slides = levelSlidesEl.querySelectorAll(".ficha-level-slide");
     if (!slides.length) return;
     levelIndex = (i + slides.length) % slides.length;
@@ -303,7 +387,8 @@
     dots.forEach(function (d, idx) {
       d.classList.toggle("is-active", idx === levelIndex);
     });
-    levelTitleEl.textContent = currentData.levels[levelIndex].title;
+    var level = currentData.levels[levelIndex];
+    if (level) levelTitleEl.textContent = level.title;
   }
 
   function startLevelTimer() {
@@ -315,7 +400,10 @@
   }
 
   function stopLevelTimer() {
-    if (levelTimer) clearInterval(levelTimer);
+    if (levelTimer) {
+      clearInterval(levelTimer);
+      levelTimer = null;
+    }
   }
 
   function freezeLevelAt(index) {
@@ -372,6 +460,7 @@
   function renderFicha(key) {
     var data = FICHAS[key];
     if (!data) return;
+    renderToken++;
     currentData = data;
     currentUnitIndex = -1;
 
@@ -379,20 +468,13 @@
     titleEl.textContent = data.title;
     locationEl.textContent = data.location;
 
-    if (data.furnishingNote) {
-      furnishingNoteEl.innerHTML = "💡 " + data.furnishingNote;
-      furnishingNoteEl.hidden = false;
-    } else {
-      furnishingNoteEl.hidden = true;
-    }
-
     renderPricing(data);
     renderSpecs(data, null);
     renderDescription(data);
     renderEquipment(data);
     renderLevels(data);
 
-    galleryItems = buildGalleryItems(data, null);
+    galleryItems = buildGalleryItems(data);
     renderThumbs();
     showGalleryImage(0);
 
@@ -416,9 +498,12 @@
   window.openFicha = openFicha;
 
   function closeFicha() {
+    renderToken++; // invalida cualquier carga de imagen pendiente de esta ficha
     modal.classList.remove("is-open");
     document.body.classList.remove("ficha-lock");
+    lightbox.classList.remove("is-open");
     stopLevelTimer();
+    levelStatic = false;
   }
 
   document.querySelectorAll("[data-ficha]").forEach(function (btn) {
