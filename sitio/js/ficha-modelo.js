@@ -400,12 +400,20 @@
   }
 
   /* ---------- apertura / cierre del modal ---------- */
-  function openFicha(key) {
+  function openFicha(key, unitId) {
     if (!FICHAS[key]) return;
     renderFicha(key);
+    if (unitId && currentData.units) {
+      var idx = currentData.units.findIndex(function (u) { return u.id === unitId; });
+      if (idx !== -1) selectUnit(idx);
+    }
     modal.classList.add("is-open");
     document.body.classList.add("ficha-lock");
   }
+
+  // Expuesta para que el visor 3D (que vive en un <iframe> aparte) pueda
+  // abrir la ficha real de un departamento al hacer click en su tarjeta.
+  window.openFicha = openFicha;
 
   function closeFicha() {
     modal.classList.remove("is-open");
