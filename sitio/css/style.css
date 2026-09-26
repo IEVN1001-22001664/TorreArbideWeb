@@ -621,6 +621,25 @@ img{display:block;max-width:100%;}
   line-height:1.5;
 }
 
+.visor-3d-unavailable{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  gap:14px;
+  padding:32px 40px;
+  max-width:280px;
+  text-align:center;
+  color:var(--ink-dim);
+}
+.visor-3d-unavailable svg{width:42px;height:42px;opacity:.55;}
+.visor-3d-unavailable p{
+  font-family:var(--font-sans);
+  font-size:13px;
+  font-weight:600;
+  letter-spacing:.03em;
+  line-height:1.6;
+}
+
 body.visor-3d-lock{overflow:hidden;}
 
 /* ---------- galeria ---------- */
@@ -1801,6 +1820,9 @@ body.ficha-lock{overflow:hidden;}
   .nav-cta{display:none;}
 }
 @media (max-width:900px){
+  .departamentos-3d-frame{height:56vh;height:56dvh;}
+  .visor-3d-activate{display:none;}
+  .visor-3d-unavailable{display:flex;}
   .unit-grid{grid-template-columns:1fr;max-width:440px;}
   .welcome-grid{grid-template-columns:1fr;}
   .welcome-media{order:-1;aspect-ratio:16/10;}

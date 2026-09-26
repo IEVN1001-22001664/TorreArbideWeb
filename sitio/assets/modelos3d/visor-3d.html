@@ -45,6 +45,7 @@
     transition:border-color .2s ease, color .2s ease;
   }
   .reset-btn:hover{border-color:var(--tan-light);color:var(--ink);}
+  .reset-btn.exit-btn{order:99;flex:0 0 auto;width:100%;margin-top:8px;}
   .reset-btn.exit-btn:hover{border-color:#e08a8a;color:var(--ink);}
   .level-card{
     background:var(--cream, #f5f3ef);color:#2f3537;border-radius:8px;padding:12px 14px;
@@ -62,16 +63,15 @@
   .level-card .badge.pending{background:rgba(217,154,78,.18);color:#8a5a1f;}
 
   /* ---- Visor 3D ---- */
-  main.viewer{flex:1 1 40%;min-width:280px;position:relative;border-right:1px solid var(--line);}
-  #canvas-wrap{position:absolute;inset:0;}
+  main.viewer{flex:1 1 40%;min-width:280px;position:relative;display:flex;flex-direction:column;}
+  .viewer-instructions{
+    flex:0 0 auto;padding:9px 16px;text-align:center;
+    font-size:11.5px;color:var(--ink-dim);letter-spacing:.02em;
+    background:rgba(255,255,255,.03);border-bottom:1px solid var(--line);
+  }
+  #canvas-wrap{position:relative;flex:1;min-height:0;}
   canvas{display:block;width:100%;height:100%;cursor:grab;}
   canvas:active{cursor:grabbing;}
-  .hint{
-    position:absolute;bottom:14px;left:16px;font-size:11px;color:var(--ink-dim);
-    background:rgba(20,22,26,.7);padding:6px 10px;border-radius:4px;
-    border:1px solid var(--line);pointer-events:none;
-    font-family:var(--font-sans);letter-spacing:.02em;
-  }
   .debug-status{
     position:absolute;top:14px;right:14px;z-index:10;font-size:11px;font-family:monospace;
     color:var(--tan-light);background:rgba(20,22,26,.92);padding:7px 10px;border-radius:4px;
@@ -83,6 +83,7 @@
   /* ---- Panel de render 2D ---- */
   aside.render-panel{
     width:360px;flex-shrink:0;background:var(--bg-panel);
+    border-right:1px solid var(--line);
     display:flex;flex-direction:column;overflow-y:auto;
   }
   .render-panel .ph{
@@ -156,20 +157,20 @@
   <nav class="levels" id="levelList">
     <div class="level-actions">
       <button class="reset-btn" id="resetBtn">↺ Ver Todo</button>
-      <button class="reset-btn exit-btn" id="exitBtn">✕ Salir</button>
     </div>
     <!-- tarjetas generadas por JS -->
+    <button class="reset-btn exit-btn" id="exitBtn">✕ Salir</button>
   </nav>
-
-  <main class="viewer">
-    <div id="canvas-wrap"></div>
-    <div class="hint">Arrastra para rotar · Scroll para zoom</div>
-    <div class="debug-status" id="debugStatus">Cargando…</div>
-  </main>
 
   <aside class="render-panel" id="renderPanel">
     <div class="ph" id="renderPlaceholder">Elige un nivel de la lista para ver su render de interiores.</div>
   </aside>
+
+  <main class="viewer">
+    <div class="viewer-instructions">Arrastra para girar el modelo · Rueda del mouse para acercar o alejar · Elige un nivel para ver sus departamentos</div>
+    <div id="canvas-wrap"></div>
+    <div class="debug-status" id="debugStatus">Cargando…</div>
+  </main>
 </div>
 
 <script>
@@ -409,11 +410,11 @@ function frameWholeBuilding(instant) {
   grid.scale.setScalar(groundSize / 1400);
   grid.position.y = wholeBuildingBox.min.y - 0.03;
 
-  const dist = Math.max(wholeBuildingSize.x, wholeBuildingSize.z, wholeBuildingSize.y, 10) * 1.7;
+  const dist = Math.max(wholeBuildingSize.x, wholeBuildingSize.z, wholeBuildingSize.y, 10) * 0.85;
   goalTarget = wholeBuildingCenter.clone();
   goalRadius = dist;
-  goalTheta = 0;
-  goalPhi = Math.PI * 0.42;
+  goalTheta = 0.6;
+  goalPhi = Math.PI * 0.34;
   defaultTarget = goalTarget.clone();
   defaultRadius = goalRadius;
   defaultTheta = goalTheta;

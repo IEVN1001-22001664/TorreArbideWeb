@@ -69,7 +69,14 @@
   /* ---------- candado de interacción del visor 3D ---------- */
   var visorFrame = document.getElementById("visor-3d-frame");
   var visorActivate = document.getElementById("visor-3d-activate");
-  if (visorFrame && visorActivate) {
+  var visorIsMobile = window.matchMedia("(max-width:900px)").matches;
+  if (visorFrame && !visorIsMobile) {
+    // En móvil el <iframe> ni siquiera recibe su src: evita cargar Three.js/Draco,
+    // que ahí generaba muchos errores, y deja ver solo el aviso "solo en computadora".
+    var visorIframe = visorFrame.querySelector("iframe[data-src]");
+    if (visorIframe) visorIframe.src = visorIframe.getAttribute("data-src");
+  }
+  if (visorFrame && visorActivate && !visorIsMobile) {
     var activarVisor3d = function () {
       visorFrame.classList.add("is-active");
       document.body.classList.add("visor-3d-lock");
