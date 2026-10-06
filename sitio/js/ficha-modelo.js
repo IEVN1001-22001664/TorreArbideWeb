@@ -248,6 +248,15 @@
 
     thumbsEl.querySelectorAll(".ficha-thumb").forEach(function (t, i) {
       t.classList.toggle("is-active", i === index);
+      if (i === index) {
+        // centra la miniatura activa dentro del carrusel (sin mover la página)
+        var tr = t.getBoundingClientRect();
+        var sr = thumbsEl.getBoundingClientRect();
+        thumbsEl.scrollTo({
+          left: thumbsEl.scrollLeft + (tr.left - sr.left) - (sr.width - tr.width) / 2,
+          behavior: "smooth"
+        });
+      }
     });
   }
 
@@ -425,6 +434,7 @@
     modal.classList.remove("is-open");
     document.body.classList.remove("ficha-lock");
     lightbox.classList.remove("is-open");
+    resetZoom();
   }
 
   document.querySelectorAll("[data-ficha]").forEach(function (btn) {
@@ -454,6 +464,7 @@
 
   function updateLightbox() {
     var multiple = lightboxItems.length > 1;
+    resetZoom();
     lightboxImg.src = lightboxItems[lightboxIndex].src;
     lightboxCounter.textContent = lightboxIndex + 1 + " / " + lightboxItems.length;
     lightboxCounter.hidden = !multiple;
@@ -471,6 +482,7 @@
 
   function closeLightbox() {
     lightbox.classList.remove("is-open");
+    resetZoom();
   }
 
   function stepLightbox(dir) {
@@ -497,21 +509,147 @@
     if (e.target === lightbox || e.target.classList.contains("ficha-lightbox-content")) closeLightbox();
   });
 
-  // Deslizar con el dedo (izquierda / derecha) para cambiar de imagen.
-  var swipeX = null;
-  var swipeY = null;
+  // Gestos táctiles del lightbox: pellizcar para zoom, arrastrar para mover la
+  // imagen ampliada, doble toque para acercar/alejar y deslizar (sin zoom) para
+  // cambiar de imagen.
+  var ZOOM_MAX = 5;
+  var zoom = { s: 1, x: 0, y: 0 };
+  var gesture = null;
+  var lastTap = { t: 0, x: 0, y: 0 };
+
+  function applyZoom(animate) {
+    lightboxImg.classList.toggle("is-animating", !!animate);
+    lightboxImg.style.transform =
+      zoom.s === 1 && zoom.x === 0 && zoom.y === 0
+        ? ""
+        : "translate(" + zoom.x + "px," + zoom.y + "px) scale(" + zoom.s + ")";
+    if (animate) setTimeout(function () { lightboxImg.classList.remove("is-animating"); }, 240);
+  }
+
+  function resetZoom() {
+    zoom.s = 1; zoom.x = 0; zoom.y = 0;
+    gesture = null;
+    applyZoom(false);
+  }
+
+  function clampZoom() {
+    zoom.s = Math.max(1, Math.min(ZOOM_MAX, zoom.s));
+    var maxX = Math.max(0, (lightboxImg.offsetWidth * zoom.s - window.innerWidth) / 2);
+    var maxY = Math.max(0, (lightboxImg.offsetHeight * zoom.s - window.innerHeight) / 2);
+    zoom.x = Math.max(-maxX, Math.min(maxX, zoom.x));
+    zoom.y = Math.max(-maxY, Math.min(maxY, zoom.y));
+    if (zoom.s === 1) { zoom.x = 0; zoom.y = 0; }
+  }
+
+  function zoomOrigin() {
+    var r = lightboxImg.parentElement.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2 };
+  }
+
+  function touchPoint(t, o) {
+    return { x: t.clientX - o.x, y: t.clientY - o.y };
+  }
+
+  function pinchInfo(e, o) {
+    var a = touchPoint(e.touches[0], o);
+    var b = touchPoint(e.touches[1], o);
+    return { d: Math.hypot(a.x - b.x, a.y - b.y), mx: (a.x + b.x) / 2, my: (a.y + b.y) / 2 };
+  }
+
   lightbox.addEventListener("touchstart", function (e) {
-    if (e.touches.length !== 1) { swipeX = null; return; }
-    swipeX = e.touches[0].clientX;
-    swipeY = e.touches[0].clientY;
+    if (e.target.closest("button")) { gesture = null; return; }
+    var o = zoomOrigin();
+    if (e.touches.length === 2) {
+      var p = pinchInfo(e, o);
+      gesture = { type: "pinch", d: p.d, mx: p.mx, my: p.my, multi: true };
+    } else if (e.touches.length === 1) {
+      var pt = touchPoint(e.touches[0], o);
+      gesture = { type: "one", sx: pt.x, sy: pt.y, px: pt.x, py: pt.y, multi: false, moved: false };
+    }
   }, { passive: true });
+
+  lightbox.addEventListener("touchmove", function (e) {
+    if (!gesture) return;
+    e.preventDefault();
+    var o = zoomOrigin();
+    if (e.touches.length === 2) {
+      var p = pinchInfo(e, o);
+      if (gesture.type !== "pinch") {
+        gesture = { type: "pinch", d: p.d, mx: p.mx, my: p.my, multi: true };
+        return;
+      }
+      var prevS = zoom.s;
+      var nextS = Math.max(1, Math.min(ZOOM_MAX, prevS * (p.d / gesture.d)));
+      var ratio = nextS / prevS;
+      zoom.x = p.mx - ratio * (gesture.mx - zoom.x);
+      zoom.y = p.my - ratio * (gesture.my - zoom.y);
+      zoom.s = nextS;
+      gesture.d = p.d; gesture.mx = p.mx; gesture.my = p.my;
+      clampZoom();
+      applyZoom(false);
+    } else if (e.touches.length === 1 && gesture.type === "one") {
+      var pt = touchPoint(e.touches[0], o);
+      if (Math.abs(pt.x - gesture.sx) > 6 || Math.abs(pt.y - gesture.sy) > 6) gesture.moved = true;
+      if (zoom.s > 1) {
+        zoom.x += pt.x - gesture.px;
+        zoom.y += pt.y - gesture.py;
+        clampZoom();
+        applyZoom(false);
+      }
+      gesture.px = pt.x; gesture.py = pt.y;
+    }
+  }, { passive: false });
+
   lightbox.addEventListener("touchend", function (e) {
-    if (swipeX === null) return;
-    var dx = e.changedTouches[0].clientX - swipeX;
-    var dy = e.changedTouches[0].clientY - swipeY;
-    swipeX = null;
-    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) stepLightbox(dx < 0 ? 1 : -1);
-  }, { passive: true });
+    if (!gesture) return;
+    if (e.touches.length > 0) {
+      // quedó un dedo tras soltar el pellizco: sigue como arrastre, sin cambiar de imagen
+      var o = zoomOrigin();
+      var pt = touchPoint(e.touches[0], o);
+      gesture = { type: "one", sx: pt.x, sy: pt.y, px: pt.x, py: pt.y, multi: true, moved: true };
+      return;
+    }
+    var g = gesture;
+    gesture = null;
+    if (zoom.s < 1.05) resetZoom();
+    if (g.type !== "one" || g.multi) return;
+
+    var t = e.changedTouches[0];
+    var dx = g.px - g.sx;
+    var dy = g.py - g.sy;
+
+    if (!g.moved) {
+      // toque simple: doble toque = acercar / alejar
+      var now = Date.now();
+      var o2 = zoomOrigin();
+      var pt2 = touchPoint(t, o2);
+      if (now - lastTap.t < 320 && Math.hypot(pt2.x - lastTap.x, pt2.y - lastTap.y) < 40 && e.target === lightboxImg) {
+        if (zoom.s > 1) {
+          zoom.s = 1; zoom.x = 0; zoom.y = 0;
+        } else {
+          zoom.s = 2.5;
+          zoom.x = pt2.x - 2.5 * pt2.x;
+          zoom.y = pt2.y - 2.5 * pt2.y;
+          clampZoom();
+        }
+        applyZoom(true);
+        lastTap.t = 0;
+        e.preventDefault();
+      } else {
+        lastTap = { t: now, x: pt2.x, y: pt2.y };
+      }
+      return;
+    }
+
+    // deslizar de lado con la imagen sin zoom: anterior / siguiente
+    if (zoom.s === 1 && Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) stepLightbox(dx < 0 ? 1 : -1);
+  }, { passive: false });
+
+  lightbox.addEventListener("touchcancel", function () { gesture = null; }, { passive: true });
+  // Safari: evita que el pellizco haga zoom a toda la página.
+  ["gesturestart", "gesturechange"].forEach(function (n) {
+    lightbox.addEventListener(n, function (e) { e.preventDefault(); });
+  });
 
   document.addEventListener("keydown", function (e) {
     if (lightbox.classList.contains("is-open")) {
