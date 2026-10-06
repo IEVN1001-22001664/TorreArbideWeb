@@ -1690,7 +1690,6 @@ body.ficha-lock{overflow:hidden;}
 .ficha-btn:focus-visible{outline:2px solid var(--ficha-gold);outline-offset:3px;}
 
 .ficha-levels{color:var(--ficha-text);}
-.ficha-level-title{display:none;}
 .ficha-level-wrapper{
   position:relative;
   width:100%;
@@ -1724,6 +1723,7 @@ body.ficha-lock{overflow:hidden;}
   transform-origin:center center;
   filter:drop-shadow(0 20px 45px rgba(0,0,0,.8));
   user-select:none;
+  cursor:zoom-in;
 }
 .ficha-level-nav{
   position:absolute;
@@ -1749,6 +1749,7 @@ body.ficha-lock{overflow:hidden;}
 .ficha-level-dots{position:absolute;bottom:16px;display:flex;gap:8px;z-index:10;}
 .ficha-level-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.3);cursor:pointer;transition:all .3s ease;padding:0;border:0;}
 .ficha-level-dot.is-active{background:var(--ficha-gold);transform:scale(1.2);}
+.ficha-level-nav[hidden], .ficha-level-dots[hidden], .ficha-lightbox-nav[hidden], .ficha-lightbox-counter[hidden]{display:none;}
 
 /* Lightbox de la ficha (pantalla completa) */
 .ficha-lightbox{
@@ -1763,6 +1764,7 @@ body.ficha-lock{overflow:hidden;}
   opacity:0;
   pointer-events:none;
   transition:opacity .25s ease;
+  touch-action:pan-y;
 }
 .ficha-lightbox.is-open{opacity:1;pointer-events:auto;}
 .ficha-lightbox-content{position:relative;width:90vw;height:85vh;display:flex;align-items:center;justify-content:center;}

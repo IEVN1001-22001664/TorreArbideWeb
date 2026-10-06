@@ -21,12 +21,10 @@
   var thumbsEl = document.getElementById("ficha-thumbs");
 
   var levelsSection = document.getElementById("ficha-levels-section");
-  var levelTitleEl = document.getElementById("ficha-level-title");
   var levelSlidesEl = document.getElementById("ficha-level-slides");
   var levelDotsEl = document.getElementById("ficha-level-dots");
   var levelPrevBtn = document.getElementById("ficha-level-prev");
   var levelNextBtn = document.getElementById("ficha-level-next");
-  var levelWrapper = document.getElementById("ficha-level-wrapper");
 
   var lightbox = document.getElementById("ficha-lightbox");
   var lightboxImg = document.getElementById("ficha-lightbox-img");
@@ -70,37 +68,40 @@
     ];
   }
 
+  function renderDe(nivel, titulo) {
+    return { title: titulo + " • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl" + nivel + ".webp" };
+  }
+
   /* ---------- datos de cada modelo ---------- */
   var FICHAS = {
     studio: {
-      refCode: "Torre Arbide • Modelo Studio",
-      title: "Departamento Modelo Studio",
-      location: "Tabasco 606, Col. Bellavista / Arbide, León, Gto.",
+      refCode: "Torre Arbide • Departamento Modelo Studio",
+      title: "Modelo Studio",
+      location: "Un espacio único para tí.",
       photosBase: "assets/fichas/mods/studio/",
       photos: STUDIO_PHOTOS,
       units: [
         {
           id: "103",
-          name: "Dpto. 103 • Nivel 1",
+          name: "Studio - 103",
           sub: "70.12 m² • Balcón vista lateral Este",
-          price: "$2,323,000",
+          price: "$2,323,000.-",
           m2: "70.12 m²",
-          nivel: "Nivel 1 (Piso 1)",
-          levelIndex: 0,
-          waText: "Hola, me interesa información y agendar cita para el Modelo Studio Dpto 103 en Torre Arbide"
+          nivel: "1er Piso",
+          renders: [renderDe(1, "1er Piso")],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Studio - 103 en Torre Arbide"
         },
         {
           id: "301",
-          name: "Dpto. 301 • Nivel 3",
+          name: "Studio - 301",
           sub: "70.90 m² • Balcón vista lateral Este",
-          price: "$2,374,000",
+          price: "$2,374,000.-",
           m2: "70.90 m²",
-          nivel: "Nivel 3 (Piso 3)",
-          levelIndex: 1,
-          waText: "Hola, me interesa información y agendar cita para el Modelo Studio Dpto 301 en Torre Arbide"
+          nivel: "3er Piso",
+          renders: [renderDe(3, "3er Piso")],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Studio - 301 en Torre Arbide"
         }
       ],
-      specsDefault: { superficie: "70.12 a 70.90 m²", nivel: "Piso 1 y Piso 3" },
       staticSpecs: [
         { label: "Configuración", value: "1 Recámara Studio" },
         { label: "Baños", value: "1 Completo" },
@@ -108,43 +109,37 @@
         { label: "Estacionamiento", value: "1 Cajón techado" }
       ],
       description: descripcionModelo("Studio"),
-      equipment: EQUIPMENT_COMUN,
-      levels: [
-        { title: "1er Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl1.webp" },
-        { title: "3er Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl3.webp" }
-      ],
-      waDefaultText: "Hola, solicito información y disponibilidad del Modelo Studio en Torre Arbide"
+      equipment: EQUIPMENT_COMUN
     },
 
     "studio-max": {
       refCode: "Torre Arbide • Modelo Studio Max",
-      title: "Departamento Modelo Studio Max",
-      location: "Tabasco 606, Col. Bellavista / Arbide, León, Gto.",
+      title: "Modelo Studio Max",
+      location: "Gran amplitud, hasta para 2 recámaras",
       photosBase: "assets/fichas/mods/studiomax/",
       photos: STUDIOMAX_PHOTOS,
       units: [
         {
           id: "204",
-          name: "Dpto. 204 • Nivel 2",
+          name: "Studio Max - 204",
           sub: "88.80 m²",
-          price: "$2,821,000",
+          price: "$2,821,000.-",
           m2: "88.80 m²",
-          nivel: "Nivel 2 (Piso 2)",
-          levelIndex: 0,
-          waText: "Hola, me interesa información y agendar cita para el Modelo Studio Max Dpto 204 en Torre Arbide"
+          nivel: "2do Piso",
+          renders: [renderDe(2, "2do Piso")],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Studio Max - 204 en Torre Arbide"
         },
         {
           id: "303",
-          name: "Dpto. 303 • Nivel 3",
+          name: "Studio Max - 303",
           sub: "88.80 m²",
-          price: "$2,842,000",
+          price: "$2,842,000.-",
           m2: "88.80 m²",
-          nivel: "Nivel 3 (Piso 3)",
-          levelIndex: 1,
-          waText: "Hola, me interesa información y agendar cita para el Modelo Studio Max Dpto 303 en Torre Arbide"
+          nivel: "3er Piso",
+          renders: [renderDe(3, "3er Piso")],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Studio Max - 303 en Torre Arbide"
         }
       ],
-      specsDefault: { superficie: "88.80 m²", nivel: "Piso 2 y Piso 3" },
       staticSpecs: [
         { label: "Configuración", value: "1 Recámara Studio Max" },
         { label: "Baños", value: "1 Completo" },
@@ -152,53 +147,47 @@
         { label: "Estacionamiento", value: "2 Cajones techados" }
       ],
       description: descripcionModelo("StudioMax"),
-      equipment: EQUIPMENT_COMUN,
-      levels: [
-        { title: "2do Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl2.webp" },
-        { title: "3er Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl3.webp" }
-      ],
-      waDefaultText: "Hola, quiero información del Modelo Studio Max en Torre Arbide"
+      equipment: EQUIPMENT_COMUN
     },
 
     loft: {
       refCode: "Torre Arbide • Modelo Loft",
-      title: "Departamento Modelo Loft",
-      location: "Tabasco 606, Col. Bellavista / Arbide, León, Gto.",
+      title: "Modelo Loft",
+      location: "Un espacio con Doble Altura y un Gran Ventanal",
       photosBase: "assets/fichas/mods/loft/",
       photos: LOFT_PHOTOS,
       units: [
         {
           id: "201",
-          name: "Dpto. 201 • Nivel 2",
+          name: "Loft - 201",
           sub: "100.80 m² • Unidad Muestra",
-          price: "$3,061,000",
+          price: "$3,061,000.-",
           m2: "100.80 m²",
-          nivel: "Nivel 2 (Piso 2)",
-          levelIndex: 0,
-          waText: "Hola, me interesa información y agendar cita para el Modelo Loft Dpto 201 en Torre Arbide"
+          nivel: "2do y 3er Piso",
+          renders: [renderDe(2, "2do Piso")],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Loft - 201 en Torre Arbide"
         },
         {
           id: "401",
-          name: "Dpto. 401 • Niveles 4-5",
+          name: "Loft - 401",
           sub: "100.80 m² • Dúplex",
-          price: "$3,259,000",
+          price: "$3,259,000.-",
           m2: "100.80 m²",
-          nivel: "Nivel 4 y 5 (Dúplex)",
-          levelIndex: [1, 2],
-          waText: "Hola, me interesa información y agendar cita para el Modelo Loft Dpto 401 en Torre Arbide"
+          nivel: "4to y 5to Piso",
+          renders: [renderDe(4, "4to Piso"), renderDe(5, "5to Piso")],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Loft - 401 en Torre Arbide"
         },
         {
           id: "403",
-          name: "Dpto. 403 • Niveles 4-5",
+          name: "Loft - 403",
           sub: "103.11 m² • Dúplex",
-          price: "$3,333,000",
+          price: "$3,333,000.-",
           m2: "103.11 m²",
-          nivel: "Nivel 4 y 5 (Dúplex)",
-          levelIndex: [1, 2],
-          waText: "Hola, me interesa información y agendar cita para el Modelo Loft Dpto 403 en Torre Arbide"
+          nivel: "4to y 5to Piso",
+          renders: [renderDe(4, "4to Piso"), renderDe(5, "5to Piso")],
+          waText: "Hola, me interesa información y agendar cita para el Modelo Loft - 403 en Torre Arbide"
         }
       ],
-      specsDefault: { superficie: "100.80 a 103.11 m²", nivel: "Piso 2, 4 y 5" },
       staticSpecs: [
         { label: "Configuración", value: "1 Recámara Loft" },
         { label: "Baños", value: "1 Completo" },
@@ -206,13 +195,7 @@
         { label: "Estacionamiento", value: "1 Cajón techado" }
       ],
       description: descripcionModelo("Loft"),
-      equipment: EQUIPMENT_COMUN,
-      levels: [
-        { title: "2do Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl2.webp" },
-        { title: "4to Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl4.webp" },
-        { title: "5to Piso • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl5.webp" }
-      ],
-      waDefaultText: "Hola, quiero información del Modelo Loft en Torre Arbide"
+      equipment: EQUIPMENT_COMUN
     }
   };
 
@@ -220,22 +203,17 @@
 
   /* ---------- estado ---------- */
   var currentData = null;
-  var currentUnitIndex = -1;
+  var currentUnit = null;
   var galleryItems = [];
   var currentGalleryIndex = 0;
   var renderToken = 0;
-
-  var levelTimer = null;
-  var levelIndex = 0;
-  var levelStatic = false;
+  var renderIndex = 0;
 
   /* ---------- galería ---------- */
   function buildGalleryItems(data) {
-    var items = [];
-    (data.photos || []).forEach(function (p) {
-      items.push({ src: data.photosBase + p, contain: false });
+    return (data.photos || []).map(function (p) {
+      return { src: data.photosBase + p };
     });
-    return items;
   }
 
   function renderThumbs() {
@@ -262,13 +240,11 @@
     temp.onload = temp.onerror = function () {
       if (myToken !== renderToken) return; // la ficha se cerró/cambió antes de que la imagen cargara
       galleryImg.src = item.src;
-      galleryImg.classList.toggle("ficha-fit-contain", !!item.contain);
       galleryImg.style.opacity = "1";
     };
     temp.src = item.src;
 
-    var thumbs = thumbsEl.querySelectorAll(".ficha-thumb");
-    thumbs.forEach(function (t, i) {
+    thumbsEl.querySelectorAll(".ficha-thumb").forEach(function (t, i) {
       t.classList.toggle("is-active", i === index);
     });
   }
@@ -276,14 +252,10 @@
   /* ---------- especificaciones y precios ---------- */
   function renderSpecs(data, unit) {
     specsGridEl.innerHTML = "";
-    var entries = [];
-    if (data.specsDefault) {
-      entries.push({ label: "Superficie Total", value: unit ? unit.m2 : data.specsDefault.superficie });
-      entries.push({ label: "Nivel / Ubicación", value: unit ? unit.nivel : data.specsDefault.nivel });
-    }
-    (data.staticSpecs || []).forEach(function (s) {
-      entries.push(s);
-    });
+    var entries = [
+      { label: "Superficie Total", value: unit.m2 },
+      { label: "Nivel / Ubicación", value: unit.nivel }
+    ].concat(data.staticSpecs || []);
     entries.forEach(function (s) {
       var item = document.createElement("div");
       item.className = "ficha-spec-item";
@@ -295,200 +267,129 @@
 
   function renderPricing(data) {
     pricingListEl.innerHTML = "";
-    if (data.units && data.units.length) {
-      data.units.forEach(function (unit, i) {
-        var row = document.createElement("div");
-        row.className = "ficha-price-row is-clickable";
-        row.innerHTML =
-          '<div><div class="ficha-unit-name">' +
-          unit.name +
-          '</div><div class="ficha-unit-sub">' +
-          unit.sub +
-          '</div></div><div class="ficha-unit-cost">' +
-          unit.price +
-          ' <span>MXN</span></div>';
-        row.addEventListener("click", function () {
-          selectUnit(i);
-        });
-        pricingListEl.appendChild(row);
-      });
-    } else {
+    data.units.forEach(function (unit, i) {
       var row = document.createElement("div");
-      row.className = "ficha-price-row";
+      row.className = "ficha-price-row is-clickable";
       row.innerHTML =
-        '<div><div class="ficha-unit-name">Precio de Referencia</div></div><div class="ficha-unit-cost">' +
-        data.price +
-        ' <span>MXN &bull; Desde</span></div>';
+        '<div><div class="ficha-unit-name">' +
+        unit.name +
+        '</div><div class="ficha-unit-sub">' +
+        unit.sub +
+        '</div></div><div class="ficha-unit-cost">' +
+        unit.price +
+        ' <span>MXN</span></div>';
+      row.addEventListener("click", function () {
+        selectUnit(i);
+      });
       pricingListEl.appendChild(row);
-    }
+    });
   }
 
   function selectUnit(index) {
-    currentUnitIndex = index;
-    var data = currentData;
-    var unit = data.units[index];
+    var unit = currentData.units[index];
+    currentUnit = unit;
 
-    var rows = pricingListEl.querySelectorAll(".ficha-price-row");
-    rows.forEach(function (r, i) {
+    pricingListEl.querySelectorAll(".ficha-price-row").forEach(function (r, i) {
       r.classList.toggle("is-selected", i === index);
     });
 
-    renderSpecs(data, unit);
-
-    if (data.levels && data.levels.length && unit.levelIndex != null) {
-      if (Array.isArray(unit.levelIndex)) {
-        // Dúplex: dos niveles relevantes — se muestra el primero pero se
-        // deja la navegación activa para que se pueda ver el segundo piso.
-        levelStatic = false;
-        stopLevelTimer();
-        showLevelSlide(unit.levelIndex[0]);
-        levelPrevBtn.style.display = "";
-        levelNextBtn.style.display = "";
-        levelDotsEl.style.display = "";
-      } else {
-        freezeLevelAt(unit.levelIndex);
-      }
-    }
-
+    renderSpecs(currentData, unit);
+    renderUnitRenders(unit);
     whatsappBtn.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(unit.waText);
   }
 
   /* ---------- descripción / equipamiento ---------- */
   function renderDescription(data) {
-    if (data.description && data.description.length) {
-      descriptionEl.innerHTML = data.description.map(function (p) { return "<p>" + p + "</p>"; }).join("");
-      descriptionSection.hidden = false;
-    } else {
-      descriptionSection.hidden = true;
-    }
+    descriptionEl.innerHTML = data.description.map(function (p) { return "<p>" + p + "</p>"; }).join("");
+    descriptionSection.hidden = false;
   }
 
   function renderEquipment(data) {
-    if (data.equipment && data.equipment.length) {
-      tagsEl.innerHTML = data.equipment
-        .map(function (t) { return '<span class="ficha-tag">✓ ' + t + "</span>"; })
-        .join("");
-      equipmentSection.hidden = false;
-    } else {
-      equipmentSection.hidden = true;
-    }
+    tagsEl.innerHTML = data.equipment
+      .map(function (t) { return '<span class="ficha-tag">✓ ' + t + "</span>"; })
+      .join("");
+    equipmentSection.hidden = false;
   }
 
-  /* ---------- carrusel de plantas / niveles ---------- */
-  function showLevelSlide(i) {
-    if (!currentData || !currentData.levels || !currentData.levels.length) return;
+  /* ---------- render(s) del departamento seleccionado ---------- */
+  function showRenderSlide(i) {
     var slides = levelSlidesEl.querySelectorAll(".ficha-level-slide");
     if (!slides.length) return;
-    levelIndex = (i + slides.length) % slides.length;
+    renderIndex = (i + slides.length) % slides.length;
     slides.forEach(function (s, idx) {
-      s.classList.toggle("is-active", idx === levelIndex);
+      s.classList.toggle("is-active", idx === renderIndex);
     });
-    var dots = levelDotsEl.querySelectorAll(".ficha-level-dot");
-    dots.forEach(function (d, idx) {
-      d.classList.toggle("is-active", idx === levelIndex);
+    levelDotsEl.querySelectorAll(".ficha-level-dot").forEach(function (d, idx) {
+      d.classList.toggle("is-active", idx === renderIndex);
     });
-    var level = currentData.levels[levelIndex];
-    if (level) levelTitleEl.textContent = level.title;
   }
 
-  function startLevelTimer() {
-    if (levelStatic) return;
-    stopLevelTimer();
-    levelTimer = setInterval(function () {
-      showLevelSlide(levelIndex + 1);
-    }, 5500);
-  }
-
-  function stopLevelTimer() {
-    if (levelTimer) {
-      clearInterval(levelTimer);
-      levelTimer = null;
-    }
-  }
-
-  function freezeLevelAt(index) {
-    levelStatic = true;
-    stopLevelTimer();
-    showLevelSlide(index);
-    levelPrevBtn.style.display = "none";
-    levelNextBtn.style.display = "none";
-    levelDotsEl.style.display = "none";
-  }
-
-  function renderLevels(data) {
-    stopLevelTimer();
-    levelStatic = false;
-    levelIndex = 0;
+  function renderUnitRenders(unit) {
+    var renders = unit.renders || [];
+    var multiple = renders.length > 1;
+    renderIndex = 0;
     levelSlidesEl.innerHTML = "";
     levelDotsEl.innerHTML = "";
-    levelPrevBtn.style.display = "";
-    levelNextBtn.style.display = "";
-    levelDotsEl.style.display = "";
+    levelPrevBtn.hidden = !multiple;
+    levelNextBtn.hidden = !multiple;
+    levelDotsEl.hidden = !multiple;
+    levelsSection.hidden = !renders.length;
 
-    if (!data.levels || !data.levels.length) {
-      levelsSection.hidden = true;
-      return;
-    }
-    levelsSection.hidden = false;
-
-    data.levels.forEach(function (level, i) {
+    renders.forEach(function (r, i) {
       var slide = document.createElement("div");
       slide.className = "ficha-level-slide" + (i === 0 ? " is-active" : "");
-      slide.innerHTML = '<img src="' + level.img + '" alt="' + level.title + '">';
+      var img = document.createElement("img");
+      img.src = r.img;
+      img.alt = r.title;
+      img.addEventListener("click", function () {
+        openLightbox("render", renders.map(function (x) { return { src: x.img }; }), i);
+      });
+      slide.appendChild(img);
       levelSlidesEl.appendChild(slide);
 
       var dot = document.createElement("button");
       dot.type = "button";
       dot.className = "ficha-level-dot" + (i === 0 ? " is-active" : "");
-      dot.setAttribute("aria-label", level.title);
+      dot.setAttribute("aria-label", r.title);
       dot.addEventListener("click", function () {
-        showLevelSlide(i);
-        levelStatic = false;
-        levelPrevBtn.style.display = "";
-        levelNextBtn.style.display = "";
-        levelDotsEl.style.display = "";
-        startLevelTimer();
+        showRenderSlide(i);
       });
       levelDotsEl.appendChild(dot);
     });
-
-    levelTitleEl.textContent = data.levels[0].title;
-    startLevelTimer();
   }
 
   /* ---------- render principal de la ficha ---------- */
   function renderFicha(key) {
     var data = FICHAS[key];
-    if (!data) return;
     renderToken++;
     currentData = data;
-    currentUnitIndex = -1;
 
     refCodeEl.textContent = data.refCode;
     titleEl.textContent = data.title;
     locationEl.textContent = data.location;
 
     renderPricing(data);
-    renderSpecs(data, null);
     renderDescription(data);
     renderEquipment(data);
-    renderLevels(data);
 
     galleryItems = buildGalleryItems(data);
     renderThumbs();
     showGalleryImage(0);
-
-    whatsappBtn.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(data.waDefaultText);
   }
 
   /* ---------- apertura / cierre del modal ---------- */
   function openFicha(key, unitId) {
     if (!FICHAS[key]) return;
     renderFicha(key);
-    if (unitId && currentData.units) {
-      var idx = currentData.units.findIndex(function (u) { return u.id === unitId; });
-      if (idx !== -1) selectUnit(idx);
+    var idx = 0;
+    if (unitId) {
+      var found = currentData.units.findIndex(function (u) { return u.id === unitId; });
+      if (found !== -1) idx = found;
     }
+    selectUnit(idx);
+    // Si la ficha se abre desde el recorrido 3D, se libera el 3D: al cerrar la
+    // ficha la página debe quedar desbloqueada (scroll y botones "Ver Ficha").
+    if (typeof window.salirVisor3d === "function") window.salirVisor3d();
     modal.classList.add("is-open");
     document.body.classList.add("ficha-lock");
   }
@@ -502,8 +403,6 @@
     modal.classList.remove("is-open");
     document.body.classList.remove("ficha-lock");
     lightbox.classList.remove("is-open");
-    stopLevelTimer();
-    levelStatic = false;
   }
 
   document.querySelectorAll("[data-ficha]").forEach(function (btn) {
@@ -518,54 +417,83 @@
   });
 
   levelPrevBtn.addEventListener("click", function () {
-    showLevelSlide(levelIndex - 1);
-    startLevelTimer();
+    showRenderSlide(renderIndex - 1);
   });
   levelNextBtn.addEventListener("click", function () {
-    showLevelSlide(levelIndex + 1);
-    startLevelTimer();
-  });
-  levelWrapper.addEventListener("mouseenter", stopLevelTimer);
-  levelWrapper.addEventListener("mouseleave", function () {
-    if (!levelStatic) startLevelTimer();
+    showRenderSlide(renderIndex + 1);
   });
 
-  /* ---------- lightbox de pantalla completa ---------- */
+  /* ---------- lightbox de pantalla completa (fotos y renders) ---------- */
+  var lightboxItems = [];
+  var lightboxIndex = 0;
+  var lightboxMode = "gallery";
+
   function updateLightbox() {
-    lightboxImg.src = galleryItems[currentGalleryIndex].src;
-    lightboxCounter.textContent = currentGalleryIndex + 1 + " / " + galleryItems.length;
+    var multiple = lightboxItems.length > 1;
+    lightboxImg.src = lightboxItems[lightboxIndex].src;
+    lightboxCounter.textContent = lightboxIndex + 1 + " / " + lightboxItems.length;
+    lightboxCounter.hidden = !multiple;
+    lightboxPrev.hidden = !multiple;
+    lightboxNext.hidden = !multiple;
+  }
+
+  function openLightbox(mode, items, index) {
+    lightboxMode = mode;
+    lightboxItems = items;
+    lightboxIndex = index;
+    updateLightbox();
+    lightbox.classList.add("is-open");
+  }
+
+  function closeLightbox() {
+    lightbox.classList.remove("is-open");
+  }
+
+  function stepLightbox(dir) {
+    if (lightboxItems.length < 2) return;
+    lightboxIndex = (lightboxIndex + dir + lightboxItems.length) % lightboxItems.length;
+    updateLightbox();
+    if (lightboxMode === "gallery") showGalleryImage(lightboxIndex);
+    else showRenderSlide(lightboxIndex);
   }
 
   galleryStage.addEventListener("click", function () {
-    updateLightbox();
-    lightbox.classList.add("is-open");
+    openLightbox("gallery", galleryItems, currentGalleryIndex);
   });
-  lightboxClose.addEventListener("click", function () {
-    lightbox.classList.remove("is-open");
-  });
+  lightboxClose.addEventListener("click", closeLightbox);
   lightboxPrev.addEventListener("click", function (e) {
     e.stopPropagation();
-    currentGalleryIndex = (currentGalleryIndex - 1 + galleryItems.length) % galleryItems.length;
-    updateLightbox();
-    showGalleryImage(currentGalleryIndex);
+    stepLightbox(-1);
   });
   lightboxNext.addEventListener("click", function (e) {
     e.stopPropagation();
-    currentGalleryIndex = (currentGalleryIndex + 1) % galleryItems.length;
-    updateLightbox();
-    showGalleryImage(currentGalleryIndex);
+    stepLightbox(1);
   });
   lightbox.addEventListener("click", function (e) {
-    if (e.target === lightbox || e.target.classList.contains("ficha-lightbox-content")) {
-      lightbox.classList.remove("is-open");
-    }
+    if (e.target === lightbox || e.target.classList.contains("ficha-lightbox-content")) closeLightbox();
   });
+
+  // Deslizar con el dedo (izquierda / derecha) para cambiar de imagen.
+  var swipeX = null;
+  var swipeY = null;
+  lightbox.addEventListener("touchstart", function (e) {
+    if (e.touches.length !== 1) { swipeX = null; return; }
+    swipeX = e.touches[0].clientX;
+    swipeY = e.touches[0].clientY;
+  }, { passive: true });
+  lightbox.addEventListener("touchend", function (e) {
+    if (swipeX === null) return;
+    var dx = e.changedTouches[0].clientX - swipeX;
+    var dy = e.changedTouches[0].clientY - swipeY;
+    swipeX = null;
+    if (Math.abs(dx) > 45 && Math.abs(dx) > Math.abs(dy) * 1.5) stepLightbox(dx < 0 ? 1 : -1);
+  }, { passive: true });
 
   document.addEventListener("keydown", function (e) {
     if (lightbox.classList.contains("is-open")) {
-      if (e.key === "Escape") lightbox.classList.remove("is-open");
-      if (e.key === "ArrowLeft") lightboxPrev.click();
-      if (e.key === "ArrowRight") lightboxNext.click();
+      if (e.key === "Escape") closeLightbox();
+      if (e.key === "ArrowLeft") stepLightbox(-1);
+      if (e.key === "ArrowRight") stepLightbox(1);
       return;
     }
     if (e.key === "Escape" && modal.classList.contains("is-open")) {

@@ -499,13 +499,16 @@ function resetView() {
   clearRender();
 }
 document.getElementById('resetBtn').addEventListener('click', resetView);
-document.getElementById('exitBtn').addEventListener('click', () => {
+function salirDelVisor() {
   try {
     if (window.parent && typeof window.parent.salirVisor3d === 'function') {
       window.parent.salirVisor3d();
     }
   } catch (e) { /* iframe fuera de contexto (ej. abierto directo) — se ignora */ }
-});
+}
+document.getElementById('exitBtn').addEventListener('click', salirDelVisor);
+// Con el foco dentro del iframe, la tecla Esc no llega a la página: se reenvía.
+document.addEventListener('keydown', (e) => { if (e.key === 'Escape') salirDelVisor(); });
 
 /* ================= Panel de render 2D + tarjetas de unidades ================= */
 const renderPanel = document.getElementById('renderPanel');
