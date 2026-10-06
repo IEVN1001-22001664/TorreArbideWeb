@@ -68,8 +68,8 @@
     ];
   }
 
-  function renderDe(nivel, titulo) {
-    return { title: titulo + " • Planta Arquitectónica", img: "assets/fichas/renders/RenderNvl" + nivel + ".webp" };
+  function renderDe(archivo, titulo) {
+    return { title: titulo + " • Planta Arquitectónica", img: "assets/fichas/renders/" + archivo + ".webp" };
   }
 
   /* ---------- datos de cada modelo ---------- */
@@ -88,7 +88,7 @@
           price: "$2,323,000.-",
           m2: "70.12 m²",
           nivel: "1er Piso",
-          renders: [renderDe(1, "1er Piso")],
+          renders: [renderDe("Studio_103", "1er Piso")],
           waText: "Hola, me interesa información y agendar cita para el Modelo Studio - 103 en Torre Arbide"
         },
         {
@@ -98,7 +98,7 @@
           price: "$2,374,000.-",
           m2: "70.90 m²",
           nivel: "3er Piso",
-          renders: [renderDe(3, "3er Piso")],
+          renders: [renderDe("Studio_301", "3er Piso")],
           waText: "Hola, me interesa información y agendar cita para el Modelo Studio - 301 en Torre Arbide"
         }
       ],
@@ -126,7 +126,7 @@
           price: "$2,821,000.-",
           m2: "88.80 m²",
           nivel: "2do Piso",
-          renders: [renderDe(2, "2do Piso")],
+          renders: [renderDe("StudioMax_204", "2do Piso")],
           waText: "Hola, me interesa información y agendar cita para el Modelo Studio Max - 204 en Torre Arbide"
         },
         {
@@ -136,7 +136,7 @@
           price: "$2,842,000.-",
           m2: "88.80 m²",
           nivel: "3er Piso",
-          renders: [renderDe(3, "3er Piso")],
+          renders: [renderDe("StudioMax_303", "3er Piso")],
           waText: "Hola, me interesa información y agendar cita para el Modelo Studio Max - 303 en Torre Arbide"
         }
       ],
@@ -164,7 +164,7 @@
           price: "$3,061,000.-",
           m2: "100.80 m²",
           nivel: "2do y 3er Piso",
-          renders: [renderDe(2, "2do Piso")],
+          renders: [renderDe("Loft201_down", "2do Piso"), renderDe("Loft201_up", "3er Piso")],
           waText: "Hola, me interesa información y agendar cita para el Modelo Loft - 201 en Torre Arbide"
         },
         {
@@ -174,7 +174,7 @@
           price: "$3,259,000.-",
           m2: "100.80 m²",
           nivel: "4to y 5to Piso",
-          renders: [renderDe(4, "4to Piso"), renderDe(5, "5to Piso")],
+          renders: [renderDe("Loft401_down", "4to Piso"), renderDe("Loft401_up", "5to Piso")],
           waText: "Hola, me interesa información y agendar cita para el Modelo Loft - 401 en Torre Arbide"
         },
         {
@@ -184,7 +184,7 @@
           price: "$3,333,000.-",
           m2: "103.11 m²",
           nivel: "4to y 5to Piso",
-          renders: [renderDe(4, "4to Piso"), renderDe(5, "5to Piso")],
+          renders: [renderDe("Loft403_down", "4to Piso"), renderDe("Loft403_up", "5to Piso")],
           waText: "Hola, me interesa información y agendar cita para el Modelo Loft - 403 en Torre Arbide"
         }
       ],
@@ -208,6 +208,8 @@
   var currentGalleryIndex = 0;
   var renderToken = 0;
   var renderIndex = 0;
+  var renderTimer = null;
+  var RENDER_ROTATE_MS = 3000;
 
   /* ---------- galería ---------- */
   function buildGalleryItems(data) {
@@ -324,7 +326,24 @@
     });
   }
 
+  function stopRenderTimer() {
+    if (renderTimer) {
+      clearInterval(renderTimer);
+      renderTimer = null;
+    }
+  }
+
+  function startRenderTimer() {
+    stopRenderTimer();
+    if (!currentUnit || !currentUnit.renders || currentUnit.renders.length < 2) return;
+    renderTimer = setInterval(function () {
+      if (!modal.classList.contains("is-open") || lightbox.classList.contains("is-open")) return;
+      showRenderSlide(renderIndex + 1);
+    }, RENDER_ROTATE_MS);
+  }
+
   function renderUnitRenders(unit) {
+    stopRenderTimer();
     var renders = unit.renders || [];
     var multiple = renders.length > 1;
     renderIndex = 0;
@@ -353,9 +372,11 @@
       dot.setAttribute("aria-label", r.title);
       dot.addEventListener("click", function () {
         showRenderSlide(i);
+        startRenderTimer();
       });
       levelDotsEl.appendChild(dot);
     });
+    startRenderTimer();
   }
 
   /* ---------- render principal de la ficha ---------- */
@@ -400,6 +421,7 @@
 
   function closeFicha() {
     renderToken++; // invalida cualquier carga de imagen pendiente de esta ficha
+    stopRenderTimer();
     modal.classList.remove("is-open");
     document.body.classList.remove("ficha-lock");
     lightbox.classList.remove("is-open");
@@ -418,9 +440,11 @@
 
   levelPrevBtn.addEventListener("click", function () {
     showRenderSlide(renderIndex - 1);
+    startRenderTimer();
   });
   levelNextBtn.addEventListener("click", function () {
     showRenderSlide(renderIndex + 1);
+    startRenderTimer();
   });
 
   /* ---------- lightbox de pantalla completa (fotos y renders) ---------- */
