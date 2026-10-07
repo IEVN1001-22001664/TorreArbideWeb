@@ -10,6 +10,7 @@
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/meshopt_decoder.js"></script>
 <style>
   :root{
     --bg: #20262a;
@@ -204,10 +205,13 @@ const LEVEL_BANDS = {
     '204': [0.0456, 0.0545, 0.8501, 0.2585],
     '201': [0.2966, 0.6384, 0.7352, 0.8522],
   },
+  'nivel-3': {
+    '301': [0.2132, 0.4437, 0.8382, 0.6408],
+    '303': [0.0714, 0.0554, 0.9554, 0.2633],
+  },
 };
 // Resto de niveles/unidades: aproximación por partes iguales (sin datos exactos aún).
 const LEVEL_ORDER = {
-  'nivel-3': { order:['303','302','301'], topOffset:0 },
   'nivel-4': { order:['404','403','402','401'], topOffset:0 },
   'nivel-5': { order:['404','403','402','401'], topOffset:0 },
 };
@@ -238,8 +242,8 @@ const UNITS_BY_LEVEL = {
     { id:'204', nombre:'Depto 204', prototipo:'Studio Max',  m2:88.80,  precio:'2,821,000', nodeName:'cent_204' },
   ],
   'nivel-3': [
-    { id:'301', nombre:'Depto 301', prototipo:'Studio',      m2:70.90,  precio:'2,374,000', nodeName:null },
-    { id:'303', nombre:'Depto 303', prototipo:'Studio Max',  m2:88.80,  precio:'2,842,000', nodeName:null },
+    { id:'301', nombre:'Depto 301', prototipo:'Studio',      m2:70.90,  precio:'2,374,000', nodeName:'cent_301' },
+    { id:'303', nombre:'Depto 303', prototipo:'Studio Max',  m2:88.80,  precio:'2,842,000', nodeName:'cent_303' },
   ],
   'nivel-4': [
     { id:'401', nombre:'Depto 401', prototipo:'Loft',        m2:100.80, precio:'3,259,000', nodeName:null },
@@ -254,12 +258,14 @@ const UNITS_BY_LEVEL = {
 // Cada nivel modelado es UNA sola malla completa (sin depas separados) — los
 // depas se enfocan con Empties (puntos) en vez de mallas propias.
 const LEVEL_GROUPS = {
-  'nivel-1':     ['Nivel01'],
-  'nivel-2':     ['Nivel02'],
+  'nivel-1':     ['NIVEL01'],
+  'nivel-2':     ['NIVEL02'],
+  'nivel-3':     ['NIVEL03'],
   'planta-baja': ['PlantaBaja'],
 };
-const KNOWN_NODE_NAMES = ['Nivel01','Nivel02','PlantaBaja',
-  'cent_103','cent_201','cent_204','cent_caseta'];
+const KNOWN_NODE_NAMES = ['NIVEL01','NIVEL02','NIVEL03','PlantaBaja',
+  'cent_103','cent_201','cent_204','cent_301','cent_303',
+  'CASETA','CASILLEROS','ELEVADOR','TERRAZA'];
 
 /* ================= Conexión con la ficha real del sitio =================
    El modal de ficha vive en la página que embebe este iframe (ver
@@ -371,17 +377,23 @@ const dracoLoader = new THREE.DRACOLoader();
 dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
 const loader = new THREE.GLTFLoader();
 loader.setDRACOLoader(dracoLoader);
+loader.setMeshoptDecoder(MeshoptDecoder);
 
-loader.load('mod2.glb', (gltf) => {
+loader.load('torre-arbide-4niveles.glb', (gltf) => {
   const model = gltf.scene;
   let meshCount = 0;
   model.traverse(obj => { if (obj.isMesh) { obj.castShadow = true; obj.receiveShadow = true; meshCount++; } });
   scene.add(model);
   model.updateMatrixWorld(true);
 
+  // Búsqueda insensible a mayúsculas/minúsculas: un cambio de capitalización en
+  // Blender no debe romper el visor. Las llaves de modelNodes son los nombres canónicos.
+  const nodesByLowerName = {};
+  model.traverse(obj => { if (obj.name) nodesByLowerName[obj.name.toLowerCase()] = obj; });
   KNOWN_NODE_NAMES.forEach(name => {
-    const node = model.getObjectByName(name);
+    const node = nodesByLowerName[name.toLowerCase()];
     if (node) modelNodes[name] = node;
+    else console.warn('[visor-3d] Nodo no encontrado en el .glb:', name);
   });
 
   wholeBuildingBox = new THREE.Box3().setFromObject(model);
@@ -529,8 +541,10 @@ const PLANTA_BAJA_DESC = `
   </ul>
 `;
 const PLANTA_BAJA_AMENITIES = [
-  { nodeName:'cent_caseta', nombre:'Caseta de seguridad',        desc:'Control de acceso vehicular y peatonal.' },
-  { nodeName:null,          nombre:'Cajones de almacenamiento',  desc:'Cubos de almacenamiento individuales por depto.' },
+  { nodeName:'CASETA',     nombre:'Caseta de seguridad',        desc:'Control de acceso vehicular y peatonal.' },
+  { nodeName:'CASILLEROS', nombre:'Cajones de almacenamiento',  desc:'Cubos de almacenamiento individuales por depto.' },
+  { nodeName:'ELEVADOR',   nombre:'Elevador',                   desc:'Acceso directo desde el estacionamiento a todos los niveles.' },
+  { nodeName:'TERRAZA',    nombre:'Terraza',                    desc:'Área de terraza del edificio.' },
 ];
 
 function showRender(lvl) {
