@@ -578,8 +578,8 @@
       caffenio: "assets/iconos/CAFEINO.png"
     };
 
-    // Puntos de interés reales, a unos pasos de Torre Arbide. 6 ya traen su
-    // streetViewEmbed real; el resto queda vacío hasta que se genere su link
+    // Puntos de interés reales, a unos pasos de Torre Arbide y en la ciudad. Los que
+    // traen streetViewEmbed ya tienen su Street View; el resto queda vacío hasta que se genere su link
     // (Google Maps → clic derecho → "Compartir o insertar mapa" → "Insertar
     // un mapa" → copiar el src del iframe).
     var PUNTOS_DE_INTERES = [
@@ -607,15 +607,63 @@
         lat: 21.123166863336575, lng: -101.69387664290882, streetViewEmbed: "" },
       { id: "oxxo-2", nombre: "OXXO", categoria: "Servicios", icono: ICONOS.oxxo,
         lat: 21.120789269693443, lng: -101.69498577955541, streetViewEmbed: "" },
-      { id: "clinica-dental", nombre: "Clínica Dental Arbide", categoria: "Salud", icono: "🦷",
-        lat: 21.121085324374476, lng: -101.69484064812835, streetViewEmbed: "" },
       { id: "farmacia", nombre: "Super Farmacia", categoria: "Servicios", icono: ICONOS.farmacia,
         lat: 21.120678253737406, lng: -101.69468069091704, streetViewEmbed: "" },
       { id: "dominos", nombre: "Domino's", categoria: "Restaurantes", icono: ICONOS.dominos,
         lat: 21.120435012202794, lng: -101.69477638199538, streetViewEmbed: "" },
       { id: "caffenio", nombre: "Caffenio", categoria: "Restaurantes", icono: ICONOS.caffenio,
-        lat: 21.120260196276046, lng: -101.69511522070262, streetViewEmbed: "" }
+        lat: 21.120260196276046, lng: -101.69511522070262, streetViewEmbed: "" },
+
+      // Puntos de interés de la ciudad (más lejanos; se ven al alejar el mapa).
+      { id: "plaza-mayor", nombre: "Plaza Mayor", categoria: "Centro comercial", icono: "🛍️",
+        lat: 21.1578, lng: -101.69519,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1791395526187!6m8!1m7!1sI6G1tq4un4fXSPsrppCbhA!2m2!1d21.1564493120381!2d-101.6933739323153!3f307.8727387385659!4f-1.3089152861244457!5f0.7820865974627469" },
+      { id: "parque-metropolitano", nombre: "Parque Metropolitano", categoria: "Parque", icono: "🌳",
+        lat: 21.17323, lng: -101.68672,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1791395570072!6m8!1m7!1sDe5eelcFY0MXMwdOcUfkPg!2m2!1d21.1731459434436!2d-101.6866320041995!3f1.5904975071421745!4f-1.7654444739305575!5f0.7820865974627469" },
+      { id: "parque-chapalita", nombre: "Parque Chapalita", categoria: "Parque", icono: "🌳",
+        lat: 21.12539, lng: -101.70032,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1791395731311!6m8!1m7!1sg_YP0FRfQg6fRfZGelBU5A!2m2!1d21.12674147442902!2d-101.7005809480319!3f189.49354796838628!4f10.76846919588985!5f0.7820865974627469" },
+      { id: "hospital-aranda", nombre: "Hospital Aranda de la Parra", categoria: "Salud", icono: "🏥",
+        lat: 21.12558, lng: -101.68158,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1791395842837!6m8!1m7!1sJ4R2Q4qVwOERhVly7BQLiQ!2m2!1d21.12546683799964!2d-101.6816682548064!3f8.579885303770766!4f32.93554782850309!5f0.7820865974627469" },
+      { id: "centro-historico", nombre: "Centro histórico", categoria: "Cultura y turismo", icono: "🏛️",
+        lat: 21.12185, lng: -101.68252,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1791395899098!6m8!1m7!1sySvOf5dNTKDfYPw4T2c-vw!2m2!1d21.12186459812066!2d-101.682456345242!3f125.70053964637641!4f9.88181498578001!5f0.7820865974627469" },
+      { id: "imss-umae1", nombre: "IMSS UMAE 1", categoria: "Salud", icono: "🏥",
+        lat: 21.13976, lng: -101.68713,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1791398313743!6m8!1m7!1sub41HRMfJjVvdTQhDLjdqQ!2m2!1d21.13945443144427!2d-101.6864290235309!3f269.53356051040106!4f10.721825687167296!5f0.7820865974627469" },
+      { id: "parque-hidalgo", nombre: "Parque Hidalgo", categoria: "Parque", icono: "🌳",
+        lat: 21.13197, lng: -101.68935,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1791398498050!6m8!1m7!1sQYmgkxjiWeiACyOsRLoRLw!2m2!1d21.13124449555847!2d-101.6892157213266!3f39.62312252999646!4f7.801476259570848!5f0.7820865974627469" },
+      { id: "universidad-leon", nombre: "Universidad de León", categoria: "Educación", icono: "🎓",
+        lat: 21.120872110687994, lng: -101.68516455073187,
+        streetViewEmbed: "https://www.google.com/maps/embed?pb=!4v1791398649011!6m8!1m7!1sfK5lPQoyqbomNgU_TbBuEA!2m2!1d21.12063700870182!2d-101.6849736020878!3f291.2460570156614!4f24.7205651292346!5f0.7820865974627469" }
     ];
+
+    // Descripción breve de cada lugar (se muestra sobre "Ruta hacia Torre Arbide").
+    var DESCRIPCIONES_POI = {
+      "santander": "Sucursal bancaria con atención a clientes, cajeros automáticos y servicios financieros.",
+      "banamex": "Sucursal bancaria con atención a clientes, cajeros automáticos y servicios financieros.",
+      "bbva": "Sucursal bancaria con atención a clientes, cajeros automáticos y servicios financieros.",
+      "banbajio": "Sucursal bancaria con atención a clientes, cajeros automáticos y servicios financieros.",
+      "banorte": "Sucursal bancaria con atención a clientes, cajeros automáticos y servicios financieros.",
+      "hsbc": "Sucursal bancaria con atención a clientes, cajeros automáticos y servicios financieros.",
+      "valero": "Estación de servicio para cargar combustible, a unos pasos de Torre Arbide.",
+      "oxxo-1": "Tienda de conveniencia abierta 24/7. Venta de abarrotes, snacks, bebidas, café y pago de servicios/depósitos bancarios.",
+      "oxxo-2": "Tienda de conveniencia abierta 24/7. Venta de abarrotes, snacks, bebidas, café y pago de servicios/depósitos bancarios.",
+      "farmacia": "Farmacia con venta de medicamentos y artículos de cuidado personal y de salud.",
+      "dominos": "Pizzería con servicio a domicilio y para llevar.",
+      "caffenio": "Cafetería de café mexicano con bebidas frías y calientes, alimentos y un espacio para trabajar o convivir.",
+      "plaza-mayor": "Centro comercial con tiendas, restaurantes, cines y áreas de entretenimiento.",
+      "parque-metropolitano": "Área natural con un embalse, área de juegos para niños y actividades como acampar, ciclismo y paseos en bote.",
+      "parque-chapalita": "Parque con áreas verdes y andadores para caminar, hacer ejercicio y convivir al aire libre.",
+      "hospital-aranda": "Hospital privado con consulta de especialidades, urgencias y servicios médicos.",
+      "centro-historico": "Corazón histórico de León: plazas, portales, la Catedral Basílica, templos, museos, cafés y restaurantes.",
+      "imss-umae1": "Hospital de alta especialidad del IMSS, referencia médica de tercer nivel para la región Bajío.",
+      "parque-hidalgo": "Parque urbano con áreas verdes y andadores para pasear, hacer ejercicio y convivir.",
+      "universidad-leon": "Universidad privada con oferta de bachillerato, licenciaturas y posgrados."
+    };
 
     // Detecta si "icono" es una imagen (logo real: URL, base64 o ruta local
     // del propio sitio) o un emoji/texto simple, y arma el <img> si aplica.
@@ -634,7 +682,17 @@
     var ZOOM_NATIVO_MAPA = 16;
     var ZOOM_MAX_MAPA = 19;
 
-    var map = L.map("map", { zoomControl: true, maxZoom: ZOOM_MAX_MAPA }).setView([TORRE.lat, TORRE.lng], ZOOM_INICIAL);
+    // Vista inicial: panorámica de la zona (zoom 13) con la torre y los puntos
+    // de interés de la ciudad a la vista; en pantallas angostas un nivel más alejada.
+    var VISTA_INICIAL_CENTRO = [21.1355, -101.6824];
+    function zoomVistaInicial() {
+      return document.getElementById("map").clientWidth < 640 ? 12 : 13;
+    }
+    function irAVistaInicial() {
+      map.setView(VISTA_INICIAL_CENTRO, zoomVistaInicial());
+    }
+
+    var map = L.map("map", { zoomControl: true, maxZoom: ZOOM_MAX_MAPA }).setView(VISTA_INICIAL_CENTRO, zoomVistaInicial());
 
     L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/Canvas/World_Light_Gray_Base/MapServer/tile/{z}/{y}/{x}", {
       attribution: '&copy; <a href="https://www.esri.com">Esri</a> &mdash; Esri, DeLorme, NAVTEQ',
@@ -697,14 +755,14 @@
       });
     }
 
-    var torreMarker = L.marker([TORRE.lat, TORRE.lng], { icon: crearIconoTorre(tamanoTorre(ZOOM_INICIAL)) })
+    var torreMarker = L.marker([TORRE.lat, TORRE.lng], { icon: crearIconoTorre(tamanoTorre(map.getZoom())) })
       .addTo(map)
       .bindPopup("<strong>" + TORRE.nombre + "</strong><br>Tu nuevo hogar");
 
     var poiMarkers = {};
 
     PUNTOS_DE_INTERES.forEach(function (poi) {
-      var marker = L.marker([poi.lat, poi.lng], { icon: crearIconoPOI(poi, tamanoPOI(ZOOM_INICIAL)) })
+      var marker = L.marker([poi.lat, poi.lng], { icon: crearIconoPOI(poi, tamanoPOI(map.getZoom())) })
         .addTo(map)
         .bindPopup("<strong>" + poi.nombre + "</strong>");
 
@@ -735,6 +793,11 @@
       document.getElementById("detail-name").textContent = poi.nombre;
       document.getElementById("detail-categoria").textContent = poi.categoria || "";
 
+      var descEl = document.getElementById("detail-desc");
+      var descripcion = DESCRIPCIONES_POI[poi.id] || "";
+      descEl.textContent = descripcion;
+      descEl.hidden = !descripcion;
+
       var fotoEl = document.getElementById("detail-foto");
       if (poi.foto) {
         fotoEl.src = poi.foto;
@@ -744,9 +807,10 @@
       }
     }
 
-    document.getElementById("btn-volver").addEventListener("click", function () {
+    function cerrarDetallePOI() {
       poiDetailEl.classList.remove("show");
-      poiEmptyEl.style.display = "flex";
+      map.closePopup();
+      poiEmptyEl.style.display = "";
       poiPanelEl.classList.remove("has-selection");
       poiActivo = null;
       if (routingControl) {
@@ -754,7 +818,76 @@
         routingControl = null;
       }
       document.getElementById("poi-result").hidden = true;
-    });
+      irAVistaInicial();
+    }
+    document.getElementById("btn-volver").addEventListener("click", cerrarDetallePOI);
+    document.getElementById("poi-close").addEventListener("click", cerrarDetallePOI);
+
+    /* ---------- listado de puntos de interés (visible sin selección) ---------- */
+    var poiListEl = document.getElementById("poi-list");
+    var poiMinutos = {};
+
+    function etiquetaMinutos(poi) {
+      var m = poiMinutos[poi.id];
+      return m ? "a " + m + " min de Torre Arbide" : poi.categoria || "";
+    }
+
+    function renderListaPOI() {
+      var ordenados = PUNTOS_DE_INTERES.slice().sort(function (a, b) {
+        var ma = poiMinutos[a.id] || Infinity;
+        var mb = poiMinutos[b.id] || Infinity;
+        return ma - mb;
+      });
+      poiListEl.innerHTML = "";
+      ordenados.forEach(function (poi) {
+        var item = document.createElement("button");
+        item.type = "button";
+        item.className = "poi-item";
+        item.innerHTML =
+          '<span class="poi-item-icon">' + renderIcono(poi.icono) + "</span>" +
+          '<span><span class="poi-item-name"></span><span class="poi-item-sub" style="display:block"></span></span>';
+        item.querySelector(".poi-item-name").textContent = poi.nombre;
+        item.querySelector(".poi-item-sub").textContent = etiquetaMinutos(poi);
+        item.addEventListener("click", function () { calcularRuta(poi); });
+        poiListEl.appendChild(item);
+      });
+    }
+
+    // Una sola consulta (OSRM "table") trae el tiempo en auto de todos los puntos
+    // hacia la torre; si falla, se estima con la distancia en línea recta.
+    function estimarMinutos(poi) {
+      var R = 6371, rad = Math.PI / 180;
+      var dLat = (TORRE.lat - poi.lat) * rad, dLng = (TORRE.lng - poi.lng) * rad;
+      var a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+        Math.cos(poi.lat * rad) * Math.cos(TORRE.lat * rad) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+      var km = 2 * R * Math.asin(Math.sqrt(a)) * 1.35;
+      return Math.max(1, Math.round((km / 28) * 60));
+    }
+
+    function cargarTiemposPOI() {
+      var coords = PUNTOS_DE_INTERES.map(function (p) { return p.lng + "," + p.lat; });
+      coords.push(TORRE.lng + "," + TORRE.lat);
+      var n = PUNTOS_DE_INTERES.length;
+      var fuentes = PUNTOS_DE_INTERES.map(function (p, i) { return i; }).join(";");
+      var url = "https://router.project-osrm.org/table/v1/driving/" + coords.join(";") +
+        "?sources=" + fuentes + "&destinations=" + n + "&annotations=duration";
+      fetch(url)
+        .then(function (r) { return r.json(); })
+        .then(function (data) {
+          if (!data.durations) throw new Error("sin duraciones");
+          PUNTOS_DE_INTERES.forEach(function (poi, i) {
+            var seg = data.durations[i] && data.durations[i][0];
+            if (typeof seg === "number") poiMinutos[poi.id] = Math.max(1, Math.round(seg / 60));
+          });
+        })
+        .catch(function () {
+          PUNTOS_DE_INTERES.forEach(function (poi) { poiMinutos[poi.id] = estimarMinutos(poi); });
+        })
+        .then(renderListaPOI);
+    }
+
+    renderListaPOI();
+    cargarTiemposPOI();
 
     /* ---------- cálculo de ruta (distancia + tiempo en auto) ---------- */
     var routingControl = null;

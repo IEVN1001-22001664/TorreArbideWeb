@@ -27,7 +27,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@1&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
-<link rel="stylesheet" href="css/style.css?v=20261013">
+<link rel="stylesheet" href="css/style.css?v=20261018">
 </head>
 <body>
 
@@ -230,7 +230,7 @@
     <h3>Explora el Edificio en 3D</h3>
   </div>
   <div class="departamentos-3d-frame" id="visor-3d-frame">
-    <iframe data-src="assets/modelos3d/visor-3d.html?v=20261013" title="Visor 3D interactivo de Torre Arbide" loading="lazy"></iframe>
+    <iframe data-src="assets/modelos3d/visor-3d.html?v=20261018" title="Visor 3D interactivo de Torre Arbide" loading="lazy"></iframe>
 
     <div class="visor-3d-gate" id="visor-3d-gate">
       <button type="button" class="visor-3d-activate" id="visor-3d-activate">
@@ -436,13 +436,16 @@
 
       <!-- Estado inicial: sin selección -->
       <div class="poi-empty" id="poi-empty">
-        <svg class="poi-empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M9 20l-6-3V4l6 3m0 13 6-3m-6 3V7m6 10 6 3V6l-6-3m0 14V4m0 0L9 7"/></svg>
-        <p>Toca cualquier ícono del mapa para ver de qué se trata, la distancia y el tiempo en auto hasta Torre Arbide.</p>
+        <p class="poi-empty-hint">Elige un lugar de la lista o toca su ícono en el mapa para ver la ruta y el tiempo en auto hasta Torre Arbide.</p>
+        <div class="poi-list" id="poi-list"></div>
       </div>
 
       <!-- Estado con un punto de interés seleccionado -->
       <div class="poi-detail" id="poi-detail">
         <button class="btn-volver" id="btn-volver">← Ver todos los puntos</button>
+        <button type="button" class="poi-close" id="poi-close" aria-label="Cerrar información del lugar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M6 6l12 12M18 6 6 18"/></svg>
+        </button>
 
         <div class="poi-detail-header">
           <div class="poi-detail-icon" id="detail-icon"></div>
@@ -453,6 +456,8 @@
         </div>
 
         <img id="detail-foto" class="poi-detail-foto" alt="">
+
+        <p class="poi-detail-desc" id="detail-desc" hidden></p>
 
         <div class="poi-result" id="poi-result" hidden>
           <p class="poi-result-label">Ruta hacia Torre Arbide</p>
@@ -646,8 +651,8 @@
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-<script src="js/script.js?v=20261013"></script>
-<script src="js/agenda.js?v=20261013"></script>
-<script src="js/ficha-modelo.js?v=20261013"></script>
+<script src="js/script.js?v=20261018"></script>
+<script src="js/agenda.js?v=20261018"></script>
+<script src="js/ficha-modelo.js?v=20261018"></script>
 </body>
 </html>
