@@ -9,7 +9,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@1&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/DRACOLoader.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/meshopt_decoder.js"></script>
 <style>
   :root{
@@ -71,15 +70,23 @@
     background:rgba(255,255,255,.03);border-bottom:1px solid var(--line);
   }
   #canvas-wrap{position:relative;flex:1;min-height:0;}
-  canvas{display:block;width:100%;height:100%;cursor:grab;}
+  canvas{display:block;width:100%;height:100%;cursor:grab;touch-action:none;}
   canvas:active{cursor:grabbing;}
+  /* Aviso de carga / error: centrado sobre el visor, con barra de progreso */
   .debug-status{
-    position:absolute;top:14px;right:14px;z-index:10;font-size:11px;font-family:monospace;
-    color:var(--tan-light);background:rgba(20,22,26,.92);padding:7px 10px;border-radius:4px;
-    border:1px solid rgba(201,195,174,.3);max-width:260px;line-height:1.5;white-space:pre-wrap;
+    position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);z-index:10;
+    width:min(300px,86%);text-align:center;font-size:12.5px;font-weight:600;letter-spacing:.02em;
+    color:var(--tan-light);background:rgba(20,22,26,.92);padding:16px 18px;border-radius:8px;
+    border:1px solid rgba(201,195,174,.3);line-height:1.5;white-space:pre-wrap;
   }
-  .debug-status.ok{color:var(--disponible);border-color:rgba(124,179,137,.4);}
+  .debug-status .bar{height:4px;margin-top:12px;background:rgba(245,243,239,.12);border-radius:4px;overflow:hidden;}
+  .debug-status .bar i{display:block;height:100%;width:0;background:var(--tan-light);transition:width .2s ease;}
   .debug-status.err{color:#e08a8a;border-color:rgba(224,138,138,.5);}
+  .debug-status.err .bar{display:none;}
+  .debug-status .retry{
+    all:unset;cursor:pointer;margin-top:12px;padding:8px 14px;border:1px solid currentColor;border-radius:2px;
+    font-size:11px;letter-spacing:.05em;text-transform:uppercase;
+  }
 
   /* ---- Panel de render 2D ---- */
   aside.render-panel{
@@ -149,12 +156,36 @@
   }
   .unit-highlight.visible{display:block;}
 
+  /* ---- Móvil: pantalla completa en columna ----
+     arriba: botones + niveles (carrusel) · centro: modelo 3D · abajo: render y departamentos */
   @media (max-width:900px){
-    .app{flex-direction:column;}
-    nav.levels{width:100%;flex-direction:row;overflow-x:auto;border-right:none;border-bottom:1px solid var(--line);align-items:flex-start;}
-    .level-card{min-width:150px;}
-    .level-actions{flex-shrink:0;}
-    aside.render-panel{width:100%;border-top:1px solid var(--line);}
+    .app{flex-direction:column;flex-wrap:nowrap;}
+    nav.levels{
+      order:1;width:100%;flex:0 0 auto;flex-direction:row;align-items:stretch;gap:8px;
+      overflow-x:auto;overflow-y:hidden;padding:10px 12px;border-right:none;border-bottom:1px solid var(--line);
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;
+    }
+    nav.levels::-webkit-scrollbar{display:none;}
+    .level-actions{order:-2;flex:0 0 auto;margin:0;}
+    .reset-btn{padding:8px 12px;white-space:nowrap;}
+    .reset-btn.exit-btn{order:-1;flex:0 0 auto;width:auto;margin:0;}
+    .level-card{flex:0 0 auto;min-width:0;padding:8px 14px;}
+    .level-card .name{font-size:13px;white-space:nowrap;}
+    .level-card .units{display:none;}
+    .level-card .badge{margin-top:4px;font-size:9px;padding:2px 7px;white-space:nowrap;}
+    main.viewer{order:2;flex:1 1 0;min-width:0;min-height:0;}
+    .viewer-instructions{padding:6px 12px;font-size:10.5px;}
+    aside.render-panel{
+      order:3;width:100%;flex:0 0 38%;overflow-y:auto; /* alto fijo: el visor no cambia de proporción al elegir un nivel */
+      border-right:none;border-top:1px solid var(--line);-webkit-overflow-scrolling:touch;
+    }
+    .render-panel .ph{padding:12px 16px;font-size:12px;}
+    .render-img-wrap{width:fit-content;max-width:100%;margin:0 auto;}
+    .render-img-wrap img{width:auto;max-width:100%;max-height:30vh;max-height:30dvh;}
+    .render-panel .cap{padding:10px 14px;}
+    .units-section{padding:12px 14px;}
+    .unit-card .u-thumb{height:72px;}
+    .unit-card .u-go{padding:12px 6px;margin:-12px -6px;}
   }
 </style>
 </head>
@@ -174,9 +205,9 @@
   </aside>
 
   <main class="viewer">
-    <div class="viewer-instructions">Arrastra para girar el modelo · Rueda del mouse para acercar o alejar · Elige un nivel para ver sus departamentos</div>
+    <div class="viewer-instructions" id="viewerInstructions">Arrastra para girar el modelo · Rueda del mouse para acercar o alejar · Elige un nivel para ver sus departamentos</div>
     <div id="canvas-wrap"></div>
-    <div class="debug-status" id="debugStatus">Cargando…</div>
+    <div class="debug-status" id="debugStatus"><span id="statusText">Cargando…</span><div class="bar"><i id="statusBar"></i></div></div>
   </main>
 </div>
 
@@ -185,12 +216,12 @@
    Preservados tal cual del kit de integración: coordenadas, precios y
    nombres de nodo del .glb están calibrados a mano — no recalcular. */
 const LEVELS = [
-  { id:'nivel-5',     label:'Nivel 5',     nodeName:null,               units:'401, 403 (dúplex)', img:'renderspng/Nivel%2005.png' },
-  { id:'nivel-4',     label:'Nivel 4',     nodeName:null,               units:'401, 403 (dúplex)', img:'renderspng/Nivel%2004.png' },
-  { id:'nivel-3',     label:'Nivel 3',     nodeName:null,               units:'301, 302, 303',     img:'renderspng/Nivel%2003.png' },
-  { id:'nivel-2',     label:'Nivel 2',     nodeName:'Piso_2_Nivel2',    units:'201, 202, 203, 204',img:'renderspng/Nivel%2002.png' },
-  { id:'nivel-1',     label:'Nivel 1',     nodeName:'Piso_1_Nivel1',    units:'101, 102, 103',     img:'renderspng/Nivel%2001.png' },
-  { id:'planta-baja', label:'Planta Baja', nodeName:'Piso_0_PlantaBaja',units:'Lobby y cochera',   img:'renderspng/Planta%20Baja.png' },
+  { id:'nivel-5',     label:'Nivel 5',     nodeName:null,               units:'401, 403 (dúplex)', img:'renders/nivel-05.webp' },
+  { id:'nivel-4',     label:'Nivel 4',     nodeName:null,               units:'401, 403 (dúplex)', img:'renders/nivel-04.webp' },
+  { id:'nivel-3',     label:'Nivel 3',     nodeName:null,               units:'301, 302, 303',     img:'renders/nivel-03.webp' },
+  { id:'nivel-2',     label:'Nivel 2',     nodeName:'Piso_2_Nivel2',    units:'201, 202, 203, 204',img:'renders/nivel-02.webp' },
+  { id:'nivel-1',     label:'Nivel 1',     nodeName:'Piso_1_Nivel1',    units:'101, 102, 103',     img:'renders/nivel-01.webp' },
+  { id:'planta-baja', label:'Planta Baja', nodeName:'Piso_0_PlantaBaja',units:'Lobby y cochera',   img:'renders/planta-baja.webp' },
 ];
 
 // Nivel 2: bandas REALES calculadas a partir de los polígonos vectorizados en
@@ -284,15 +315,47 @@ function abrirFichaReal(unitId, prototipo) {
 
 /* ================= Diagnóstico visible en pantalla ================= */
 const debugEl = document.getElementById('debugStatus');
+const statusTextEl = document.getElementById('statusText');
+const statusBarEl = document.getElementById('statusBar');
 function setStatus(msg, cls) {
   if (!debugEl) return;
-  debugEl.textContent = msg;
+  debugEl.style.display = '';
   debugEl.className = 'debug-status' + (cls ? ' ' + cls : '');
+  statusTextEl.textContent = msg;
+  const old = debugEl.querySelector('.retry');
+  if (old) old.remove();
+  if (cls === 'err') {
+    const btn = document.createElement('button');
+    btn.className = 'retry';
+    btn.textContent = 'Reintentar';
+    btn.addEventListener('click', () => location.reload());
+    debugEl.appendChild(btn);
+  }
 }
+function setProgress(pct) { if (statusBarEl) statusBarEl.style.width = pct + '%'; }
+function hideStatus() { if (debugEl) debugEl.style.display = 'none'; }
+let fatalShown = false; // ya se mostró un mensaje específico: el genérico no debe taparlo
 window.addEventListener('error', (e) => {
+  if (fatalShown) return;
   if (e.message && e.message.indexOf('ResizeObserver') !== -1) return; // warning benigno del navegador, no un error real
-  setStatus('Error JS: ' + (e.message || e.error) + '\n(línea ' + e.lineno + ')', 'err');
+  setStatus('No se pudo mostrar el visor 3D.\n' + (e.message || e.error), 'err');
 });
+
+/* ================= Perfil de rendimiento =================
+   Móvil / táctil → versión "lite": modelo con ~25 % de los triángulos y texturas
+   pequeñas, sin sombras y con menos resolución de pantalla. Escritorio → modelo completo.
+   ?lite=1 / ?lite=0 fuerzan un perfil (útil para probar). */
+const qs = new URLSearchParams(location.search);
+const IS_LITE = qs.has('lite')
+  ? qs.get('lite') !== '0'
+  : (window.matchMedia('(max-width:900px)').matches || window.matchMedia('(pointer:coarse)').matches);
+const IS_TOUCH = window.matchMedia('(pointer:coarse)').matches;
+const MODEL_VERSION = '20261021'; // súbelo cuando cambies un .glb (evita que se quede el viejo en caché)
+const MODEL_URL = (IS_LITE ? 'torre-arbide-4niveles-lite.glb' : 'torre-arbide-4niveles.glb') + '?v=' + MODEL_VERSION;
+if (IS_TOUCH) {
+  document.getElementById('viewerInstructions').textContent =
+    'Arrastra para girar · Pellizca para acercar o alejar · Elige un nivel para ver sus departamentos';
+}
 
 /* ================= Escena Three.js ================= */
 const wrap = document.getElementById('canvas-wrap');
@@ -301,16 +364,29 @@ scene.background = new THREE.Color(0x1a1d22);
 scene.fog = new THREE.Fog(0x1a1d22, 900, 2200);
 
 const camera = new THREE.PerspectiveCamera(42, wrap.clientWidth / wrap.clientHeight, 0.1, 5000);
-const renderer = new THREE.WebGLRenderer({ antialias: true });
-renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+let renderer;
+try {
+  renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: 'high-performance' });
+} catch (err) {
+  fatalShown = true;
+  setStatus('Tu dispositivo no pudo iniciar el visor 3D (WebGL no disponible).', 'err');
+  throw err;
+}
+renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, IS_LITE ? 1.5 : 2));
 renderer.setSize(wrap.clientWidth, wrap.clientHeight);
-renderer.shadowMap.enabled = true;
+renderer.shadowMap.enabled = !IS_LITE;
 wrap.appendChild(renderer.domElement);
+// Si el sistema le quita el contexto WebGL a la página (poca memoria en móvil),
+// se avisa en vez de dejar el visor en negro sin explicación.
+renderer.domElement.addEventListener('webglcontextlost', (e) => {
+  e.preventDefault();
+  setStatus('El dispositivo liberó la memoria gráfica del visor 3D.', 'err');
+});
 
-scene.add(new THREE.HemisphereLight(0xbfd4e6, 0x1a1a1a, 0.65));
-const sun = new THREE.DirectionalLight(0xfff2d9, 0.9);
+scene.add(new THREE.HemisphereLight(0xbfd4e6, 0x1a1a1a, IS_LITE ? 0.95 : 0.65));
+const sun = new THREE.DirectionalLight(0xfff2d9, IS_LITE ? 0.8 : 0.9);
 sun.position.set(300, 500, 250);
-sun.castShadow = true;
+sun.castShadow = !IS_LITE;
 sun.shadow.mapSize.set(2048, 2048);
 sun.shadow.camera.left = -500; sun.shadow.camera.right = 500;
 sun.shadow.camera.top = 500; sun.shadow.camera.bottom = -500;
@@ -325,64 +401,124 @@ ground.rotation.x = -Math.PI / 2;
 ground.receiveShadow = true;
 scene.add(ground);
 
-/* ================= Órbita manual (drag + wheel) ================= */
+/* ================= Órbita manual (arrastrar / pellizcar / rueda) ================= */
 let radius = 60, theta = 0.0, phi = Math.PI * 0.42;
 let targetPos = new THREE.Vector3(0, 20, 0);
 let goalRadius = radius, goalTheta = theta, goalPhi = phi;
 let goalTarget = targetPos.clone();
 let defaultRadius = radius, defaultTheta = theta, defaultPhi = phi, defaultTarget = targetPos.clone();
 
+// Devuelve true mientras la cámara todavía se está moviendo hacia su meta.
 function updateCamera() {
-  radius += (goalRadius - radius) * 0.12;
-  theta += (goalTheta - theta) * 0.12;
-  phi += (goalPhi - phi) * 0.12;
-  targetPos.lerp(goalTarget, 0.12);
+  const dTarget = targetPos.distanceTo(goalTarget);
+  const moving =
+    Math.abs(goalRadius - radius) > goalRadius * 0.0005 ||
+    Math.abs(goalTheta - theta) > 0.0003 ||
+    Math.abs(goalPhi - phi) > 0.0003 ||
+    dTarget > goalRadius * 0.0005;
+  if (moving) {
+    radius += (goalRadius - radius) * 0.12;
+    theta += (goalTheta - theta) * 0.12;
+    phi += (goalPhi - phi) * 0.12;
+    targetPos.lerp(goalTarget, 0.12);
+  } else {
+    radius = goalRadius; theta = goalTheta; phi = goalPhi;
+    targetPos.copy(goalTarget);
+  }
   camera.position.x = targetPos.x + radius * Math.sin(phi) * Math.sin(theta);
   camera.position.y = targetPos.y + radius * Math.cos(phi);
   camera.position.z = targetPos.z + radius * Math.sin(phi) * Math.cos(theta);
   camera.lookAt(targetPos);
+  return moving;
 }
 
-let isDragging = false, lastX = 0, lastY = 0;
-renderer.domElement.addEventListener('pointerdown', e => { isDragging = true; lastX = e.clientX; lastY = e.clientY; });
-window.addEventListener('pointerup', () => isDragging = false);
-window.addEventListener('pointermove', e => {
-  if (!isDragging) return;
-  const dx = e.clientX - lastX, dy = e.clientY - lastY;
-  lastX = e.clientX; lastY = e.clientY;
-  goalTheta -= dx * 0.006;
-  goalPhi = Math.max(0.15, Math.min(1.45, goalPhi - dy * 0.006));
+function zoomBy(factor) {
+  const minR = Math.max(defaultRadius * 0.08, 1.5);
+  const maxR = defaultRadius * 6;
+  goalRadius = Math.max(minR, Math.min(maxR, goalRadius * factor));
+}
+
+// Un dedo / mouse: girar. Dos dedos: pellizcar para acercar o alejar.
+const pointers = new Map();
+let pinchPrev = 0;
+const pinchDistance = () => {
+  const [a, b] = [...pointers.values()];
+  return Math.hypot(a.x - b.x, a.y - b.y);
+};
+const canvasEl = renderer.domElement;
+canvasEl.addEventListener('pointerdown', e => {
+  try { canvasEl.setPointerCapture(e.pointerId); } catch (_) { /* no crítico */ }
+  pointers.set(e.pointerId, { x: e.clientX, y: e.clientY });
+  if (pointers.size === 2) pinchPrev = pinchDistance();
 });
-renderer.domElement.addEventListener('wheel', e => {
+canvasEl.addEventListener('pointermove', e => {
+  const p = pointers.get(e.pointerId);
+  if (!p) return;
+  const dx = e.clientX - p.x, dy = e.clientY - p.y;
+  p.x = e.clientX; p.y = e.clientY;
+  if (pointers.size === 1) {
+    goalTheta -= dx * 0.006;
+    goalPhi = Math.max(0.15, Math.min(1.45, goalPhi - dy * 0.006));
+  } else if (pointers.size === 2) {
+    const d = pinchDistance();
+    if (pinchPrev > 0 && d > 0) zoomBy(pinchPrev / d);
+    pinchPrev = d;
+  }
+  requestRender();
+});
+const endPointer = e => { pointers.delete(e.pointerId); pinchPrev = 0; };
+canvasEl.addEventListener('pointerup', endPointer);
+canvasEl.addEventListener('pointercancel', endPointer);
+canvasEl.addEventListener('wheel', e => {
   e.preventDefault();
   const minR = Math.max(defaultRadius * 0.08, 1.5);
   const maxR = defaultRadius * 6;
   const step = e.deltaY * (defaultRadius * 0.0012);
   goalRadius = Math.max(minR, Math.min(maxR, goalRadius + step));
+  requestRender();
 }, { passive: false });
 
+/* ================= Bucle de dibujo bajo demanda =================
+   Antes se dibujaba el edificio completo 60 veces por segundo sin parar, aunque
+   nadie lo moviera: en móvil eso agota batería y memoria. Ahora solo se dibuja
+   cuando la cámara se mueve o algo cambia, y se pausa si la pestaña o el visor
+   no están a la vista (la página principal avisa por postMessage). */
+let needsRender = true, wasMoving = false, paused = false;
+function requestRender() { needsRender = true; }
 function animate() {
   requestAnimationFrame(animate);
-  updateCamera();
-  renderer.render(scene, camera);
+  if (paused || document.hidden) return;
+  const moving = updateCamera();
+  if (moving || wasMoving || needsRender) {
+    renderer.render(scene, camera);
+    needsRender = false;
+  }
+  wasMoving = moving;
 }
 animate();
+document.addEventListener('visibilitychange', requestRender);
+window.addEventListener('message', e => {
+  if (e.origin !== location.origin || !e.data) return;
+  if (e.data.visor3d === 'hidden') paused = true;
+  if (e.data.visor3d === 'visible') { paused = false; requestRender(); }
+});
 
-/* ================= Carga del edificio (.glb comprimido con Draco) ================= */
+/* ================= Carga del edificio (.glb comprimido con Meshopt) ================= */
 let modelNodes = {};      // nodeName -> Object3D
 let wholeBuildingBox = null, wholeBuildingSize = null, wholeBuildingCenter = null;
 
 setStatus('Cargando modelo 3D…');
-const dracoLoader = new THREE.DRACOLoader();
-dracoLoader.setDecoderPath('https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/libs/draco/');
 const loader = new THREE.GLTFLoader();
-loader.setDRACOLoader(dracoLoader);
 loader.setMeshoptDecoder(MeshoptDecoder);
 
-loader.load('torre-arbide-4niveles.glb', (gltf) => {
+loader.load(MODEL_URL, (gltf) => {
   const model = gltf.scene;
   let meshCount = 0;
-  model.traverse(obj => { if (obj.isMesh) { obj.castShadow = true; obj.receiveShadow = true; meshCount++; } });
+  model.traverse(obj => {
+    if (!obj.isMesh) return;
+    meshCount++;
+    if (!IS_LITE) { obj.castShadow = true; obj.receiveShadow = true; }
+  });
   scene.add(model);
   model.updateMatrixWorld(true);
 
@@ -401,24 +537,42 @@ loader.load('torre-arbide-4niveles.glb', (gltf) => {
   wholeBuildingCenter = wholeBuildingBox.getCenter(new THREE.Vector3());
 
   if (!isFinite(wholeBuildingSize.x) || wholeBuildingSize.x === 0) {
-    setStatus('⚠ El edificio cargó (' + meshCount + ' mallas) pero su bounding box es inválido.', 'err');
+    fatalShown = true;
+    setStatus('El modelo cargó (' + meshCount + ' mallas) pero sus medidas no son válidas.', 'err');
   } else {
-    setStatus('✓ Edificio cargado — ' + meshCount + ' mallas', 'ok');
-    setTimeout(() => { if (debugEl) debugEl.style.display = 'none'; }, 3500);
+    hideStatus();
   }
 
   frameWholeBuilding(true);
   buildLevelList();
+  requestRender();
 }, (xhr) => {
-  if (xhr.lengthComputable) {
-    setStatus('Cargando modelo 3D… ' + Math.round((xhr.loaded / xhr.total) * 100) + '%');
+  if (xhr.lengthComputable && xhr.total) {
+    const pct = Math.round((xhr.loaded / xhr.total) * 100);
+    const mb = (xhr.total / 1048576).toFixed(0);
+    setStatus('Cargando modelo 3D… ' + pct + '%  (' + mb + ' MB)');
+    setProgress(pct);
   }
 }, (err) => {
-  setStatus('✗ GLTFLoader falló: ' + (err && err.message ? err.message : err), 'err');
+  fatalShown = true;
+  setStatus('No se pudo cargar el modelo 3D.\nRevisa tu conexión e inténtalo de nuevo.', 'err');
   console.error(err);
 });
 
 /* ================= Encuadre de cámara ================= */
+// En pantallas verticales (celular) el ancho visible es menor: se aleja la cámara
+// para que el edificio no quede cortado por los lados.
+function aspectFit() {
+  const a = camera.aspect || 1.2;
+  return a >= 1.15 ? 1 : Math.min(1.8, Math.pow(1.15 / Math.max(a, 0.3), 0.75));
+}
+// Re-encuadra la vista actual (nivel elegido o edificio completo), p. ej. al girar el celular.
+function reframeCurrent() {
+  if (!wholeBuildingBox) return;
+  const group = currentLevelId && LEVEL_GROUPS[currentLevelId];
+  const box = group ? computeGroupBox(group) : null;
+  if (box) frameBox(box, true); else frameWholeBuilding(false);
+}
 function frameWholeBuilding(instant) {
   if (!wholeBuildingBox) return;
   const groundSize = Math.max(wholeBuildingSize.x, wholeBuildingSize.z, 10) * 3.5;
@@ -428,7 +582,7 @@ function frameWholeBuilding(instant) {
   grid.scale.setScalar(groundSize / 1400);
   grid.position.y = wholeBuildingBox.min.y - 0.03;
 
-  const dist = Math.max(wholeBuildingSize.x, wholeBuildingSize.z, wholeBuildingSize.y, 10) * 0.85;
+  const dist = Math.max(wholeBuildingSize.x, wholeBuildingSize.z, wholeBuildingSize.y, 10) * 0.85 * aspectFit() * (IS_TOUCH ? 0.75 : 1);
   goalTarget = wholeBuildingCenter.clone();
   goalRadius = dist;
   goalTheta = 0.6;
@@ -455,7 +609,7 @@ function computeGroupBox(names) {
 function frameBox(box, angled) {
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
-  const dist = Math.max(size.x, size.z, size.y, 3) * (angled ? 2.0 : 1.7);
+  const dist = Math.max(size.x, size.z, size.y, 3) * (angled ? 2.0 : 1.7) * aspectFit() * (IS_TOUCH ? 0.8 : 1);
   goalTarget = center;
   goalRadius = dist;
   goalTheta = angled ? 0.5 : 0;
@@ -481,9 +635,11 @@ function showOnlyGroup(names) {
   Object.entries(modelNodes).forEach(([name, node]) => {
     node.visible = names.includes(name);
   });
+  requestRender();
 }
 function showAllNodes() {
   Object.values(modelNodes).forEach(node => node.visible = true);
+  requestRender();
 }
 
 function selectLevel(levelId) {
@@ -715,9 +871,12 @@ function buildLevelList() {
 function fitToContainer() {
   const w = wrap.clientWidth, h = wrap.clientHeight;
   if (!w || !h) return;
+  const portraitBefore = camera.aspect < 1.15;
   camera.aspect = w / h;
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
+  if (portraitBefore !== (camera.aspect < 1.15)) reframeCurrent();
+  requestRender();
 }
 if (typeof ResizeObserver !== 'undefined') {
   // rAF evita el warning "ResizeObserver loop completed with undelivered

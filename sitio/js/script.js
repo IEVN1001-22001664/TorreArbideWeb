@@ -79,26 +79,40 @@
     });
   }
 
-  /* ---------- candado de interacción del visor 3D ---------- */
+  /* ---------- visor 3D: carga bajo demanda + candado de interacción ----------
+     El modelo pesa decenas de MB: el <iframe> NO recibe su src hasta que la persona
+     toca "Toca para interactuar". Así, quien solo recorre la página no descarga nada
+     del visor (antes cada visita bajaba ~44 MB aunque nunca llegara a esa sección).
+     En celular, al activarlo el visor ocupa toda la pantalla (ver style.css). */
   var visorFrame = document.getElementById("visor-3d-frame");
   var visorActivate = document.getElementById("visor-3d-activate");
-  var visorIsMobile = window.matchMedia("(max-width:900px)").matches;
-  if (visorFrame && !visorIsMobile) {
-    // En móvil el <iframe> ni siquiera recibe su src: evita cargar Three.js/Draco,
-    // que ahí generaba muchos errores, y deja ver solo el aviso "solo en computadora".
-    var visorIframe = visorFrame.querySelector("iframe[data-src]");
-    if (visorIframe) visorIframe.src = visorIframe.getAttribute("data-src");
-  }
-  if (visorFrame && visorActivate && !visorIsMobile) {
+  var visorIframe = visorFrame ? visorFrame.querySelector("iframe[data-src]") : null;
+  var visorNote = document.getElementById("visor-3d-note");
+  var visorMovil = function () { return window.matchMedia("(max-width:900px)").matches; };
+
+  if (visorFrame && visorActivate && visorIframe) {
+    if (visorNote) visorNote.textContent = visorMovil() ? "Se descargan unos 9 MB" : "Se descargan unos 19 MB";
+
+    var cargarVisor3d = function () {
+      if (!visorIframe.getAttribute("src")) visorIframe.src = visorIframe.getAttribute("data-src");
+    };
     var activarVisor3d = function () {
+      cargarVisor3d();
       visorFrame.classList.add("is-active");
       document.body.classList.add("visor-3d-lock");
+      // En celular el visor es pantalla completa: el botón "atrás" lo cierra en vez de salir del sitio.
+      if (visorMovil()) {
+        try { history.pushState({ visor3d: 1 }, ""); } catch (e) { /* sin historial: no es crítico */ }
+      }
     };
-    var salirVisor3d = function () {
+    var salirVisor3d = function (desdeHistorial) {
+      if (!visorFrame.classList.contains("is-active")) return;
       visorFrame.classList.remove("is-active");
       document.body.classList.remove("visor-3d-lock");
+      if (desdeHistorial !== true && history.state && history.state.visor3d) history.back();
     };
     visorActivate.addEventListener("click", activarVisor3d);
+    window.addEventListener("popstate", function () { salirVisor3d(true); });
     document.addEventListener("keydown", function (e) {
       if (e.key === "Escape" && visorFrame.classList.contains("is-active")) {
         salirVisor3d();
@@ -107,6 +121,21 @@
     // Expuesta para que el botón "Salir" dentro del <iframe> del visor 3D
     // (junto a "Ver edificio completo") pueda cerrarlo desde ahí.
     window.salirVisor3d = salirVisor3d;
+
+    // Pausa el dibujo del visor cuando sale de pantalla (ahorra batería/CPU).
+    if ("IntersectionObserver" in window) {
+      var visorVisible = true;
+      new IntersectionObserver(function (entries) {
+        var visible = entries[0].isIntersecting;
+        if (visible === visorVisible) return;
+        visorVisible = visible;
+        try {
+          if (visorIframe.contentWindow) {
+            visorIframe.contentWindow.postMessage({ visor3d: visible ? "visible" : "hidden" }, window.location.origin);
+          }
+        } catch (e) { /* iframe aún sin cargar */ }
+      }, { threshold: 0.05 }).observe(visorFrame);
+    }
   }
 
   /* ---------- sticky nav background ---------- */

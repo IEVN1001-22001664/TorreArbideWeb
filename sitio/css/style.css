@@ -638,24 +638,12 @@ img{display:block;max-width:100%;}
   text-align:center;
   line-height:1.5;
 }
-
-.visor-3d-unavailable{
-  display:none;
-  flex-direction:column;
-  align-items:center;
-  gap:14px;
-  padding:32px 40px;
-  max-width:280px;
-  text-align:center;
-  color:var(--ink-dim);
-}
-.visor-3d-unavailable svg{width:42px;height:42px;opacity:.55;}
-.visor-3d-unavailable p{
+.visor-3d-activate-note{
   font-family:var(--font-sans);
-  font-size:13px;
-  font-weight:600;
-  letter-spacing:.03em;
-  line-height:1.6;
+  font-size:11px;
+  letter-spacing:.04em;
+  color:var(--ink-dim,rgba(245,243,239,.65));
+  margin-top:-6px;
 }
 
 body.visor-3d-lock{overflow:hidden;}
@@ -1875,8 +1863,17 @@ body.ficha-lock{overflow:hidden;}
 }
 @media (max-width:900px){
   .departamentos-3d-frame{height:56vh;height:56dvh;}
-  .visor-3d-activate{display:none;}
-  .visor-3d-unavailable{display:flex;}
+  /* Al activarlo, el visor 3D ocupa toda la pantalla del celular (la salida es "✕ Salir" o el botón atrás) */
+  .departamentos-3d-frame.is-active{
+    position:fixed;
+    inset:0;
+    z-index:900;
+    width:100vw;
+    height:100vh;
+    height:100dvh;
+    margin:0;
+  }
+  .visor-3d-activate{padding:24px 28px;}
   .unit-grid{grid-template-columns:1fr;max-width:440px;}
   .welcome-grid{grid-template-columns:1fr;}
   .welcome-media{order:-1;aspect-ratio:4/3;}
