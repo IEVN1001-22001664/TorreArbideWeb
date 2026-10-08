@@ -371,7 +371,6 @@ img{display:block;max-width:100%;}
   content:"";
   position:absolute;
   inset:-20px;
-  background:var(--bg) center/cover no-repeat;
   filter:blur(22px) brightness(.7);
   opacity:0;
 }
@@ -1878,7 +1877,8 @@ body.ficha-lock{overflow:hidden;}
   .welcome-grid{grid-template-columns:1fr;}
   .welcome-media{order:-1;aspect-ratio:4/3;}
   /* fotos verticales (clase puesta por JS según su orientación real): completas, sin recorte */
-  .welcome-slide.is-portrait::before{opacity:1;}
+  /* la imagen de fondo solo se declara aquí: así las demás fotos no se descargan antes de tiempo */
+  .welcome-slide.is-portrait::before{opacity:1;background:var(--bg) center/cover no-repeat;}
   .welcome-slide.is-portrait img{object-fit:contain;object-position:center;}
   .map-layout{grid-template-columns:1fr;max-width:560px;}
   .poi-panel{
