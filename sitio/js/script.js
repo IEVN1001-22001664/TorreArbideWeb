@@ -12,6 +12,19 @@
 
   /* ---------- carrusel de bienvenida (slide horizontal, una imagen a la vez) ---------- */
   var welcomeTrack = document.getElementById("welcome-media-track");
+
+  // Detecta la orientación real de cada foto: las verticales se marcan con
+  // .is-portrait para que en móvil se muestren completas (ver style.css).
+  if (welcomeTrack) {
+    welcomeTrack.querySelectorAll(".welcome-slide img").forEach(function (img) {
+      function mark() {
+        if (img.naturalHeight > img.naturalWidth) img.parentNode.classList.add("is-portrait");
+      }
+      if (img.complete && img.naturalWidth) mark();
+      else img.addEventListener("load", mark);
+    });
+  }
+
   if (welcomeTrack && !reduced) {
     var welcomeRealSlides = welcomeTrack.children.length - 1; // excluye la copia final de la primera imagen
     var welcomeIndex = 0;
