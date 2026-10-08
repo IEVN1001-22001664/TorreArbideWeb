@@ -52,8 +52,14 @@
     background:var(--cream, #f5f3ef);color:#2f3537;border-radius:8px;padding:12px 14px;
     cursor:pointer;border:2px solid transparent;transition:border-color .15s ease, transform .15s ease;
   }
-  .level-card:hover{transform:translateX(2px);}
-  .level-card.active{border-color:var(--tan);}
+  @media (hover:hover){
+    .level-card:hover{transform:translateX(2px);background:#e3eefb;}
+  }
+  /* Nivel seleccionado: tarjeta azul (mismo azul que el contorno del departamento) */
+  .level-card.active, .level-card.active:hover{background:#2c78d6;border-color:#8fbdf5;color:#fff;transform:none;}
+  .level-card.active .name{color:#fff;}
+  .level-card.active .units{color:rgba(255,255,255,.88);}
+  .level-card.active .badge.modeled, .level-card.active .badge.pending{background:rgba(255,255,255,.22);color:#fff;}
   .level-card .name{font-family:var(--font-sans);font-weight:700;font-size:14.5px;}
   .level-card .units{font-size:11.5px;color:#5a5d63;margin-top:2px;}
   .level-card .badge{
@@ -122,7 +128,7 @@
   .unit-card:hover{border-color:rgba(201,195,174,.4);}
   .unit-card.selected{border-color:var(--tan-light);}
   .unit-card .u-thumb{
-    width:100%;height:96px;background-color:#14161a;background-repeat:no-repeat;
+    width:100%;height:auto;margin:0 auto;background-color:#14161a;background-repeat:no-repeat;
   }
   .unit-card .u-body{
     display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 14px;
@@ -165,7 +171,7 @@
      barra superior fija (Salir / Ver todo) · niveles (Planta Baja → Nivel 5) · modelo 3D ·
      panel inferior con los departamentos disponibles (se expande para ver el plano) */
   @media (max-width:900px){
-    :root{--peek-h:150px;}
+    :root{--peek-h:184px;}
     .m-topbar{
       display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 auto;
       padding:8px 10px;padding-top:max(8px, env(safe-area-inset-top));
@@ -232,13 +238,12 @@
     }
     .render-panel:not(.is-open) .render-body{overflow:hidden;}
     .render-panel .ph{padding:6px 18px 18px;font-size:12.5px;}
-    .render-panel .cap{
-      order:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;
-      padding:0 14px 8px;border-top:0;font-size:11.5px;
-    }
-    .render-panel .cap strong{display:inline;margin:0;font-size:17px;}
+    .render-panel .cap{order:0;display:block;padding:0 14px 8px;border-top:0;font-size:11.5px;line-height:1.35;}
+    .render-panel .cap strong{display:block;margin:0 0 1px;font-size:17px;}
     .render-panel .cap br{display:none;}
-    .render-panel .cap span{flex:0 0 100%;font-size:11px;}
+    .render-panel .cap .cap-units{display:block;color:var(--ink-dim);}
+    .render-panel .cap .cap-units b{color:var(--ink);font-weight:600;}
+    .render-panel .cap .cap-warn{display:block;font-size:11px;}
     .units-section{order:1;padding:0 0 12px;border-top:0;overflow:visible;}
     .units-section h4{display:none;}
     .pb-desc{display:none;padding:0 14px;}
@@ -248,11 +253,16 @@
       scroll-snap-type:x proximity;scroll-padding:0 14px;-webkit-overflow-scrolling:touch;
     }
     .units-row::-webkit-scrollbar{display:none;}
-    .unit-card{flex:0 0 82%;max-width:330px;margin:0;scroll-snap-align:start;}
+    .unit-card{flex:1 1 0;min-width:150px;max-width:none;margin:0;scroll-snap-align:start;}
+    .units-row.is-amenities .unit-card{flex:0 0 78%;max-width:330px;}
     .unit-card .u-thumb{display:none;}
-    .render-panel.is-open .unit-card .u-thumb{display:block;height:84px;}
-    .unit-card .u-body{padding:10px 12px;}
-    .unit-card .u-go{padding:12px 6px;margin:-12px -6px;}
+    .render-panel.is-open .unit-card .u-thumb{display:block;}
+    .unit-card .u-body{flex-direction:column;align-items:flex-start;justify-content:flex-start;gap:3px;padding:10px 12px;}
+    .unit-card .u-body > div:first-child{width:100%;}
+    .unit-card .u-name{display:flex;flex-wrap:wrap;align-items:center;gap:4px 6px;font-size:15px;}
+    .unit-card .u-name .tag{margin-left:0;font-size:9px;padding:2px 6px;}
+    .unit-card .u-sub{margin-top:1px;font-size:11.5px;}
+    .unit-card .u-go{align-self:flex-end;padding:10px 4px;margin:-6px -4px -10px 0;}
     .render-img-wrap{order:2;width:fit-content;max-width:calc(100% - 28px);margin:8px auto 16px;}
     .render-img-wrap img{width:auto;max-width:100%;max-height:38vh;max-height:38dvh;}
   }
@@ -297,12 +307,12 @@
    Preservados tal cual del kit de integración: coordenadas, precios y
    nombres de nodo del .glb están calibrados a mano — no recalcular. */
 const LEVELS = [
-  { id:'nivel-5',     label:'Nivel 5',     nodeName:null,               units:'401, 403 (dúplex)', img:'renders/nivel-05.webp' },
-  { id:'nivel-4',     label:'Nivel 4',     nodeName:null,               units:'401, 403 (dúplex)', img:'renders/nivel-04.webp' },
-  { id:'nivel-3',     label:'Nivel 3',     nodeName:null,               units:'301, 302, 303',     img:'renders/nivel-03.webp' },
-  { id:'nivel-2',     label:'Nivel 2',     nodeName:'Piso_2_Nivel2',    units:'201, 202, 203, 204',img:'renders/nivel-02.webp' },
-  { id:'nivel-1',     label:'Nivel 1',     nodeName:'Piso_1_Nivel1',    units:'101, 102, 103',     img:'renders/nivel-01.webp' },
-  { id:'planta-baja', label:'Planta Baja', nodeName:'Piso_0_PlantaBaja',units:'Lobby y cochera',   img:'renders/planta-baja.webp' },
+  { id:'nivel-5',     label:'Nivel 5',     nodeName:null,               units:'401, 403 (dúplex)', img:'renders/nivel-05.webp', w:1888, h:2272 },
+  { id:'nivel-4',     label:'Nivel 4',     nodeName:null,               units:'401, 403 (dúplex)', img:'renders/nivel-04.webp', w:1856, h:2304 },
+  { id:'nivel-3',     label:'Nivel 3',     nodeName:null,               units:'301, 302, 303',     img:'renders/nivel-03.webp', w:1792, h:2400 },
+  { id:'nivel-2',     label:'Nivel 2',     nodeName:'Piso_2_Nivel2',    units:'201, 202, 203, 204',img:'renders/nivel-02.webp', w:1888, h:2240 },
+  { id:'nivel-1',     label:'Nivel 1',     nodeName:'Piso_1_Nivel1',    units:'101, 102, 103',     img:'renders/nivel-01.webp', w:1760, h:2432 },
+  { id:'planta-baja', label:'Planta Baja', nodeName:'Piso_0_PlantaBaja',units:'Lobby y cochera',   img:'renders/planta-baja.webp', w:1888, h:2272 },
 ];
 
 // Nivel 2: bandas REALES calculadas a partir de los polígonos vectorizados en
@@ -342,6 +352,13 @@ function getBand(levelId, unitId) {
   const bandFrac = (1 - topOffset) / N;
   const y0 = topOffset + idx * bandFrac;
   return [0.04, y0, 0.96, y0 + bandFrac];
+}
+// Texto "Loft - 201 y Studio Max - 204" con SOLO las unidades disponibles del nivel.
+function unitsAvailableText(lvl) {
+  if (lvl.id === 'planta-baja') return lvl.units; // sin departamentos: "Lobby y cochera"
+  const items = (UNITS_BY_LEVEL[lvl.id] || []).map(u => u.prototipo + ' - ' + u.id);
+  if (!items.length) return 'ninguna por ahora';
+  return items.length === 1 ? items[0] : items.slice(0, -1).join(', ') + ' y ' + items[items.length - 1];
 }
 // Solo unidades DISPONIBLES por nivel (tabla real de precios/superficies).
 // nodeName: nombre real del objeto separado en el .glb (null = aún sin separar).
@@ -709,10 +726,54 @@ function computeGroupBox(names) {
   return any ? box : null;
 }
 
+const isMobileLayout = () => window.matchMedia('(max-width:900px)').matches;
+
+// Calcula la distancia de cámara para que un conjunto de puntos 3D quede completo en
+// pantalla (ocupando `fill` del espacio disponible), con el ángulo dado y la proporción real
+// del visor. Sustituye a las distancias fijas: encuadra igual niveles y departamentos.
+const fitCam = new THREE.PerspectiveCamera(42, 1, 0.1, 5000);
+function fitRadius(points, target, th, ph, fill) {
+  fitCam.fov = camera.fov;
+  fitCam.aspect = camera.aspect || 1;
+  fitCam.updateProjectionMatrix();
+  const v = new THREE.Vector3();
+  let r = Math.max(defaultRadius, 3) * 2;
+  for (let i = 0; i < 8; i++) {
+    fitCam.position.set(
+      target.x + r * Math.sin(ph) * Math.sin(th),
+      target.y + r * Math.cos(ph),
+      target.z + r * Math.sin(ph) * Math.cos(th)
+    );
+    fitCam.lookAt(target);
+    fitCam.updateMatrixWorld(true);
+    let m = 0;
+    for (const p of points) { v.copy(p).project(fitCam); m = Math.max(m, Math.abs(v.x), Math.abs(v.y)); }
+    if (!isFinite(m) || m === 0) break;
+    r *= m / fill;
+  }
+  return r;
+}
+function boxCorners(box) {
+  const pts = [];
+  for (const x of [box.min.x, box.max.x]) for (const y of [box.min.y, box.max.y]) for (const z of [box.min.z, box.max.z]) {
+    pts.push(new THREE.Vector3(x, y, z));
+  }
+  return pts;
+}
+const MOBILE_LEVEL_PHI = Math.PI * 0.27; // vista de nivel: elevada
+const MOBILE_UNIT_PHI = Math.PI * 0.22;  // vista de departamento: aún más desde arriba
+
 function frameBox(box, angled) {
   const size = box.getSize(new THREE.Vector3());
   const center = box.getCenter(new THREE.Vector3());
-  const dist = Math.max(size.x, size.z, size.y, 3) * (angled ? 2.0 : 1.7) * aspectFit() * (IS_TOUCH ? 0.8 : 1);
+  if (angled && isMobileLayout()) {
+    goalTarget = center;
+    goalTheta = 0.5;
+    goalPhi = MOBILE_LEVEL_PHI;
+    goalRadius = fitRadius(boxCorners(box), center, goalTheta, goalPhi, 0.94);
+    return;
+  }
+  const dist = Math.max(size.x, size.z, size.y, 3) * (angled ? 2.0 : 1.7) * aspectFit();
   goalTarget = center;
   goalRadius = dist;
   goalTheta = angled ? 0.5 : 0;
@@ -728,7 +789,33 @@ function frameAtPoint(node) {
   goalTarget = worldPos;
   goalRadius = dist;
   goalTheta = 0.5;
-  goalPhi = Math.PI * 0.36;
+  goalPhi = Math.PI * (isMobileLayout() ? 0.24 : 0.36);
+}
+
+// Departamento: se centra en su punto de referencia y, en móvil, se encuadra la huella
+// completa del depa (tomada del recorte de su plano) desde un ángulo elevado.
+function frameUnit(levelId, unitId, node) {
+  if (!isMobileLayout()) { frameAtPoint(node); return; }
+  const worldPos = new THREE.Vector3();
+  node.getWorldPosition(worldPos);
+  const band = getBand(levelId, unitId);
+  const group = LEVEL_GROUPS[levelId];
+  const box = group ? computeGroupBox(group) : null;
+  goalTarget = worldPos;
+  goalTheta = 0.5;
+  goalPhi = MOBILE_UNIT_PHI;
+  if (band && box) {
+    const size = box.getSize(new THREE.Vector3());
+    const hw = ((band[2] - band[0]) * size.x) / 2;   // plano: x -> ancho del piso
+    const hd = ((band[3] - band[1]) * size.z) / 2;   // plano: y -> largo del piso
+    const pts = [];
+    for (const dx of [-hw, hw]) for (const dz of [-hd, hd]) for (const y of [box.min.y, box.max.y]) {
+      pts.push(new THREE.Vector3(worldPos.x + dx, y, worldPos.z + dz));
+    }
+    goalRadius = Math.max(fitRadius(pts, worldPos, goalTheta, goalPhi, 0.8), 1.4);
+  } else {
+    goalRadius = Math.max(defaultRadius * 0.3, 2.2);
+  }
 }
 
 /* ================= Selección de nivel ================= */
@@ -858,13 +945,13 @@ function showRender(lvl) {
     </div>
     <div class="cap">
       <strong>${lvl.label}</strong>
-      Unidades: ${lvl.units}
-      ${pendiente ? '<br><span style="color:var(--pendiente)">⚠ Modelo 3D de este nivel aún pendiente — mostrando edificio completo a la izquierda.</span>' : ''}
+      <span class="cap-units">${lvl.id === 'planta-baja' ? lvl.units : 'Unidades disponibles: <b>' + unitsAvailableText(lvl) + '</b>'}</span>
+      ${pendiente ? '<span class="cap-warn" style="color:var(--pendiente)">⚠ Modelo 3D de este nivel aún pendiente — mostrando edificio completo.</span>' : ''}
     </div>
   `;
 
   if (lvl.id === 'planta-baja') {
-    let pbHtml = `<div class="pb-desc">${PLANTA_BAJA_DESC}</div><h4 style="margin-top:12px;">Elementos en 3D</h4><div class="units-row">`;
+    let pbHtml = `<div class="pb-desc">${PLANTA_BAJA_DESC}</div><h4 style="margin-top:12px;">Elementos en 3D</h4><div class="units-row is-amenities">`;
     PLANTA_BAJA_AMENITIES.forEach(a => {
       const has3d = !!modelNodes[a.nodeName];
       pbHtml += `
@@ -889,7 +976,7 @@ function showRender(lvl) {
     } else {
       units.forEach(u => {
         const band = getBand(lvl.id, u.id);
-        let thumbStyle = `background-image:url('${lvl.img}');background-position:center center;background-size:cover;`;
+        let thumbStyle = `background-image:url('${lvl.img}');background-position:center center;background-size:cover;height:96px;`;
         if (band) {
           const [x0, y0, x1, y1] = band;
           const spanX = Math.max(x1 - x0, 0.02);
@@ -898,7 +985,10 @@ function showRender(lvl) {
           const sizeY = ((1 / spanY) * 100).toFixed(1) + '%';
           const posX = (100 * x0 / (1 - spanX)).toFixed(1) + '%';
           const posY = (100 * y0 / (1 - spanY)).toFixed(1) + '%';
-          thumbStyle = `background-image:url('${lvl.img}');background-size:${sizeX} ${sizeY};background-position:${posX} ${posY};`;
+          // La miniatura toma la proporción real del recorte del plano: se reduce, no se deforma.
+          const ratio = (spanX * lvl.w) / (spanY * lvl.h);
+          thumbStyle = `background-image:url('${lvl.img}');background-size:${sizeX} ${sizeY};background-position:${posX} ${posY};` +
+            `aspect-ratio:${ratio.toFixed(3)};width:min(100%,${Math.round(110 * ratio)}px);`;
         }
         cardsHtml += `
           <div class="unit-card" data-unit="${u.id}" onclick="selectUnit('${lvl.id}','${u.id}')">
@@ -954,7 +1044,7 @@ function selectUnit(levelId, unitId) {
 
   // Si el depa ya tiene su punto de referencia (Empty) en el modelo, se enfoca ahí.
   if (unit && unit.nodeName && modelNodes[unit.nodeName]) {
-    frameAtPoint(modelNodes[unit.nodeName]);
+    frameUnit(levelId, unitId, modelNodes[unit.nodeName]);
   }
 
 }
@@ -1005,7 +1095,7 @@ function buildLevelList() {
     const modeled = !!(LEVEL_GROUPS[lvl.id] && computeGroupBox(LEVEL_GROUPS[lvl.id]));
     card.innerHTML = `
       <div class="name">${lvl.label}</div>
-      <div class="units">Unidades ${lvl.units}</div>
+      <div class="units">${lvl.id === 'planta-baja' ? lvl.units : 'Disponibles: ' + unitsAvailableText(lvl)}</div>
       <span class="badge ${modeled ? 'modeled' : 'pending'}">${modeled ? 'MODELO 3D' : '3D PENDIENTE'}</span>
     `;
     card.addEventListener('click', () => selectLevel(lvl.id));
