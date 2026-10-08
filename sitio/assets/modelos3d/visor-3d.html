@@ -157,40 +157,115 @@
   }
   .unit-highlight.visible{display:block;}
 
-  /* ---- Móvil: pantalla completa en columna ----
-     arriba: botones + niveles (carrusel) · centro: modelo 3D · abajo: render y departamentos */
+  /* ---- Piezas solo-móvil: ocultas en escritorio ---- */
+  .m-topbar, .sheet-handle{display:none;}
+  .render-body{display:contents;}
+
+  /* ---- Móvil: pantalla completa ----
+     barra superior fija (Salir / Ver todo) · niveles (Planta Baja → Nivel 5) · modelo 3D ·
+     panel inferior con los departamentos disponibles (se expande para ver el plano) */
   @media (max-width:900px){
-    .app{flex-direction:column;flex-wrap:nowrap;}
+    :root{--peek-h:150px;}
+    .m-topbar{
+      display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 auto;
+      padding:8px 10px;padding-top:max(8px, env(safe-area-inset-top));
+      background:#1b2024;border-bottom:1px solid var(--line);
+    }
+    .m-title{font-family:var(--font-display);font-style:italic;font-size:17px;color:var(--ink-dim);}
+    .m-btn{
+      all:unset;box-sizing:border-box;min-height:40px;padding:0 14px;display:flex;align-items:center;justify-content:center;
+      border:1px solid var(--line);border-radius:6px;background:rgba(255,255,255,.05);color:var(--ink);
+      font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+    }
+    .m-btn:active{background:rgba(255,255,255,.14);}
+    .m-btn.exit{border-color:rgba(224,138,138,.55);}
+
+    .app{position:relative;flex-direction:column;flex-wrap:nowrap;}
+
+    /* niveles: carrusel horizontal, de abajo hacia arriba */
     nav.levels{
       order:1;width:100%;flex:0 0 auto;flex-direction:row;align-items:stretch;gap:8px;
-      overflow-x:auto;overflow-y:hidden;padding:10px 12px;border-right:none;border-bottom:1px solid var(--line);
-      -webkit-overflow-scrolling:touch;scrollbar-width:none;
+      overflow-x:auto;overflow-y:hidden;padding:8px 12px;border-right:none;border-bottom:1px solid var(--line);
+      -webkit-overflow-scrolling:touch;scrollbar-width:none;scroll-snap-type:x proximity;scroll-padding:0 12px;
     }
     nav.levels::-webkit-scrollbar{display:none;}
-    .level-actions{order:-2;flex:0 0 auto;margin:0;}
-    .reset-btn{padding:8px 12px;white-space:nowrap;}
-    .reset-btn.exit-btn{order:-1;flex:0 0 auto;width:auto;margin:0;}
-    .level-card{flex:0 0 auto;min-width:0;padding:8px 14px;}
+    .level-actions, .reset-btn.exit-btn{display:none;}
+    .level-card{flex:0 0 auto;min-width:0;padding:8px 14px;scroll-snap-align:center;}
+    .level-card[data-id="planta-baja"]{order:1;}
+    .level-card[data-id="nivel-1"]{order:2;}
+    .level-card[data-id="nivel-2"]{order:3;}
+    .level-card[data-id="nivel-3"]{order:4;}
+    .level-card[data-id="nivel-4"]{order:5;}
+    .level-card[data-id="nivel-5"]{order:6;}
     .level-card .name{font-size:13px;white-space:nowrap;}
     .level-card .units{display:none;}
     .level-card .badge{margin-top:4px;font-size:9px;padding:2px 7px;white-space:nowrap;}
-    main.viewer{order:2;flex:1 1 0;min-width:0;min-height:0;}
+
+    /* modelo 3D: ocupa todo el espacio libre; el alto del panel inferior se reserva fijo
+       (así el visor no cambia de proporción al elegir un nivel) */
+    main.viewer{order:2;flex:1 1 0;min-width:0;min-height:0;margin-bottom:var(--peek-h);}
     .viewer-instructions{padding:6px 12px;font-size:10.5px;}
+
+    /* panel inferior (hoja): cerrado = departamentos disponibles · abierto = + plano */
     aside.render-panel{
-      order:3;width:100%;flex:0 0 38%;overflow-y:auto; /* alto fijo: el visor no cambia de proporción al elegir un nivel */
-      border-right:none;border-top:1px solid var(--line);-webkit-overflow-scrolling:touch;
+      position:absolute;left:0;right:0;bottom:0;z-index:20;order:3;width:100%;height:var(--peek-h);
+      display:flex;flex-direction:column;overflow:hidden;
+      background:var(--bg-panel);border:0;border-top:1px solid var(--line);border-radius:16px 16px 0 0;
+      box-shadow:0 -8px 24px rgba(0,0,0,.35);transition:height .28s ease;
     }
-    .render-panel .ph{padding:12px 16px;font-size:12px;}
-    .render-img-wrap{width:fit-content;max-width:100%;margin:0 auto;}
-    .render-img-wrap img{width:auto;max-width:100%;max-height:30vh;max-height:30dvh;}
-    .render-panel .cap{padding:10px 14px;}
-    .units-section{padding:12px 14px;}
-    .unit-card .u-thumb{height:72px;}
+    aside.render-panel.is-open{height:66%;}
+    .sheet-handle{
+      all:unset;box-sizing:border-box;flex:0 0 auto;width:100%;height:36px;
+      display:flex;align-items:center;justify-content:center;gap:10px;cursor:pointer;
+      color:var(--ink-dim);font-size:11px;font-weight:600;letter-spacing:.05em;text-transform:uppercase;
+      -webkit-tap-highlight-color:transparent;touch-action:none;
+    }
+    .sheet-handle .grip{width:34px;height:4px;border-radius:2px;background:rgba(245,243,239,.3);}
+    .sheet-handle .chev{display:inline-block;transition:transform .25s ease;}
+    .render-panel.is-open .sheet-handle .chev{transform:rotate(180deg);}
+    .render-panel:not(.has-level) .sheet-handle{visibility:hidden;}
+
+    .render-body{
+      display:flex;flex-direction:column;flex:1;min-height:0;overflow-y:auto;
+      -webkit-overflow-scrolling:touch;overscroll-behavior:contain;
+    }
+    .render-panel:not(.is-open) .render-body{overflow:hidden;}
+    .render-panel .ph{padding:6px 18px 18px;font-size:12.5px;}
+    .render-panel .cap{
+      order:0;display:flex;flex-wrap:wrap;align-items:baseline;gap:2px 10px;
+      padding:0 14px 8px;border-top:0;font-size:11.5px;
+    }
+    .render-panel .cap strong{display:inline;margin:0;font-size:17px;}
+    .render-panel .cap br{display:none;}
+    .render-panel .cap span{flex:0 0 100%;font-size:11px;}
+    .units-section{order:1;padding:0 0 12px;border-top:0;overflow:visible;}
+    .units-section h4{display:none;}
+    .pb-desc{display:none;padding:0 14px;}
+    .render-panel.is-open .pb-desc{display:block;}
+    .units-row{
+      display:flex;gap:10px;overflow-x:auto;padding:2px 14px 4px;scrollbar-width:none;
+      scroll-snap-type:x proximity;scroll-padding:0 14px;-webkit-overflow-scrolling:touch;
+    }
+    .units-row::-webkit-scrollbar{display:none;}
+    .unit-card{flex:0 0 82%;max-width:330px;margin:0;scroll-snap-align:start;}
+    .unit-card .u-thumb{display:none;}
+    .render-panel.is-open .unit-card .u-thumb{display:block;height:84px;}
+    .unit-card .u-body{padding:10px 12px;}
     .unit-card .u-go{padding:12px 6px;margin:-12px -6px;}
+    .render-img-wrap{order:2;width:fit-content;max-width:calc(100% - 28px);margin:8px auto 16px;}
+    .render-img-wrap img{width:auto;max-width:100%;max-height:38vh;max-height:38dvh;}
   }
 </style>
 </head>
 <body>
+
+<!-- Barra superior solo-móvil: siempre visible, no se desplaza con nada -->
+<header class="m-topbar">
+  <button class="m-btn exit" id="mExitBtn" type="button">✕ Salir</button>
+  <span class="m-title">Recorrido 3D</span>
+  <button class="m-btn" id="mResetBtn" type="button">↺ Ver todo</button>
+</header>
 
 <div class="app">
   <nav class="levels" id="levelList">
@@ -201,8 +276,13 @@
     <button class="reset-btn exit-btn" id="exitBtn">✕ Salir</button>
   </nav>
 
-  <aside class="render-panel" id="renderPanel">
-    <div class="ph" id="renderPlaceholder">Elige un nivel de la lista para ver su render de interiores.</div>
+  <aside class="render-panel" id="renderSheet">
+    <button class="sheet-handle" id="sheetHandle" type="button" aria-expanded="false">
+      <span class="grip"></span><span id="sheetLabel">Ver plano del nivel</span><span class="chev">▲</span>
+    </button>
+    <div class="render-body" id="renderPanel">
+      <div class="ph" id="renderPlaceholder">Elige un nivel de la lista para ver su render de interiores.</div>
+    </div>
   </aside>
 
   <main class="viewer">
@@ -430,7 +510,29 @@ function updateCamera() {
   camera.position.y = targetPos.y + radius * Math.cos(phi);
   camera.position.z = targetPos.z + radius * Math.sin(phi) * Math.cos(theta);
   camera.lookAt(targetPos);
-  return moving;
+  return applyViewShift() || moving;
+}
+
+// Móvil: al abrir el panel inferior tapa parte del visor; se desplaza la imagen hacia arriba
+// (setViewOffset) para que el modelo siga centrado en el espacio que queda visible.
+let viewShift = 0, viewShiftGoal = 0;
+function applyViewShift() {
+  const diff = viewShiftGoal - viewShift;
+  const w = wrap.clientWidth, h = wrap.clientHeight;
+  if (Math.abs(diff) < 0.5) {
+    const changed = viewShift !== viewShiftGoal;
+    viewShift = viewShiftGoal;
+    if (changed || camera.view) {
+      if (viewShift === 0) camera.clearViewOffset();
+      else camera.setViewOffset(w, h, 0, viewShift, w, h);
+      camera.updateProjectionMatrix();
+    }
+    return changed;
+  }
+  viewShift += diff * 0.25;
+  camera.setViewOffset(w, h, 0, viewShift, w, h);
+  camera.updateProjectionMatrix();
+  return true;
 }
 
 function zoomBy(factor) {
@@ -664,6 +766,7 @@ function selectLevel(levelId) {
   }
 
   showRender(lvl);
+  centerLevelChip(levelId);
 }
 
 function resetView() {
@@ -674,6 +777,7 @@ function resetView() {
   clearRender();
 }
 document.getElementById('resetBtn').addEventListener('click', resetView);
+document.getElementById('mResetBtn').addEventListener('click', resetView);
 function salirDelVisor() {
   try {
     if (window.parent && typeof window.parent.salirVisor3d === 'function') {
@@ -682,11 +786,50 @@ function salirDelVisor() {
   } catch (e) { /* iframe fuera de contexto (ej. abierto directo) — se ignora */ }
 }
 document.getElementById('exitBtn').addEventListener('click', salirDelVisor);
+document.getElementById('mExitBtn').addEventListener('click', salirDelVisor);
 // Con el foco dentro del iframe, la tecla Esc no llega a la página: se reenvía.
 document.addEventListener('keydown', (e) => { if (e.key === 'Escape') salirDelVisor(); });
 
 /* ================= Panel de render 2D + tarjetas de unidades ================= */
 const renderPanel = document.getElementById('renderPanel');
+const renderSheet = document.getElementById('renderSheet');
+const sheetHandle = document.getElementById('sheetHandle');
+const sheetLabel = document.getElementById('sheetLabel');
+// Solo móvil: la hoja inferior muestra los departamentos; abierta, también el plano del nivel.
+function setSheetOpen(open) {
+  renderSheet.classList.toggle('is-open', open);
+  sheetHandle.setAttribute('aria-expanded', String(open));
+  sheetLabel.textContent = open ? 'Ocultar plano' : 'Ver plano del nivel';
+  updateViewShiftGoal();
+}
+function updateViewShiftGoal() {
+  const mobile = window.matchMedia('(max-width:900px)').matches;
+  if (!mobile || !renderSheet.classList.contains('is-open')) { viewShiftGoal = 0; requestRender(); return; }
+  const appH = document.querySelector('.app').clientHeight;
+  const peek = parseFloat(getComputedStyle(renderSheet).getPropertyValue('--peek-h')) || 150;
+  const cover = Math.max(0, appH * 0.66 - peek);   // lo que el panel abierto tapa del visor
+  viewShiftGoal = cover / 2;                        // mitad: el modelo queda al centro de lo visible
+  requestRender();
+}
+sheetHandle.addEventListener('click', () => setSheetOpen(!renderSheet.classList.contains('is-open')));
+let sheetTouchY = null;
+sheetHandle.addEventListener('touchstart', e => { sheetTouchY = e.touches[0].clientY; }, { passive: true });
+sheetHandle.addEventListener('touchend', e => {
+  if (sheetTouchY === null) return;
+  const dy = e.changedTouches[0].clientY - sheetTouchY;
+  sheetTouchY = null;
+  if (dy < -30) setSheetOpen(true);        // desliza hacia arriba
+  else if (dy > 30) setSheetOpen(false);   // desliza hacia abajo
+  else return;
+  e.preventDefault();                      // ya se atendió el gesto: evita el click duplicado
+});
+// Centra en el carrusel de niveles el que se acaba de elegir.
+function centerLevelChip(levelId) {
+  const nav = document.getElementById('levelList');
+  const chip = nav.querySelector('.level-card[data-id="' + levelId + '"]');
+  if (!chip || nav.scrollWidth <= nav.clientWidth) return;
+  nav.scrollTo({ left: chip.offsetLeft - (nav.clientWidth - chip.offsetWidth) / 2, behavior: 'smooth' });
+}
 let selectedUnitId = null;
 let selectedAmenity = null;
 
@@ -721,7 +864,7 @@ function showRender(lvl) {
   `;
 
   if (lvl.id === 'planta-baja') {
-    let pbHtml = `<div class="pb-desc">${PLANTA_BAJA_DESC}</div><h4 style="margin-top:12px;">Elementos en 3D</h4>`;
+    let pbHtml = `<div class="pb-desc">${PLANTA_BAJA_DESC}</div><h4 style="margin-top:12px;">Elementos en 3D</h4><div class="units-row">`;
     PLANTA_BAJA_AMENITIES.forEach(a => {
       const has3d = !!modelNodes[a.nodeName];
       pbHtml += `
@@ -736,10 +879,11 @@ function showRender(lvl) {
         </div>
       `;
     });
+    pbHtml += `</div>`;
     bodyHtml += `<div class="units-section">${pbHtml}</div>`;
   } else {
     const units = UNITS_BY_LEVEL[lvl.id] || [];
-    let cardsHtml = `<h4>Unidades disponibles</h4>`;
+    let cardsHtml = `<h4>Unidades disponibles</h4><div class="units-row">`;
     if (units.length === 0) {
       cardsHtml += `<p style="color:var(--ink-dim);font-size:12.5px;">No hay unidades disponibles en este nivel por ahora.</p>`;
     } else {
@@ -770,14 +914,18 @@ function showRender(lvl) {
         `;
       });
     }
+    cardsHtml += `</div>`;
     bodyHtml += `<div class="units-section">${cardsHtml}</div>`;
   }
 
   renderPanel.innerHTML = bodyHtml;
+  renderSheet.classList.add('has-level');
 }
 function clearRender() {
   selectedUnitId = null;
   renderPanel.innerHTML = `<div class="ph" id="renderPlaceholder">Elige un nivel de la lista para ver su render de interiores.</div>`;
+  renderSheet.classList.remove('has-level');
+  setSheetOpen(false);
 }
 
 /* ================= Selección de unidad: sincroniza 3D + contorno + ficha real ================= */
@@ -877,6 +1025,7 @@ function fitToContainer() {
   camera.updateProjectionMatrix();
   renderer.setSize(w, h);
   if (portraitBefore !== (camera.aspect < 1.15)) reframeCurrent();
+  updateViewShiftGoal();
   requestRender();
 }
 if (typeof ResizeObserver !== 'undefined') {
