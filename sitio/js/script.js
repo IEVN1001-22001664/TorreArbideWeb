@@ -91,7 +91,7 @@
   var visorMovil = function () { return window.matchMedia("(max-width:900px)").matches; };
 
   if (visorFrame && visorActivate && visorIframe) {
-    if (visorNote) visorNote.textContent = visorMovil() ? "Se descargan unos 9 MB" : "Se descargan unos 19 MB";
+    if (visorNote) visorNote.textContent = visorMovil() ? "Se descargan unos 14 MB" : "Se descargan unos 19 MB";
 
     var cargarVisor3d = function () {
       if (!visorIframe.getAttribute("src")) visorIframe.src = visorIframe.getAttribute("data-src");

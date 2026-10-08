@@ -343,7 +343,7 @@ window.addEventListener('error', (e) => {
 });
 
 /* ================= Perfil de rendimiento =================
-   Móvil / táctil → versión "lite": modelo con ~25 % de los triángulos y texturas
+   Móvil / táctil → versión "lite": modelo con ~50 % de los triángulos y texturas
    pequeñas, sin sombras y con menos resolución de pantalla. Escritorio → modelo completo.
    ?lite=1 / ?lite=0 fuerzan un perfil (útil para probar). */
 const qs = new URLSearchParams(location.search);
@@ -351,7 +351,7 @@ const IS_LITE = qs.has('lite')
   ? qs.get('lite') !== '0'
   : (window.matchMedia('(max-width:900px)').matches || window.matchMedia('(pointer:coarse)').matches);
 const IS_TOUCH = window.matchMedia('(pointer:coarse)').matches;
-const MODEL_VERSION = '20261021'; // súbelo cuando cambies un .glb (evita que se quede el viejo en caché)
+const MODEL_VERSION = '20261024'; // súbelo cuando cambies un .glb (evita que se quede el viejo en caché)
 const MODEL_URL = (IS_LITE ? 'torre-arbide-4niveles-lite.glb' : 'torre-arbide-4niveles.glb') + '?v=' + MODEL_VERSION;
 if (IS_TOUCH) {
   document.getElementById('viewerInstructions').textContent =
