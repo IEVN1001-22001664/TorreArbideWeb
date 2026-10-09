@@ -171,7 +171,7 @@
      barra superior fija (Salir / Ver todo) · niveles (Planta Baja → Nivel 5) · modelo 3D ·
      panel inferior con los departamentos disponibles (se expande para ver el plano) */
   @media (max-width:900px){
-    :root{--peek-h:184px;}
+    :root{--peek-h:172px;}
     .m-topbar{
       display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 auto;
       padding:8px 10px;padding-top:max(8px, env(safe-area-inset-top));
@@ -995,7 +995,7 @@ function showRender(lvl) {
             <div class="u-thumb" style="${thumbStyle}"></div>
             <div class="u-body">
               <div>
-                <div class="u-name">${u.nombre}<span class="tag">${u.prototipo.toUpperCase()}</span></div>
+                <div class="u-name">${u.prototipo} - ${u.id}</div>
                 <div class="u-sub">${u.m2} m² · $${u.precio}</div>
               </div>
               <span class="u-go" role="button" tabindex="0" onclick="verFichaDeUnidad(event,'${u.id}','${u.prototipo}')" onkeydown="if(event.key==='Enter'){verFichaDeUnidad(event,'${u.id}','${u.prototipo}')}">Ver ficha →</span>
