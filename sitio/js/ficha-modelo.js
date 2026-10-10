@@ -192,7 +192,7 @@
         { label: "Configuración", value: "1 Recámara Loft" },
         { label: "Baños", value: "1 Completo" },
         { label: "Lavandería", value: "Cuarto Cerrado" },
-        { label: "Estacionamiento", value: "1 Cajón techado" }
+        { label: "Estacionamiento", value: "2 Cajónes techados" }
       ],
       description: descripcionModelo("Loft"),
       equipment: EQUIPMENT_COMUN
