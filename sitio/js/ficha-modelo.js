@@ -184,6 +184,10 @@
           price: "$3,333,000.-",
           m2: "103.11 m²",
           nivel: "4to y 5to Piso",
+          // Fotografías exclusivas de este departamento (solo el Loft 403): al seleccionarlo,
+          // la galería cambia a estas fotos; los demás Loft siguen usando las del modelo.
+          photosBase: "assets/fichas/mods/loft403/",
+          photos: photoSet("ficha_loft_403", 35),
           renders: [renderDe("Loft403_down", "4to Piso"), renderDe("Loft403_up", "5to Piso")],
           waText: "Hola, me interesa información y agendar cita para el Modelo Loft - 403 en Torre Arbide"
         }
@@ -205,6 +209,7 @@
   var currentData = null;
   var currentUnit = null;
   var galleryItems = [];
+  var currentGalleryKey = null; // carpeta de fotos que muestra hoy la galería
   var currentGalleryIndex = 0;
   var renderToken = 0;
   var renderIndex = 0;
@@ -216,6 +221,17 @@
     return (data.photos || []).map(function (p) {
       return { src: data.photosBase + p };
     });
+  }
+
+  // Galería del departamento: si la unidad trae sus propias fotos (photos/photosBase) se usan
+  // esas; si no, las del modelo. Solo reconstruye la galería cuando cambia la carpeta de fotos.
+  function applyGallery(data, unit) {
+    var source = unit.photos && unit.photos.length ? unit : data;
+    if (source.photosBase === currentGalleryKey) return;
+    currentGalleryKey = source.photosBase;
+    galleryItems = buildGalleryItems(source);
+    renderThumbs();
+    showGalleryImage(0);
   }
 
   function renderThumbs() {
@@ -304,6 +320,7 @@
       r.classList.toggle("is-selected", i === index);
     });
 
+    applyGallery(currentData, unit);
     renderSpecs(currentData, unit);
     renderUnitRenders(unit);
     whatsappBtn.href = "https://wa.me/" + WHATSAPP + "?text=" + encodeURIComponent(unit.waText);
@@ -402,9 +419,7 @@
     renderDescription(data);
     renderEquipment(data);
 
-    galleryItems = buildGalleryItems(data);
-    renderThumbs();
-    showGalleryImage(0);
+    currentGalleryKey = null; // la galería la arma selectUnit() según el departamento elegido
   }
 
   /* ---------- apertura / cierre del modal ---------- */
