@@ -138,6 +138,31 @@
     }
   }
 
+  /* ---------- aviso de cookies ----------
+     Se muestra una vez; al pulsar "Entendido" se recuerda en este navegador. */
+  var cookieBanner = document.getElementById("cookie-banner");
+  var cookieAccept = document.getElementById("cookie-accept");
+  if (cookieBanner && cookieAccept) {
+    var COOKIE_KEY = "ta_aviso_cookies";
+    var cookieVisto = false;
+    try { cookieVisto = window.localStorage.getItem(COOKIE_KEY) === "1"; } catch (e) { /* sin almacenamiento: se muestra siempre */ }
+    var ajustarWhatsapp = function () {
+      document.documentElement.style.setProperty("--cookie-h", cookieBanner.offsetHeight + "px");
+    };
+    if (!cookieVisto) {
+      cookieBanner.hidden = false;
+      document.body.classList.add("has-cookie-banner");
+      ajustarWhatsapp();
+      window.addEventListener("resize", ajustarWhatsapp);
+      cookieAccept.addEventListener("click", function () {
+        cookieBanner.hidden = true;
+        document.body.classList.remove("has-cookie-banner");
+        window.removeEventListener("resize", ajustarWhatsapp);
+        try { window.localStorage.setItem(COOKIE_KEY, "1"); } catch (e) { /* no crítico */ }
+      });
+    }
+  }
+
   /* ---------- sticky nav background ---------- */
   var nav = document.getElementById("site-nav");
   if (nav) {

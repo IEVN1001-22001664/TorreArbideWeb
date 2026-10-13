@@ -1400,6 +1400,17 @@ body.mapa-fullscreen-lock{overflow:hidden;}
   color:var(--ink-dim);
   opacity:.7;
 }
+.footer-legal{
+  margin-top:8px;
+}
+.site-footer .footer-legal{opacity:.85;}
+.footer-legal a{
+  color:inherit;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  transition:color .2s ease;
+}
+.footer-legal a:hover{color:var(--tan-light);}
 .footer-credit{
   margin-top:8px;
 }
@@ -1960,3 +1971,56 @@ body.ficha-lock{overflow:hidden;}
    El clic debe registrarlo el propio elemento con data-track (<a> / <button>), no un hijo
    (svg, span, path): así GTM siempre ve el mismo elemento, también dentro de las fichas. */
 [data-track] *{pointer-events:none;}
+
+/* ---------- aviso de cookies ---------- */
+.cookie-banner{
+  position:fixed;
+  left:24px;
+  bottom:24px;
+  z-index:850;
+  display:flex;
+  align-items:center;
+  gap:18px;
+  max-width:560px;
+  padding:16px 20px;
+  background:rgba(32,38,42,.97);
+  color:var(--ink);
+  border:1px solid rgba(245,243,239,.18);
+  border-radius:4px;
+  box-shadow:0 12px 36px rgba(0,0,0,.4);
+  animation:cookie-in .45s ease both;
+}
+.cookie-banner[hidden]{display:none;}
+.cookie-text{
+  flex:1;
+  font-size:12.5px;
+  line-height:1.55;
+  color:var(--ink-dim);
+}
+.cookie-text a{color:var(--ink);text-underline-offset:3px;}
+.cookie-text a:hover{color:var(--tan-light);}
+.cookie-btn{
+  flex:0 0 auto;
+  padding:11px 20px;
+  background:var(--cream);
+  color:var(--charcoal-deep);
+  border:0;
+  border-radius:2px;
+  font-family:var(--font-sans);
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.06em;
+  text-transform:uppercase;
+  cursor:pointer;
+  transition:background .2s ease;
+}
+.cookie-btn:hover{background:var(--tan-light);}
+.cookie-btn:focus-visible{outline:2px solid var(--tan-light);outline-offset:3px;}
+@keyframes cookie-in{from{opacity:0;transform:translateY(16px);}to{opacity:1;transform:none;}}
+@media (prefers-reduced-motion:reduce){.cookie-banner{animation:none;}}
+@media (max-width:640px){
+  .cookie-banner{left:12px;right:12px;bottom:12px;flex-direction:column;align-items:stretch;gap:12px;padding:14px 16px;}
+  .cookie-btn{width:100%;}
+  /* el botón de WhatsApp sube para no quedar tapado por el aviso */
+  body.has-cookie-banner .whatsapp-float{bottom:calc(var(--cookie-h,140px) + 24px);}
+}
