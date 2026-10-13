@@ -1955,3 +1955,8 @@ body.ficha-lock{overflow:hidden;}
   *{animation-duration:.001ms !important;animation-iteration-count:1 !important;transition-duration:.001ms !important;}
   html{scroll-behavior:auto;}
 }
+
+/* ---------- Seguimiento (Google Tag Manager) ----------
+   El clic debe registrarlo el propio elemento con data-track (<a> / <button>), no un hijo
+   (svg, span, path): así GTM siempre ve el mismo elemento, también dentro de las fichas. */
+[data-track] *{pointer-events:none;}
