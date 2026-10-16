@@ -237,9 +237,9 @@
 
     // Mismos datos ya usados en la ficha de cada modelo (js/ficha-modelo.js).
     var MODEL_INFO = {
-      studio: { nombre: "Studio", superficie: "70.12 a 70.90 m²", desde: "$2,323,000" },
-      studiomax: { nombre: "Studio Max", superficie: "88.80 m²", desde: "$2,821,000" },
-      loft: { nombre: "Loft", superficie: "100.80 a 103.11 m²", desde: "$3,061,000" }
+      studio: { nombre: "Studio", superficie: "70.12 a 70.90 m²", desde: "$2,320,000" },
+      studiomax: { nombre: "Studio Max", superficie: "88.80 m²", desde: "$2,820,000" },
+      loft: { nombre: "Loft", superficie: "100.80 a 103.11 m²", desde: "$3,060,000" }
     };
 
     function onSingleAndDoubleClick(el, onSingle, onDouble) {
