@@ -1,0 +1,42 @@
+OPTIMIZAR EL MODELO 3D DEL VISOR
+================================
+
+Cada vez que llegue un modelo nuevo de Blender (por ejemplo cuando se agreguen los
+niveles 4 y 5), NO se sube tal cual a assets/modelos3d/: pesa decenas de MB.
+Se pasa primero por este script, que genera los dos archivos que usa el visor:
+
+  torre-arbide-4niveles.glb        -> escritorio (misma geometría, mucho más ligero)
+  torre-arbide-4niveles-lite.glb   -> celular / tablet (~50 % de los triángulos)
+
+Pasos
+-----
+1. Instalar una sola vez (en esta carpeta):
+
+     npm install
+
+2. Optimizar (ajusta las rutas):
+
+     node optimizar-modelo3d.mjs "C:\ruta\NuevoModelo.glb" ^
+        "C:\CLAUDECODE\TORREARBIDE.COM\sitio\assets\modelos3d\torre-arbide-4niveles.glb" ^
+        "C:\CLAUDECODE\TORREARBIDE.COM\sitio\assets\modelos3d\torre-arbide-4niveles-lite.glb"
+
+3. En sitio/assets/modelos3d/visor-3d.html cambia la constante MODEL_VERSION
+   (p. ej. '20261021' -> la fecha de hoy). Sin esto, los navegadores que ya
+   visitaron el sitio se quedan con el modelo viejo en caché.
+   También sube el ?v= del iframe en sitio/index.html.
+
+4. Revisa el visor en el celular y en la computadora antes de subir.
+
+Notas
+-----
+- El modelo de Blender debe conservar los nombres de nodo (NIVEL01, NIVEL02,
+  NIVEL03, PlantaBaja, cent_103, cent_201, cent_204, cent_301, cent_303,
+  CASETA, CASILLEROS, ELEVADOR, TERRAZA). El script los respeta.
+- Si en el celular algún piso se ve deforme: baja LITE_ERROR (0.01 -> 0.005).
+  Si el celular va lento: súbelo (0.01 -> 0.02 / 0.03). Se pasan como variables, por ejemplo:
+      set LITE_ERROR=0.02&& node optimizar-modelo3d.mjs ...
+  NO uses valores de error altos (0.05): deforman paredes y pisos.
+  Efecto conocido: la versión lite elimina detalles muy pequeños (hojas de las plantas).
+- El modelo original sin optimizar queda guardado en
+  C:\CLAUDECODE\TORREARBIDE.COM\respaldo-modelos3d\  (fuera de la carpeta "sitio",
+  para que no se suba al servidor).

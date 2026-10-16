@@ -58,6 +58,10 @@
     "Portón y acceso controlado",
     "Tanque e instalaciones independientes"
   ];
+  // Solo los Loft tienen 2 cajones de estacionamiento (Studio y Studio Max: 1).
+  var EQUIPMENT_LOFT = EQUIPMENT_COMUN.map(function (t) {
+    return t === "1 Cajón de estacionamiento" ? "2 Cajones de estacionamiento" : t;
+  });
   function descripcionModelo(nombre) {
     return [
       "El <strong>Modelo " +
@@ -144,7 +148,7 @@
         { label: "Configuración", value: "1 Recámara Studio Max" },
         { label: "Baños", value: "1 Completo" },
         { label: "Lavandería", value: "Cuarto Cerrado" },
-        { label: "Estacionamiento", value: "2 Cajones techados" }
+        { label: "Estacionamiento", value: "1 Cajón techado" }
       ],
       description: descripcionModelo("StudioMax"),
       equipment: EQUIPMENT_COMUN
@@ -196,10 +200,10 @@
         { label: "Configuración", value: "1 Recámara Loft" },
         { label: "Baños", value: "1 Completo" },
         { label: "Lavandería", value: "Cuarto Cerrado" },
-        { label: "Estacionamiento", value: "2 Cajónes techados" }
+        { label: "Estacionamiento", value: "2 Cajones techados" }
       ],
       description: descripcionModelo("Loft"),
-      equipment: EQUIPMENT_COMUN
+      equipment: EQUIPMENT_LOFT
     }
   };
 

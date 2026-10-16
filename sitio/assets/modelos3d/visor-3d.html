@@ -170,7 +170,7 @@
   /* ---- Móvil: pantalla completa ----
      barra superior fija (Salir / Ver todo) · niveles (Planta Baja → Nivel 5) · modelo 3D ·
      panel inferior con los departamentos disponibles (se expande para ver el plano) */
-  @media (max-width:900px){
+  @media (max-width:1100px){
     :root{--peek-h:172px;}
     .m-topbar{
       display:flex;align-items:center;justify-content:space-between;gap:8px;flex:0 0 auto;
@@ -726,7 +726,7 @@ function computeGroupBox(names) {
   return any ? box : null;
 }
 
-const isMobileLayout = () => window.matchMedia('(max-width:900px)').matches;
+const isMobileLayout = () => window.matchMedia('(max-width:1100px)').matches;
 
 // Calcula la distancia de cámara para que un conjunto de puntos 3D quede completo en
 // pantalla (ocupando `fill` del espacio disponible), con el ángulo dado y la proporción real
@@ -890,7 +890,7 @@ function setSheetOpen(open) {
   updateViewShiftGoal();
 }
 function updateViewShiftGoal() {
-  const mobile = window.matchMedia('(max-width:900px)').matches;
+  const mobile = window.matchMedia('(max-width:1100px)').matches;
   if (!mobile || !renderSheet.classList.contains('is-open')) { viewShiftGoal = 0; requestRender(); return; }
   const appH = document.querySelector('.app').clientHeight;
   const peek = parseFloat(getComputedStyle(renderSheet).getPropertyValue('--peek-h')) || 150;

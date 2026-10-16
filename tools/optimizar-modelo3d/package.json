@@ -1,0 +1,14 @@
+{
+  "name": "optimizar-modelo3d",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Optimiza el .glb del visor 3D de Torre Arbide (versión escritorio + versión lite para móvil)",
+  "dependencies": {
+    "@gltf-transform/core": "4.5.1",
+    "@gltf-transform/extensions": "4.5.1",
+    "@gltf-transform/functions": "4.5.1",
+    "meshoptimizer": "1.3.0",
+    "sharp": "0.35.5"
+  }
+}

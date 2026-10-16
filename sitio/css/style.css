@@ -588,6 +588,19 @@ img{display:block;max-width:100%;}
   pointer-events:none;
 }
 .departamentos-3d-frame.is-active iframe{pointer-events:auto;}
+/* Al activarlo, el visor 3D se abre casi a pantalla completa y centrado (con el resto de la
+   página atenuada detrás). Salir: "✕ Salir", tecla Esc o el botón atrás del navegador. */
+.departamentos-3d-frame.is-active{
+  position:fixed;
+  inset:clamp(8px,1.6vw,24px);
+  z-index:900;
+  width:auto;
+  height:auto;
+  margin:0;
+  border-radius:6px;
+  overflow:hidden;
+  box-shadow:0 0 0 100vmax rgba(10,12,14,.84);
+}
 
 .visor-3d-gate{
   position:absolute;
@@ -1873,15 +1886,11 @@ body.ficha-lock{overflow:hidden;}
 }
 @media (max-width:900px){
   .departamentos-3d-frame{height:56vh;height:56dvh;}
-  /* Al activarlo, el visor 3D ocupa toda la pantalla del celular (la salida es "✕ Salir" o el botón atrás) */
+  /* En celular el visor ocupa la pantalla completa, sin marco */
   .departamentos-3d-frame.is-active{
-    position:fixed;
     inset:0;
-    z-index:900;
-    width:100vw;
-    height:100vh;
-    height:100dvh;
-    margin:0;
+    border-radius:0;
+    box-shadow:none;
   }
   .visor-3d-activate{padding:24px 28px;}
   .unit-grid{grid-template-columns:1fr;max-width:440px;}

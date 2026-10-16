@@ -100,10 +100,8 @@
       cargarVisor3d();
       visorFrame.classList.add("is-active");
       document.body.classList.add("visor-3d-lock");
-      // En celular el visor es pantalla completa: el botón "atrás" lo cierra en vez de salir del sitio.
-      if (visorMovil()) {
-        try { history.pushState({ visor3d: 1 }, ""); } catch (e) { /* sin historial: no es crítico */ }
-      }
+      // El visor se abre casi a pantalla completa: el botón "atrás" lo cierra en vez de salir del sitio.
+      try { history.pushState({ visor3d: 1 }, ""); } catch (e) { /* sin historial: no es crítico */ }
     };
     var salirVisor3d = function (desdeHistorial) {
       if (!visorFrame.classList.contains("is-active")) return;
