@@ -91,7 +91,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital@1&family=Montserrat:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.css">
-<link rel="stylesheet" href="css/style.css?v=20261104">
+<link rel="stylesheet" href="css/style.css?v=20261105">
 </head>
 <body>
 <!-- Google Tag Manager (noscript) -->
@@ -320,7 +320,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <h3>Explora el Edificio en 3D</h3>
   </div>
   <div class="departamentos-3d-frame" id="visor-3d-frame">
-    <iframe data-src="assets/modelos3d/visor-3d.html?v=20261104" title="Visor 3D interactivo de Torre Arbide"></iframe>
+    <iframe data-src="assets/modelos3d/visor-3d.html?v=20261105" title="Visor 3D interactivo de Torre Arbide"></iframe>
 
     <div class="visor-3d-gate" id="visor-3d-gate">
       <button type="button" class="visor-3d-activate" id="visor-3d-activate">
@@ -406,17 +406,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </ul>
           </div>
 
-          <div class="ficha-card is-solar">
-            <p class="ficha-section-title">Energía Solar Incluida</p>
-            <ul class="ficha-payment-list">
-              <li class="ficha-payment-item"><span class="ficha-payment-bullet"></span><span><strong>3 paneles solares fotovoltaicos:</strong> cada departamento incluye su instalación, con una capacidad de entre 1.5 y 1.8 kW.</span></li>
-              <li class="ficha-payment-item"><span class="ficha-payment-bullet"></span><span><strong>Consumo básico cubierto:</strong> al ser una torre 100% eléctrica, los tres paneles alcanzan a cubrir el consumo básico habitual: iluminación general, estufa y calentador de agua (boiler).</span></li>
-              <li class="ficha-payment-item"><span class="ficha-payment-bullet"></span><span><strong>Equipos de alto consumo:</strong> no cubren al 100% el gasto si se incorporan aires acondicionados (minisplits) u otros equipos de alto consumo, pero amortiguan significativamente el costo de energía.</span></li>
-              <li class="ficha-payment-item"><span class="ficha-payment-bullet"></span><span><strong>Áreas comunes independientes:</strong> pasillos, elevador y zonas compartidas cuentan con su propio sistema de paneles independiente en la azotea.</span></li>
-              <li class="ficha-payment-item"><span class="ficha-payment-bullet"></span><span><strong>Espacio asignado:</strong> el área de la azotea ya está proyectada y delimitada en planos, con el espacio exacto para los tres módulos de cada unidad.</span></li>
-            </ul>
-          </div>
-
           <div class="ficha-actions">
             <a href="#" target="_blank" rel="noopener" class="ficha-btn ficha-btn-primary" id="ficha-whatsapp-btn" data-track="whatsapp">
               <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.582 2.128 2.182-.573c.978.58 1.911.928 3.145.929 3.178 0 5.767-2.587 5.768-5.766.001-3.187-2.575-5.77-5.764-5.771zm3.392 8.244c-.144.405-.837.774-1.17.824-.299.045-.677.063-1.092-.069-.252-.08-.575-.187-.988-.365-1.739-.751-2.874-2.502-2.961-2.617-.087-.116-.708-.94-.708-1.793s.448-1.273.607-1.446c.159-.173.346-.217.462-.217l.332.006c.106.005.249-.04.39.299.144.347.491 1.2.534 1.287.043.087.072.188.014.303-.058.116-.087.188-.173.289l-.26.302c-.087.087-.179.182-.077.357.101.174.45 1.743 1.94 2.234.193.064.347.103.466.14.202.064.385.055.53-.016.183-.089.789-.918.999-1.232.21-.314.42-.262.705-.157.285.105 1.808.853 2.119 1.008.311.155.518.232.593.361.075.13.075.753-.069 1.158z"/></svg>
@@ -434,6 +423,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <div class="ficha-section" id="ficha-description-section" hidden>
         <p class="ficha-section-title">Descripción</p>
         <div class="ficha-description" id="ficha-description"></div>
+      </div>
+
+      <div class="ficha-section" id="ficha-solar-section">
+        <p class="ficha-section-title">Energía Solar Incluida</p>
+        <div class="ficha-description">
+          <p>Cada departamento incluye la instalación de <strong>3 paneles solares fotovoltaicos</strong>, con una capacidad de <strong>1.5 kW</strong>. Al ser una torre 100% eléctrica, los tres paneles alcanzan a cubrir el <strong>consumo básico habitual</strong>: iluminación general, estufa y calentador de agua (boiler).</p>
+          <p>No cubren al 100% el gasto si se incorporan aires acondicionados (minisplits) u otros equipos de alto consumo, pero amortiguan significativamente el costo de energía.</p>
+        </div>
       </div>
 
       <div class="ficha-section" id="ficha-equipment-section" hidden>
@@ -754,8 +751,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 <script src="https://unpkg.com/leaflet-routing-machine@3.2.12/dist/leaflet-routing-machine.js"></script>
-<script src="js/script.js?v=20261104"></script>
-<script src="js/agenda.js?v=20261104"></script>
-<script src="js/ficha-modelo.js?v=20261104"></script>
+<script src="js/script.js?v=20261105"></script>
+<script src="js/agenda.js?v=20261105"></script>
+<script src="js/ficha-modelo.js?v=20261105"></script>
 </body>
 </html>

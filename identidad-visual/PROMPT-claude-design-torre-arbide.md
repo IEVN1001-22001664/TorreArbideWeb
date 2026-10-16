@@ -112,7 +112,7 @@ Todos: 1 recámara, 1 baño completo, **cuarto de lavado cerrado**, **isla de co
 
 Precios en MXN. "Desde $2,320,000" (Studio), "Desde $2,820,000" (Studio Max), "Desde $3,060,000" (Loft).
 
-**Energía solar incluida (diferenciador):** cada departamento incluye la instalación de **3 paneles solares fotovoltaicos** (capacidad de entre 1.5 y 1.8 kW). La torre es 100% eléctrica y los tres paneles alcanzan a cubrir el consumo básico habitual (iluminación, estufa y calentador de agua); no cubren al 100% si se agregan aires acondicionados u otros equipos de alto consumo, pero amortiguan significativamente el costo de energía. Las áreas comunes (pasillos, elevador) tienen su propio sistema independiente en la azotea. **No prometer ahorros en porcentaje ni "recibo en cero".**
+**Energía solar incluida (diferenciador):** cada departamento incluye la instalación de **3 paneles solares fotovoltaicos con una capacidad de 1.5 kW**. La torre es 100% eléctrica y los tres paneles alcanzan a cubrir el consumo básico habitual (iluminación general, estufa y calentador de agua); no cubren al 100% si se agregan aires acondicionados u otros equipos de alto consumo, pero amortiguan significativamente el costo de energía. **No prometer ahorros en porcentaje ni "recibo en cero".**
 
 **Formas de pago:** créditos hipotecarios de todos los bancos autorizados (BBVA, Banorte, Santander, Scotiabank, etc.); Cofinavit y esquemas mixtos o institucionales; recursos propios con apartado para congelar precio.
 
