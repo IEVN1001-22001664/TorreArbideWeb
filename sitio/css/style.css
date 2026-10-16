@@ -1875,7 +1875,8 @@ body.ficha-lock{overflow:hidden;}
   #ficha-description-section{order:5;margin-top:0;margin-bottom:16px;}
   #ficha-equipment-section{order:6;margin-top:0;margin-bottom:16px;}
   .ficha-card.is-payment{order:7;margin-bottom:16px;}
-  .ficha-actions{order:8;margin-bottom:28px;}
+  .ficha-card.is-solar{order:8;margin-bottom:16px;}
+  .ficha-actions{order:9;margin-bottom:28px;}
   .ficha-level-wrapper{height:auto;aspect-ratio:4/5;}
 }
 

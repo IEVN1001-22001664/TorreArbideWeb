@@ -56,7 +56,8 @@
     "1 Cajón de estacionamiento",
     "Pisos cerámicos gran formato",
     "Portón y acceso controlado",
-    "Tanque e instalaciones independientes"
+    "Tanque e instalaciones independientes",
+    "3 paneles solares fotovoltaicos incluidos"
   ];
   // Solo los Loft tienen 2 cajones de estacionamiento (Studio y Studio Max: 1).
   var EQUIPMENT_LOFT = EQUIPMENT_COMUN.map(function (t) {
