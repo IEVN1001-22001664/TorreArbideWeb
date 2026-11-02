@@ -1,6 +1,6 @@
 # CLAUDE.md — Torre Arbide (sitio web)
 
-Guía para continuar el proyecto sin reanalizar el código. **Responde siempre en español** (todo texto visible al usuario, incluidos avisos intermedios). Última actualización: 2026-11-02 (HEAD `cf3dadf`).
+Guía para continuar el proyecto sin reanalizar el código. **Responde siempre en español** (todo texto visible al usuario, incluidos avisos intermedios). Última actualización: 2026-11-02 (verificación de estado; HEAD previo `0e83c54`).
 
 ## 1. Qué es
 
@@ -142,15 +142,16 @@ Inventario disponible (**7 unidades**; precios en MXN, **redondeados por instruc
 
 ## 8. Estado actual (2026-11-02)
 
-- Git: `main` = `cf3dadf` (CLAUDE.md), todo subido a GitHub/Vercel. Etiqueta local `siteground` = `cf3dadf`.
-- **SiteGround (producción) está al día**: el usuario subió los cambios y se verificó por contenido que `index.html`, `css/style.css`, `css/legal.css`, `js/script.js`, `js/ficha-modelo.js`, `js/agenda.js`, `visor-3d.html` y `aviso-de-privacidad/index.html` son idénticos a los del repositorio. No hay archivos pendientes de subir.
+- Git: `main` sincronizado con `origin/main`, todo subido a GitHub/Vercel. Etiqueta local `siteground` = `0e83c54` (los commits posteriores solo tocan `CLAUDE.md`, que no se sube a SiteGround).
+- **SiteGround (producción) está al día**: el usuario subió los cambios y se verificó por contenido que `index.html`, `css/style.css`, `css/legal.css`, `js/script.js`, `js/ficha-modelo.js`, `js/agenda.js`, `visor-3d.html` y `aviso-de-privacidad/index.html` son idénticos a los del repositorio (re-verificado el 2026-11-02 descargándolos de `www.torrearbide.com`). No hay archivos pendientes de subir. Apex, `sitemap.xml` y el `.glb` lite responden bien.
 - Versión `?v=` actual: `20261105`.
+- **GTM publicado** (versión 9 del contenedor `GTM-KH5K446C`, verificado descargando `gtm.js`): incluye GA4 `G-98VQ9M0J25` y activadores de clic por `[data-track="whatsapp"]`, `agendar-visita` y `agendar-videollamada`. **Falta** un activador de evento personalizado `agendar_cita` (no aparece en el contenedor).
 
 ## 9. Pendientes y preguntas abiertas
 
 1. **Modelar niveles 4 y 5** en 3D (cuando llegue el Blender: nombres de nodo intactos, pasar por `tools/optimizar-modelo3d`, subir `MODEL_VERSION`, añadir grupos en `LEVEL_GROUPS` y Empties `cent_401/403`).
 2. Aplicar (opcional) el fragmento de caché al `.htaccess` de SiteGround.
-3. GTM: dentro de Tag Manager el usuario debe crear la etiqueta GA4 (disparo "All Pages"), activadores por `[data-track]` y el evento `agendar_cita`, y **publicar** el contenedor.
+3. GTM: GA4 y clics `[data-track]` ya están publicados. Falta que el usuario cree en Tag Manager el activador de evento personalizado `agendar_cita` (con la variable de capa de datos `tipo_cita`), una etiqueta de evento GA4 que lo use, y vuelva a **publicar**. Así se miden citas realmente agendadas en Cal.com, no solo clics.
 4. Confirmar con el equipo: vigencia de precios y leyendas legales ("imágenes ilustrativas"), si el Studio Max se promociona con 1 o 2 recámaras, claim de la energía solar, medios concretos para derechos ARCO y revisión legal del aviso de privacidad; correo/teléfono de oficina para impresos.
 5. Ofrecidos y no pedidos: banner con consentimiento real (Consent Mode), GitHub Action de despliegue por FTP a SiteGround, un solo archivo de precios, textos reales para los POIs genéricos (parques Chapalita/Hidalgo, Hospital Aranda de la Parra, IMSS UMAE 1, Universidad de León, Plaza Mayor, Centro histórico), sección de energía solar adicional si el cliente quiere más detalle.
 6. Mejoras menores conocidas: en ventanas de escritorio de ~1000×650 el área del modelo 3D queda baja (~290 px) por el panel inferior; el sitio carga solo Cormorant Garamond Italic regular (los pesos 500/600 del CSS usan ese mismo archivo); la versión lite elimina detalles muy pequeños (hojas de plantas).
