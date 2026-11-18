@@ -219,7 +219,7 @@
     ])
     .concat(galleryCategory("areas-comunes", "galeria_estacionamiento", 24, "areas-comunes", "Torre Arbide - Cochera y Recepción"))
     .concat(galleryCategory("departamentos/studio", "galeria_studio", 63, "studio", "Torre Arbide - Studio"))
-    .concat(galleryCategory("departamentos/studioMax", "galeria_studioMax", 35, "studiomax", "Torre Arbide - Studio Max"))
+    .concat(galleryCategory("departamentos/studioMax", "galeria_studiomax", 35, "studiomax", "Torre Arbide - Studio Max"))
     .concat(galleryCategory("departamentos/loft", "galeria_loft", 67, "loft", "Torre Arbide - Loft"));
 
   var arcEl = document.getElementById("gallery-arc");
