@@ -15,7 +15,7 @@ Sitio web de **una sola página** (HTML/CSS/JS estático, sin framework ni build
 1. Se edita en local, se prueba en el navegador de vista previa, y **al terminar cada instrucción**: `git add .` → `git commit -m "<mensaje descriptivo en español>"` → `git push` (el usuario lo pidió explícitamente y de forma permanente). Añadir al commit la línea `Co-Authored-By: Claude Sonnet 5.5 <noreply@anthropic.com>` como segundo `-m`.
 2. Vercel despliega solo con el push (revisión del jefe). **SiteGround es la producción y se sube a mano** (File Manager, arrastrar/descomprimir en `public_html`). No se modifica nada directo en el servidor.
 3. **Al final de cada respuesta, listar los archivos a sustituir en SiteGround**: ejecutar `python tools/cambios-para-siteground.py` (compara contra la etiqueta git local `siteground`, imprime nuevos/modificados/eliminados y arma `C:\CLAUDECODE\subir-a-siteground\cambios.zip` solo con esos archivos). Cuando el usuario avise "ya subí", mover la etiqueta: `git tag -f siteground HEAD`.
-4. **Subir el `?v=YYYYMMDD` en `sitio/index.html`** (CSS, JS, iframe del visor) con cada cambio de CSS/JS/visor, porque el usuario despliega por git y hay cachés. Versión actual: `20261105`. Es un reemplazo global de la cadena (`sed -i 's/20261105/20261106/g' sitio/index.html`). Si se cambia un `.glb`, subir también `MODEL_VERSION` en `visor-3d.html`.
+4. **Subir el `?v=YYYYMMDD` en `sitio/index.html`** (CSS, JS, iframe del visor) con cada cambio de CSS/JS/visor, porque el usuario despliega por git y hay cachés. Versión actual: `20261106`. Es un reemplazo global de la cadena (`sed -i 's/20261106/20261107/g' sitio/index.html`). Si se cambia un `.glb`, subir también `MODEL_VERSION` en `visor-3d.html`.
 5. **No se manejan credenciales** (FTP/SiteGround/GitHub). No se sube a SiteGround automáticamente; se ofreció una GitHub Action por FTP (el usuario guardaría los secretos) y no se pidió.
 6. Verificar en el navegador antes de dar algo por hecho; decir qué se probó y qué no. Datos de negocio (precios, m², claims) se toman del código/textos del usuario, **no se inventan**.
 
@@ -144,7 +144,8 @@ Inventario disponible (**7 unidades**; precios en MXN, **redondeados por instruc
 
 - Git: `main` sincronizado con `origin/main`, todo subido a GitHub/Vercel. Etiqueta local `siteground` = `0e83c54` (los commits posteriores solo tocan `CLAUDE.md`, que no se sube a SiteGround).
 - **SiteGround (producción) está al día**: el usuario subió los cambios y se verificó por contenido que `index.html`, `css/style.css`, `css/legal.css`, `js/script.js`, `js/ficha-modelo.js`, `js/agenda.js`, `visor-3d.html` y `aviso-de-privacidad/index.html` son idénticos a los del repositorio (re-verificado el 2026-11-02 descargándolos de `www.torrearbide.com`). No hay archivos pendientes de subir. Apex, `sitemap.xml` y el `.glb` lite responden bien.
-- Versión `?v=` actual: `20261105`.
+- Versión `?v=` actual: `20261106`.
+- Galería Studio Max (2026-11-18): las fotos se llaman `galeria_studiomax_NN.jpg` (todo en minúsculas, en git, disco y SiteGround). Antes el código pedía `studioMax` y en SiteGround (Linux distingue mayúsculas) daban 404; en Windows no se nota. **Usar siempre minúsculas en nombres de archivo nuevos.** La galería muestra 35 de las 49 fotos de la carpeta.
 - **GTM publicado** (versión 9 del contenedor `GTM-KH5K446C`, verificado descargando `gtm.js`): incluye GA4 `G-98VQ9M0J25` y activadores de clic por `[data-track="whatsapp"]`, `agendar-visita` y `agendar-videollamada`. **Falta** un activador de evento personalizado `agendar_cita` (no aparece en el contenedor).
 
 ## 9. Pendientes y preguntas abiertas
